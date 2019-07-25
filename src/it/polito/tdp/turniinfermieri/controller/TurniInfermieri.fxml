@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -22,29 +27,70 @@
    <center>
       <TabPane tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
-          <Tab closable="false" text="Infermieri">
+            <Tab closable="false" text="Periodi Ferie">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0">
+                     <children>
+                        <HBox>
+                           <children>
+                              <TableView>
+                                <columns>
+                                  <TableColumn editable="false" prefWidth="166.3333740234375" text="Infermiere" />
+                                  <TableColumn prefWidth="82.6666259765625" text="Trimestre" />
+                                </columns>
+                                 <HBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </HBox.margin>
+                              </TableView>
+                              <VBox alignment="CENTER">
+                                 <children>
+                                    <TextArea editable="false" prefHeight="200.0" prefWidth="210.0" text="Scegliere quali infermieri avranno&#10;le &quot;ferie lugnhe&quot; (16 giorni) nei&#10;quattro trimestri, gli altri infermieri&#10;potranno fare solamente 2 giorni.&#10;&#10;trimestre 1 (set - nov) : 3 infermieri&#10;trimestre 2 (dic - feb) : 2 infermieri &#10;trimestre 3 (mar - mag) : 3 infermieri&#10;trimestre 4 (giu - ago) : 3 infermieri&#10;&#10;inserire valori da 1 a  4" />
+                                    <TextArea editable="false" prefHeight="200.0" prefWidth="200.0">
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </TextArea>
+                                    <Button mnemonicParsing="false" text="Invia">
+                                       <VBox.margin>
+                                          <Insets top="10.0" />
+                                       </VBox.margin>
+                                    </Button>
+                                 </children>
+                                 <HBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </HBox.margin>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+          <Tab closable="false" text="Giorni Ferie">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0">
                      <children>
-                        <VBox>
+                        <VBox alignment="CENTER" layoutX="102.0">
                            <children>
-                              <HBox>
+                              <HBox alignment="CENTER">
                                  <children>
-                                    <Label text="Seleziona infermiere : ">
+                                    <Label text="Seleziona Infermiere : ">
                                        <HBox.margin>
-                                          <Insets />
+                                          <Insets right="10.0" />
                                        </HBox.margin>
                                     </Label>
-                                    <ComboBox prefWidth="150.0">
-                                       <HBox.margin>
-                                          <Insets left="10.0" />
-                                       </HBox.margin>
-                                    </ComboBox>
+                                    <ComboBox prefWidth="150.0" />
                                  </children>
                                  <VBox.margin>
-                                    <Insets left="10.0" top="10.0" />
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </VBox.margin>
                               </HBox>
+                              <Button mnemonicParsing="false" text="Conferma">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </VBox.margin>
+                              </Button>
+                              <DatePicker />
                            </children>
                         </VBox>
                      </children>
@@ -56,7 +102,7 @@
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
             </content>
           </Tab>
-            <Tab closable="false" disable="true" text="Orario reparto">
+            <Tab closable="false" disable="true" text="Orario Reparto">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
               </content>
