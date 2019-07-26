@@ -44,7 +44,7 @@
                               </TableView>
                               <VBox alignment="CENTER">
                                  <children>
-                                    <TextArea editable="false" prefHeight="200.0" prefWidth="210.0" text="Scegliere quali infermieri avranno&#10;le &quot;ferie lugnhe&quot; (16 giorni) nei&#10;quattro trimestri, gli altri infermieri&#10;potranno fare solamente 2 giorni.&#10;&#10;trimestre 1 (set - nov) : 3 infermieri&#10;trimestre 2 (dic - feb) : 2 infermieri &#10;trimestre 3 (mar - mag) : 3 infermieri&#10;trimestre 4 (giu - ago) : 3 infermieri&#10;&#10;inserire valori da 1 a  4" />
+                                    <TextArea editable="false" prefHeight="200.0" prefWidth="210.0" text="Scegliere quali infermieri avranno&#10;le &quot;ferie lugnhe&quot; (14 giorni) nei&#10;quattro trimestri, gli altri infermieri&#10;potranno fare solamente 2 giorni.&#10;&#10;trimestre 1 (set - nov) : 3 infermieri&#10;trimestre 2 (dic - feb) : 2 infermieri &#10;trimestre 3 (mar - mag) : 3 infermieri&#10;trimestre 4 (giu - ago) : 3 infermieri&#10;&#10;inserire valori da 1 a  4" />
                                     <TextArea editable="false" prefHeight="200.0" prefWidth="200.0">
                                        <VBox.margin>
                                           <Insets top="10.0" />
@@ -66,11 +66,11 @@
                   </AnchorPane>
               </content>
             </Tab>
-          <Tab closable="false" text="Giorni Ferie">
+          <Tab closable="false" text="Richieste Giorni Ferie">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0">
                      <children>
-                        <VBox alignment="CENTER" layoutX="102.0">
+                        <VBox alignment="CENTER" layoutX="65.0">
                            <children>
                               <HBox alignment="CENTER">
                                  <children>
@@ -80,17 +80,38 @@
                                        </HBox.margin>
                                     </Label>
                                     <ComboBox prefWidth="150.0" />
+                                    <Button mnemonicParsing="false" text="Conferma">
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                    </Button>
                                  </children>
                                  <VBox.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </VBox.margin>
                               </HBox>
-                              <Button mnemonicParsing="false" text="Conferma">
+                              <HBox alignment="CENTER" prefHeight="25.0" prefWidth="232.0">
+                                 <children>
+                                    <DatePicker />
+                                    <Button mnemonicParsing="false" text="Modifica">
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                 </children>
                                  <VBox.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </VBox.margin>
-                              </Button>
-                              <DatePicker />
+                              </HBox>
+                              <TableView>
+                                <columns>
+                                  <TableColumn prefWidth="179.3333740234375" text="Ferie Brevi" />
+                                  <TableColumn minWidth="0.0" prefWidth="175.6666259765625" text="Ferie Lughe" />
+                                </columns>
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </VBox.margin>
+                              </TableView>
                            </children>
                         </VBox>
                      </children>
