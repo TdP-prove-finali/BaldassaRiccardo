@@ -75,7 +75,13 @@ public class TurniInfermieriController {
 
     @FXML
     void doPeriodiFerie(ActionEvent event) {
-
+    	
+    	TextAreaErrore.clear();
+    	if (!model.trimestriAccettabili(TableViewTrimestri.getItems().subList(0, TableViewTrimestri.getItems().size())))
+	    		TextAreaErrore.setText("Reegole non rispettate, modificare la \nscelta dei trimestri e confermare \nnuovamente");
+    	else {
+    		
+    	}
     }
 
     @FXML
@@ -107,8 +113,10 @@ public class TurniInfermieriController {
 
 	public void setModel(Model model) {
 		this.model = model;
+		// popolazione combobox
 		ComboBoxInfermieri.getItems().addAll(model.getInfermieri());
 		
+		// popolazione tabella prima tab
     	TableColumnTrimestre.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
 		
 		TableColumnNome.setCellValueFactory(new PropertyValueFactory<Infermiere, String>("nome"));

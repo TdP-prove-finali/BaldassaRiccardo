@@ -62,7 +62,7 @@ public class Infermiere {
 
 	@Override
 	public String toString() {
-		return String.format("%s %s", nome, cognome);
+		return String.format("%s %s %d", nome, cognome, trimestre_ferie_lunghe);
 	}
 
 }
