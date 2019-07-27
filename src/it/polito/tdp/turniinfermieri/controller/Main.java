@@ -16,7 +16,7 @@ public class Main extends Application {
 			BorderPane root = loader.load();
 			TurniInfermieriController controller = loader.getController();
 			Model model = new Model();
-			//controller.setModel(model) ;
+			controller.setModel(model) ;
 			
 			Scene scene = new Scene(root);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
