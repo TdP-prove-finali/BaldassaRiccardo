@@ -27,7 +27,7 @@
    <center>
       <TabPane tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
-            <Tab closable="false" text="Periodi Ferie">
+            <Tab fx:id="Tab_Periodi_Ferie" closable="false" text="Periodi Ferie">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0">
                      <children>
@@ -67,11 +67,11 @@
                   </AnchorPane>
               </content>
             </Tab>
-          <Tab closable="false" text="Richieste Giorni Ferie">
+          <Tab fx:id="Tab_Richieste_Giorni_Ferie" closable="false" text="Richieste Giorni Ferie">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0">
                      <children>
-                        <VBox alignment="CENTER" layoutX="65.0">
+                        <VBox alignment="CENTER" layoutX="33.0">
                            <children>
                               <HBox alignment="CENTER">
                                  <children>
@@ -104,32 +104,37 @@
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </VBox.margin>
                               </HBox>
-                              <TableView fx:id="TableViewFerie" onMouseClicked="#doSelectDay">
-                                <columns>
-                                  <TableColumn fx:id="TableColumnFerieBrevi" prefWidth="179.3333740234375" text="Ferie Brevi" />
-                                  <TableColumn fx:id="TableColumnFerieLunghe" minWidth="0.0" prefWidth="175.6666259765625" text="Ferie Lughe" />
-                                </columns>
-                                 <VBox.margin>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                 </VBox.margin>
-                              </TableView>
+                              <HBox>
+                                 <children>
+                                    <TableView fx:id="TableViewFerieBrevi" editable="true" onMouseClicked="#doSelectDay">
+                                      <columns>
+                                        <TableColumn fx:id="TableColumnFerieBrevi" onEditCommit="#onEditCommitFerieBrevi" prefWidth="250.0" text="Ferie Brevi" />
+                                      </columns>
+                                    </TableView>
+                                    <TableView fx:id="TableViewFerieLunghe" editable="true">
+                                       <columns>
+                                          <TableColumn fx:id="TableColumnFerieLunghe" onEditCommit="#onEditCommitFerieLunghe" prefWidth="250.0" text="Ferie Lunghe" />
+                                       </columns>
+                                    </TableView>
+                                 </children>
+                              </HBox>
                            </children>
                         </VBox>
                      </children>
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab closable="false" text="Genera Orario">
+          <Tab fx:id="Tab_Genera_Orario" closable="false" text="Genera Orario">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
             </content>
           </Tab>
-            <Tab closable="false" text="Orario Reparto">
+            <Tab fx:id="Tab_Orario_Reparto" closable="false" text="Orario Reparto">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
               </content>
             </Tab>
-            <Tab closable="false" text="Orario Infermieri">
+            <Tab fx:id="Tab_Orario_Infermieri" closable="false" text="Orario Infermieri">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
               </content>
