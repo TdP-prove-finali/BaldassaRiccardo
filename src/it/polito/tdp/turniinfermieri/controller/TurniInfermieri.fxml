@@ -33,11 +33,11 @@
                      <children>
                         <HBox>
                            <children>
-                              <TableView fx:id="TableViewTrimestri" editable="true">
+                              <TableView fx:id="TableViewTrimestri" editable="true" maxWidth="-Infinity" prefWidth="303.0">
                                 <columns>
-                                  <TableColumn fx:id="TableColumnNome" editable="false" prefWidth="110.0" text="Nome" />
-                                    <TableColumn fx:id="TableColumnCognome" prefWidth="110.0" text="Cognome" />
-                                  <TableColumn fx:id="TableColumnTrimestre" onEditCommit="#onEditCommitTrimestre" text="Trimestre" />
+                                  <TableColumn fx:id="TableColumnNome" editable="false" prefWidth="90.0" text="Nome" />
+                                    <TableColumn fx:id="TableColumnCognome" prefWidth="90.0" text="Cognome" />
+                                  <TableColumn fx:id="TableColumnTrimestre" onEditCommit="#onEditCommitTrimestre" prefWidth="120.0" text="Trimestre" />
                                 </columns>
                                  <HBox.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -45,7 +45,7 @@
                               </TableView>
                               <VBox alignment="CENTER">
                                  <children>
-                                    <TextArea editable="false" prefHeight="200.0" prefWidth="210.0" text="Scegliere quali infermieri avranno&#10;le &quot;ferie lugnhe&quot; (14 giorni) nei&#10;quattro trimestri, gli altri infermieri&#10;potranno fare solamente 2 giorni.&#10;&#10;trimestre 1 (set - nov) : 3 infermieri&#10;trimestre 2 (dic - feb) : 2 infermieri &#10;trimestre 3 (mar - mag) : 3 infermieri&#10;trimestre 4 (giu - ago) : 3 infermieri&#10;&#10;inserire valori da 1 a  4" />
+                                    <TextArea editable="false" prefHeight="200.0" prefWidth="210.0" text="Scegliere quali infermieri avranno&#10;le &quot;ferie lunghe&quot; (14 giorni) nei&#10;quattro trimestri, gli altri infermieri&#10;potranno fare solamente 2 giorni.&#10;&#10;trimestre 1 (set - nov) : 3 infermieri&#10;trimestre 2 (dic - feb) : 2 infermieri &#10;trimestre 3 (mar - mag) : 3 infermieri&#10;trimestre 4 (giu - ago) : 3 infermieri&#10;&#10;inserire valori da 1 a  4" />
                                     <TextArea fx:id="TextAreaErrore" editable="false" prefHeight="200.0" prefWidth="200.0">
                                        <VBox.margin>
                                           <Insets top="10.0" />
@@ -117,6 +117,9 @@
                                        </columns>
                                     </TableView>
                                  </children>
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" />
+                                 </VBox.margin>
                               </HBox>
                            </children>
                         </VBox>

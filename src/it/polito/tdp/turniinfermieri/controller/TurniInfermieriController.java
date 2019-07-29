@@ -6,6 +6,7 @@ package it.polito.tdp.turniinfermieri.controller;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -144,7 +145,11 @@ public class TurniInfermieriController {
     	
     	//modifica tabella  trimestre ferie
     	Infermiere infermiere = TableViewTrimestri.getSelectionModel().getSelectedItem();
-    	infermiere.setTrimestre_ferie_lunghe(trimestreCellEditEvent.getNewValue());
+    	Integer newValue = trimestreCellEditEvent.getNewValue();
+    	if (newValue != null)
+    		infermiere.setTrimestre_ferie_lunghe(newValue);
+
+  
 
     }
     
@@ -153,8 +158,11 @@ public class TurniInfermieriController {
     void onEditCommitFerieBrevi(TableColumn.CellEditEvent<Ferie, LocalDate> ferieBreviCellEditEvent) {
 
     	//modifica tabella ferie brevi
-    	//Ferie ferie = TableViewFerieBrevi.getSelectionModel().getSelectedItem();
-    	//ferie.setData(ferieBreviCellEditEvent.getNewValue());
+    	Ferie ferie = TableViewFerieBrevi.getSelectionModel().getSelectedItem();    	
+    	LocalDate newValue = ferieBreviCellEditEvent.getNewValue();
+    	
+    	if (newValue != null)
+    		ferie.setData(newValue);
     	
     }
 
@@ -162,19 +170,11 @@ public class TurniInfermieriController {
     void onEditCommitFerieLunghe(TableColumn.CellEditEvent<Ferie, LocalDate> ferieLungheCellEditEvent) {
 
     	//modifica tabella ferie lunghe
-    	Ferie ferie = TableViewFerieLunghe.getSelectionModel().getSelectedItem();
-    	LocalDate newValue = ferieLungheCellEditEvent.getOldValue();
+    	Ferie ferie = TableViewFerieLunghe.getSelectionModel().getSelectedItem();    	
+    	LocalDate newValue = ferieLungheCellEditEvent.getNewValue();
     	
-    	
-    	try {
-    		
-        	LocalDate.parse(ferieLungheCellEditEvent.toString());
-    		
-		} catch (DateTimeParseException e) {
-			return;
-		}
-    	
-    	ferie.setData(newValue);
+    	if (newValue != null)
+    		ferie.setData(newValue);
 
     }
 
@@ -205,7 +205,34 @@ public class TurniInfermieriController {
 		ComboBoxInfermieri.getItems().addAll(model.getInfermieri());
 		
 		// popolazione tabella prima tab
-    	TableColumnTrimestre.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+    	TableColumnTrimestre.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter() {
+    		
+    		@Override
+    		public String toString(Integer value) {
+
+    			if (value == null)
+    				return "valore non valido";
+    			
+    			return super.toString(value);
+    		}
+    		
+    		@Override
+    		public Integer fromString(String value) {
+
+    			// controllo che il nuovo numero inserito sia un numero valido
+    			
+    			try {
+					Integer.parseInt(value);
+				} catch (Exception NumberFormatException) {
+					return null;
+				}
+    			
+    			if (Integer.parseInt(value) > 4 || Integer.parseInt(value) < 1)
+    				return null;
+    			
+    			return super.fromString(value);
+    		}
+    	}));
 		
 		TableColumnNome.setCellValueFactory(new PropertyValueFactory<Infermiere, String>("nome"));
 		TableColumnCognome.setCellValueFactory(new PropertyValueFactory<Infermiere, String>("cognome"));
@@ -218,8 +245,62 @@ public class TurniInfermieriController {
 		TableViewTrimestri.setItems(rows);
 		
 		// tabelle ferie brevi e lunghe seconda tab
-    	TableColumnFerieBrevi.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateStringConverter()));
-    	TableColumnFerieLunghe.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateStringConverter()));
+    	TableColumnFerieBrevi.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateStringConverter() {
+    		
+    		@Override
+    		public String toString(LocalDate value) {
+
+    			if (value == null)
+    				return "valore non valido";
+    			
+    			return super.toString(value);
+    		}
+    		
+    		@Override
+    		public LocalDate fromString(String value) {
+    			
+    			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+    			
+    			//controllo che la nuova data inserita sia valida
+    			
+    			try {
+        			LocalDate.parse(value, formatter);
+				} catch (Exception DateTimeParseException) {
+					return null;
+				}
+    			
+    			return super.fromString(value);
+    		}
+    	}));
+    	TableColumnFerieLunghe.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateStringConverter() {
+    		
+    		@Override
+    		public String toString(LocalDate value) {
+
+    			if (value == null)
+    				return "valore non valido";
+    			
+    			return super.toString(value);
+    		}
+    		
+    		@Override
+    		public LocalDate fromString(String value) {
+
+    			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+    			
+    			//controllo che la nuova data inserita sia valida
+    			
+    			try {
+        			LocalDate.parse(value, formatter);
+				} catch (Exception DateTimeParseException) {
+					return null;
+				}
+    			
+    			return super.fromString(value);
+    		}
+    	}));
     	
     	TableColumnFerieBrevi.setCellValueFactory(new PropertyValueFactory<Ferie, LocalDate>("data"));
 		TableColumnFerieLunghe.setCellValueFactory(new PropertyValueFactory<Ferie, LocalDate>("data"));
