@@ -38,6 +38,11 @@ public class Ferie {
 	public void setData(LocalDate data) {
 		this.data = data;
 	}
+
+	@Override
+	public String toString() {
+		return String.format("%s %s %s", id_ferie, id_infermiere, data);
+	}
 	
 	
 	

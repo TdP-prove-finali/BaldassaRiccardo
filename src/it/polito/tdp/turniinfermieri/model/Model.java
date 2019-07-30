@@ -323,10 +323,79 @@ public class Model {
 		return false;
 	}
 
-	public void modificaFerie() {
+	public void modificaFerie(Infermiere infermiere) {
+		
+		List<Ferie> ferie = new ArrayList<Ferie>();
+		ferie.addAll(this.getFerieBreviInfermiere(infermiere));
+		ferie.addAll(this.getFerieLungheInfermiere(infermiere));
 
+		for (int i = 0; i < ferie.size(); i++) {
+			dao.modificaFerieInfermiere(ferie.get(i));
+		}
 		
 		
+	}
+	// controllo se la nuova data inserita nelle ferie lunghe sia valida
+	public boolean controllaFerieLunghe(LocalDate value, int trimestre_ferie_lunghe) {
+		
+		LocalDate inizio = LocalDate.of(2019, Month.AUGUST, 31);
+		LocalDate fine = LocalDate.of(2020, Month.SEPTEMBER, 1);
+
+
+		if (value == null)
+			return false;
+		
+		if (!value.isAfter(inizio) || !value.isBefore(fine))
+			return false;
+		
+		if (trimestre_ferie_lunghe != 1 && (value.getMonth() == Month.SEPTEMBER
+				|| value.getMonth() == Month.OCTOBER || value.getMonth() == Month.NOVEMBER)) 
+			return false;
+			
+		else if (trimestre_ferie_lunghe != 2 && (value.getMonth() == Month.DECEMBER
+				|| value.getMonth() == Month.JANUARY || value.getMonth() == Month.FEBRUARY))
+			return false;
+		
+		else if (trimestre_ferie_lunghe != 3 && (value.getMonth() == Month.MARCH
+				|| value.getMonth() == Month.APRIL || value.getMonth() == Month.MAY))
+			return false;
+		
+		else if (trimestre_ferie_lunghe != 4 && (value.getMonth() == Month.JUNE
+				|| value.getMonth() == Month.JULY || value.getMonth() == Month.AUGUST))
+			return false;
+		
+		return true;
+	}
+
+	public boolean controllaFerieBrevi(LocalDate value, int trimestre_ferie_lunghe) {
+		
+		LocalDate inizio = LocalDate.of(2019, Month.AUGUST, 31);
+		LocalDate fine = LocalDate.of(2020, Month.SEPTEMBER, 1);
+
+
+		if (value == null)
+			return false;
+		
+		if (!value.isAfter(inizio) || !value.isBefore(fine))
+			return false;
+		
+		if (trimestre_ferie_lunghe == 1 && (value.getMonth() == Month.SEPTEMBER
+				|| value.getMonth() == Month.OCTOBER || value.getMonth() == Month.NOVEMBER)) 
+			return false;
+			
+		else if (trimestre_ferie_lunghe == 2 && (value.getMonth() == Month.DECEMBER
+				|| value.getMonth() == Month.JANUARY || value.getMonth() == Month.FEBRUARY))
+			return false;
+		
+		else if (trimestre_ferie_lunghe == 3 && (value.getMonth() == Month.MARCH
+				|| value.getMonth() == Month.APRIL || value.getMonth() == Month.MAY))
+			return false;
+		
+		else if (trimestre_ferie_lunghe == 4 && (value.getMonth() == Month.JUNE
+				|| value.getMonth() == Month.JULY || value.getMonth() == Month.AUGUST))
+			return false;
+		
+		return true;
 	}
 
 }

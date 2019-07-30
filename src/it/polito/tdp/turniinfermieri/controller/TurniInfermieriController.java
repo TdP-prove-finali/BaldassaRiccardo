@@ -6,7 +6,6 @@ package it.polito.tdp.turniinfermieri.controller;
 
 import java.net.URL;
 import java.time.LocalDate;
-import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -98,20 +97,24 @@ public class TurniInfermieriController {
     		
     		if (!model.ferieLungheAccettabili(infermiere) && !model.ferieBreviAccettabili(infermiere)) {
     			TextFieldFerie.setText("ferie brevi e lunghe non accettabili");
+    			Tab_Periodi_Ferie.setDisable(true);
     			Tab_Genera_Orario.setDisable(true);
     		}
     		else if (!model.ferieBreviAccettabili(infermiere)) {
     			TextFieldFerie.setText("ferie brevi non accettabili");
+    			Tab_Periodi_Ferie.setDisable(true);
     			Tab_Genera_Orario.setDisable(true);
     		}
     		else if (!model.ferieLungheAccettabili(infermiere)) {
     			TextFieldFerie.setText("ferie lunghe non accettabili");
+    			Tab_Periodi_Ferie.setDisable(true);
     			Tab_Genera_Orario.setDisable(true);
     		}
     		else if (model.ferieLungheAccettabili(infermiere) && model.ferieBreviAccettabili(infermiere)) {
     			TextFieldFerie.setText("ferie brevi e lunghe accettate");
+    			Tab_Periodi_Ferie.setDisable(false);
     			Tab_Genera_Orario.setDisable(false);
-    			model.modificaFerie();
+    			model.modificaFerie(infermiere);
     		}
     	}
     	else
@@ -130,10 +133,12 @@ public class TurniInfermieriController {
     	if (!model.trimestriAccettabili(infermieri)) {
 	    	TextAreaErrore.setText("Regole non rispettate, modificare la \nscelta dei trimestri e confermare \nnuovamente");
 	    	Tab_Richieste_Giorni_Ferie.setDisable(true);
+	    	Tab_Genera_Orario.setDisable(true);
     	}
 	    else {
     		TextAreaErrore.setText("Regole rispettate, ferie accettate");
 	    	Tab_Richieste_Giorni_Ferie.setDisable(false);
+	    	Tab_Genera_Orario.setDisable(false);
     		model.modificaTrimestri();
     	}
     }
@@ -143,6 +148,7 @@ public class TurniInfermieriController {
     void onEditCommitTrimestre(TableColumn.CellEditEvent<Infermiere, Integer> trimestreCellEditEvent) {
     	
     	Tab_Richieste_Giorni_Ferie.setDisable(true);
+    	Tab_Genera_Orario.setDisable(true);
     	
     	//modifica tabella  trimestre ferie
     	Infermiere infermiere = TableViewTrimestri.getSelectionModel().getSelectedItem();
@@ -157,6 +163,9 @@ public class TurniInfermieriController {
 
     @FXML
     void onEditCommitFerieBrevi(TableColumn.CellEditEvent<Ferie, LocalDate> ferieBreviCellEditEvent) {
+    	
+    	Tab_Periodi_Ferie.setDisable(true);
+    	Tab_Genera_Orario.setDisable(true);
 
     	//modifica tabella ferie brevi
     	Ferie ferie = TableViewFerieBrevi.getSelectionModel().getSelectedItem();    	
@@ -164,58 +173,25 @@ public class TurniInfermieriController {
     	
     	Infermiere infermiere = ComboBoxInfermieri.getValue();
 		
-    	if (newValue != null) {
-    	
-			if (infermiere.getTrimestre_ferie_lunghe() == 1 && (newValue.getMonth() == Month.SEPTEMBER
-					|| newValue.getMonth() == Month.OCTOBER || newValue.getMonth() == Month.NOVEMBER)) 
-				return;
-				
-			else if (infermiere.getTrimestre_ferie_lunghe() == 2 && (newValue.getMonth() == Month.DECEMBER
-					|| newValue.getMonth() == Month.JANUARY || newValue.getMonth() == Month.FEBRUARY))
-				return;
-			
-			else if (infermiere.getTrimestre_ferie_lunghe() == 3 && (newValue.getMonth() == Month.MARCH
-					|| newValue.getMonth() == Month.APRIL || newValue.getMonth() == Month.MAY))
-				return;
-			
-			else if (infermiere.getTrimestre_ferie_lunghe() == 4 && (newValue.getMonth() == Month.JUNE
-					|| newValue.getMonth() == Month.JULY || newValue.getMonth() == Month.AUGUST))
-				return;
-	    	
-	    		ferie.setData(newValue);
-    	}
+		if (model.controllaFerieBrevi(newValue, infermiere.getTrimestre_ferie_lunghe()))
+    		ferie.setData(newValue);
     	
     }
 
     @FXML
     void onEditCommitFerieLunghe(TableColumn.CellEditEvent<Ferie, LocalDate> ferieLungheCellEditEvent) {
 
+    	Tab_Periodi_Ferie.setDisable(true);
+    	Tab_Genera_Orario.setDisable(true);
+    	
     	//modifica tabella ferie lunghe
     	Ferie ferie = TableViewFerieLunghe.getSelectionModel().getSelectedItem();    	
     	LocalDate newValue = ferieLungheCellEditEvent.getNewValue();
     	
     	Infermiere infermiere = ComboBoxInfermieri.getValue();
-		
-    	if (newValue != null) {
     	
-			if (infermiere.getTrimestre_ferie_lunghe() != 1 && (newValue.getMonth() == Month.SEPTEMBER
-					|| newValue.getMonth() == Month.OCTOBER || newValue.getMonth() == Month.NOVEMBER)) 
-				return;
-				
-			else if (infermiere.getTrimestre_ferie_lunghe() != 2 && (newValue.getMonth() == Month.DECEMBER
-					|| newValue.getMonth() == Month.JANUARY || newValue.getMonth() == Month.FEBRUARY))
-				return;
-			
-			else if (infermiere.getTrimestre_ferie_lunghe() != 3 && (newValue.getMonth() == Month.MARCH
-					|| newValue.getMonth() == Month.APRIL || newValue.getMonth() == Month.MAY))
-				return;
-			
-			else if (infermiere.getTrimestre_ferie_lunghe() != 4 && (newValue.getMonth() == Month.JUNE
-					|| newValue.getMonth() == Month.JULY || newValue.getMonth() == Month.AUGUST))
-				return;
-	    	
-	    		ferie.setData(newValue);
-    	}
+		if (model.controllaFerieLunghe(newValue, infermiere.getTrimestre_ferie_lunghe()))
+    		ferie.setData(newValue);
 
     }
     
@@ -321,23 +297,7 @@ public class TurniInfermieriController {
 
     			Infermiere infermiere = ComboBoxInfermieri.getValue();
     			
-    			if (value == null)
-    				return "valore non valido";
-    			
-    			if (infermiere.getTrimestre_ferie_lunghe() == 1 && (value.getMonth() == Month.SEPTEMBER
-    					|| value.getMonth() == Month.OCTOBER || value.getMonth() == Month.NOVEMBER)) 
-    				return "valore non valido";
-    				
-    			else if (infermiere.getTrimestre_ferie_lunghe() == 2 && (value.getMonth() == Month.DECEMBER
-    					|| value.getMonth() == Month.JANUARY || value.getMonth() == Month.FEBRUARY))
-    				return "valore non valido";
-    			
-    			else if (infermiere.getTrimestre_ferie_lunghe() == 3 && (value.getMonth() == Month.MARCH
-    					|| value.getMonth() == Month.APRIL || value.getMonth() == Month.MAY))
-    				return "valore non valido";
-    			
-    			else if (infermiere.getTrimestre_ferie_lunghe() == 4 && (value.getMonth() == Month.JUNE
-    					|| value.getMonth() == Month.JULY || value.getMonth() == Month.AUGUST))
+    			if (!model.controllaFerieBrevi(value, infermiere.getTrimestre_ferie_lunghe()))
     				return "valore non valido";
     			
     			return super.toString(value);
@@ -367,25 +327,8 @@ public class TurniInfermieriController {
     			
     			Infermiere infermiere = ComboBoxInfermieri.getValue();
     			
-    			if (value == null)
+    			if (!model.controllaFerieLunghe(value, infermiere.getTrimestre_ferie_lunghe()))
     				return "valore non valido";
-    			
-    			if (infermiere.getTrimestre_ferie_lunghe() != 1 && (value.getMonth() == Month.SEPTEMBER
-    					|| value.getMonth() == Month.OCTOBER || value.getMonth() == Month.NOVEMBER)) 
-    				return "valore non valido";
-    				
-    			else if (infermiere.getTrimestre_ferie_lunghe() != 2 && (value.getMonth() == Month.DECEMBER
-    					|| value.getMonth() == Month.JANUARY || value.getMonth() == Month.FEBRUARY))
-    				return "valore non valido";
-    			
-    			else if (infermiere.getTrimestre_ferie_lunghe() != 3 && (value.getMonth() == Month.MARCH
-    					|| value.getMonth() == Month.APRIL || value.getMonth() == Month.MAY))
-    				return "valore non valido";
-    			
-    			else if (infermiere.getTrimestre_ferie_lunghe() != 4 && (value.getMonth() == Month.JUNE
-    					|| value.getMonth() == Month.JULY || value.getMonth() == Month.AUGUST))
-    				return "valore non valido";
-    			
     			
     			return super.toString(value);
     		}

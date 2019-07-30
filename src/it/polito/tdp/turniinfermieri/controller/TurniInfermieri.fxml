@@ -51,7 +51,7 @@
                                           <Insets top="10.0" />
                                        </VBox.margin>
                                     </TextArea>
-                                    <Button mnemonicParsing="false" onAction="#doPeriodiFerie" text="Invia">
+                                    <Button mnemonicParsing="false" onAction="#doPeriodiFerie" text="Conferma">
                                        <VBox.margin>
                                           <Insets top="10.0" />
                                        </VBox.margin>
@@ -67,7 +67,7 @@
                   </AnchorPane>
               </content>
             </Tab>
-          <Tab fx:id="Tab_Richieste_Giorni_Ferie" closable="false" disable="true" text="Richieste Giorni Ferie">
+          <Tab fx:id="Tab_Richieste_Giorni_Ferie" closable="false" text="Richieste Giorni Ferie">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0">
                      <children>
@@ -89,7 +89,7 @@
                               <HBox alignment="CENTER" prefHeight="25.0" prefWidth="232.0">
                                  <children>
                                     <TextField fx:id="TextFieldFerie" prefHeight="25.0" prefWidth="197.0" />
-                                    <Button mnemonicParsing="false" onAction="#doModificaFerie" text="Modifica">
+                                    <Button mnemonicParsing="false" onAction="#doModificaFerie" text="Conferma">
                                        <HBox.margin>
                                           <Insets left="10.0" />
                                        </HBox.margin>
