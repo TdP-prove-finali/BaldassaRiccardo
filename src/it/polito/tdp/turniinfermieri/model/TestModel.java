@@ -8,11 +8,10 @@ public class TestModel {
 	public static void main(String[] args) {
 
 		Model model = new Model();
-		Map<LocalDate, DataTurni> prova = model.generaOrario();
+		Map<LocalDate, Map<Infermiere, String>> prova = model.generaOrario();
 		
-		for (DataTurni dt : prova.values()) {
-			//if (dt.getData().getYear() == 2019)
-				System.out.println(dt);
+		for (LocalDate l : prova.keySet()) {
+			System.out.println("" + l + prova.get(l));
 		}
 		
 	}

@@ -17,12 +17,18 @@ public class Model {
 	private TurniInfermieriDAO dao;
 	private List<Infermiere> infermieri;
 	private List<Ferie> ferie;
-	private List<DataTurni> soluzione;
+	private Map<LocalDate, Map<Infermiere, String>> soluzione;
+	private boolean trovata;
+	private List<Infermiere> candidatiMattino;
+	private List<Infermiere> candidatiPomeriggio;
+	private List<Infermiere> candidatiNotte;
+
 	
 	public Model() {
 		dao = new TurniInfermieriDAO();
 		infermieri = dao.getInfermieri();
 		ferie = dao.getFerie();
+		trovata = false;
 	}
 
 	public List<Infermiere> getInfermieri() {
@@ -402,10 +408,10 @@ public class Model {
 		return true;
 	}
 
-	public Map<LocalDate, DataTurni> generaOrario() {
+	public Map<LocalDate, Map<Infermiere, String>> generaOrario() {
 
-		this.soluzione = new ArrayList<DataTurni>();
-		Map<LocalDate, DataTurni> parziale = new TreeMap<LocalDate, DataTurni>();
+		this.soluzione = new HashMap<LocalDate, Map<Infermiere, String>>();
+		Map<LocalDate, Map<Infermiere, String>> parziale = new TreeMap<LocalDate, Map<Infermiere, String>>();
 		
 		LocalDate data = LocalDate.of(2019, Month.SEPTEMBER, 1);
 		LocalDate fine = LocalDate.of(2020, Month.SEPTEMBER, 1);
@@ -417,7 +423,7 @@ public class Model {
 			turni.put(i, null);
 		
 		while(data.isBefore(fine)){
-			parziale.put(data, new DataTurni(data, new HashMap<Infermiere,String>(turni)));
+			parziale.put(data, new HashMap<Infermiere,String>(turni));
 			data = data.plusDays(1);
 		}
 		
@@ -428,41 +434,112 @@ public class Model {
 		
 		// inserimento ferie
 		for (Ferie f : ferie) {
-			DataTurni dt = parziale.get(f.getData());
-		
-			dt.getTurni().put(infermieriMap.get(f.getId_infermiere()), "Ferie");
+			
+			Map<Infermiere, String> map = parziale.get(f.getData());
+			map.put(infermieriMap.get(f.getId_infermiere()), "Ferie");
 			
 		}
 		
 		LocalDate d = LocalDate.of(2019, Month.SEPTEMBER, 1);
-	
-		calcolaOrario(parziale, d);
 		
-		return parziale;
+		Map<LocalDate, List<Infermiere>> infermieriMattino = new HashMap<LocalDate, List<Infermiere>>(); 
+		Map<LocalDate, List<Infermiere>> infermieriPomeriggio = new HashMap<LocalDate, List<Infermiere>>(); 
+		Map<LocalDate, List<Infermiere>> infermieriNotte = new HashMap<LocalDate, List<Infermiere>>(); 
+
+
+	
+		calcolaOrario(parziale, d, fine, infermieriMattino, infermieriPomeriggio, infermieriNotte);
+		
+		return this.soluzione;
 		
 	}
 	// calcola orario attraverso la ricorsione
-	/*private void calcolaOrario(Map<LocalDate, DataTurni> parziale, LocalDate data) {
+	private void calcolaOrario(Map<LocalDate, Map<Infermiere, String>> parziale, LocalDate data, LocalDate fine,
+			Map<LocalDate, List<Infermiere>> infermieriMattino, Map<LocalDate, List<Infermiere>> infermieriPomeriggio, Map<LocalDate, List<Infermiere>> infermieriNotte) {
 		
+			if (trovata)
+				return;
 		
-		//ottengo tutti i candidati
-		List<Infermiere> candidati = this.trovaCandidatiMattino(data);
-		for(Infermiere candidato : candidati) {
-			if(!parziale.contains(candidato)) {
-				//è un candidato che non ho ancora considerato
-				parziale.add(candidato);
-				this.cercaPercorso(parziale);
-				parziale.remove(parziale.size()-1);
-			}
+		//vedere se ho completato tutto l'anno		
+		if(data.isEqual(fine)) {
+			trovata = true;
+			this.soluzione = new HashMap<LocalDate, Map<Infermiere, String>>(parziale);
 		}
 		
-		
-		//vedere se la soluzione corrente è migliore della ottima corrente
-		if(parziale.size() > ottima.size()) {
-			this.ottima = new LinkedList(parziale);
-		}
+		candidatiMattino = this.trovaCandidatiMattino(data);
+		candidatiPomeriggio = this.trovaCandidatiPomeriggio(data);
+		candidatiNotte = this.trovaCandidatiNotte(data);
+		// controllo che ci siano infermieri sufficienti a ricoprire i turni
+		if ((candidatiMattino.size() + infermieriMattino.get(data).size()) < 3
+				|| (candidatiPomeriggio.size() + infermieriPomeriggio.get(data).size()) < 2 ||
+				(candidatiNotte.size() + infermieriNotte.get(data).size()) < 1)
+			return;
 
-	}*/
+		if (infermieriMattino.get(data).size() < 3) {
+			for(Infermiere candidato : candidatiMattino) {
+				if(parziale.get(data).get(candidato) == null) {
+					// candidato che non ho ancora considerato
+					parziale.get(data).put(candidato, "Mattino");
+					infermieriMattino.get(data).add(candidato);
+					this.calcolaOrario(parziale, data, fine, infermieriMattino, infermieriPomeriggio, infermieriNotte);
+					parziale.get(data).put(candidato, null);
+					infermieriMattino.get(data).remove(infermieriMattino.get(data).size()-1);
+				}
+			}
+		
+		}
+		
+		if (infermieriPomeriggio.get(data).size() < 2) {
+			for(Infermiere candidato : candidatiPomeriggio) {
+				if(parziale.get(data).get(candidato) == null) {
+					// candidato che non ho ancora considerato
+					parziale.get(data).put(candidato, "Pomeriggio");
+					infermieriPomeriggio.get(data).add(candidato);
+					this.calcolaOrario(parziale, data, fine, infermieriMattino, infermieriPomeriggio, infermieriNotte);
+					parziale.get(data).put(candidato, null);
+					infermieriPomeriggio.get(data).remove(infermieriPomeriggio.get(data).size()-1);
+				}
+			}
+		
+		}
+		
+		if (infermieriNotte.get(data).size() < 1) {
+			for(Infermiere candidato : candidatiNotte) {
+				if(parziale.get(data).get(candidato) == null) {
+					// candidato che non ho ancora considerato
+					parziale.get(data).put(candidato, "Notte");
+					infermieriNotte.get(data).add(candidato);
+					this.calcolaOrario(parziale, data, fine, infermieriMattino, infermieriPomeriggio, infermieriNotte);
+					parziale.get(data).put(candidato, null);
+					infermieriNotte.get(data).remove(infermieriNotte.get(data).size()-1);
+				}
+			}
+		
+		}
+		
+		if (infermieriMattino.get(data).size() == 3 && infermieriPomeriggio.get(data).size() == 2 &&infermieriNotte.get(data).size() == 1) {
+						
+			for (Infermiere i : parziale.get(data).keySet()) {
+				if (parziale.get(data).get(i) == null)
+					parziale.get(data).put(i, "Riposo");
+			}
+			
+			data = data.plusDays(1);
+			this.calcolaOrario(parziale, data, fine, infermieriMattino, infermieriPomeriggio, infermieriNotte);
+		}
+		
+
+	}
+
+	private List<Infermiere> trovaCandidatiNotte(LocalDate data) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private List<Infermiere> trovaCandidatiPomeriggio(LocalDate data) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	private List<Infermiere> trovaCandidatiMattino(LocalDate data) {
 		// TODO Auto-generated method stub
