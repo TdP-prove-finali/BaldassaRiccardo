@@ -1,9 +1,6 @@
 package it.polito.tdp.turniinfermieri.db;
 
-import java.time.LocalDate;
-import java.time.Month;
 
-import it.polito.tdp.turniinfermieri.model.Ferie;
 
 public class TestDAO {
 

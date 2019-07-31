@@ -3,9 +3,12 @@ package it.polito.tdp.turniinfermieri.model;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import it.polito.tdp.turniinfermieri.db.TurniInfermieriDAO;
 
@@ -14,6 +17,7 @@ public class Model {
 	private TurniInfermieriDAO dao;
 	private List<Infermiere> infermieri;
 	private List<Ferie> ferie;
+	private List<DataTurni> soluzione;
 	
 	public Model() {
 		dao = new TurniInfermieriDAO();
@@ -398,4 +402,70 @@ public class Model {
 		return true;
 	}
 
+	public Map<LocalDate, DataTurni> generaOrario() {
+
+		this.soluzione = new ArrayList<DataTurni>();
+		Map<LocalDate, DataTurni> parziale = new TreeMap<LocalDate, DataTurni>();
+		
+		LocalDate data = LocalDate.of(2019, Month.SEPTEMBER, 1);
+		LocalDate fine = LocalDate.of(2020, Month.SEPTEMBER, 1);
+		// inizializzazione orario
+		
+		Map <Infermiere, String> turni = new HashMap<Infermiere,String>();
+		
+		for (Infermiere i : infermieri)
+			turni.put(i, null);
+		
+		while(data.isBefore(fine)){
+			parziale.put(data, new DataTurni(data, new HashMap<Infermiere,String>(turni)));
+			data = data.plusDays(1);
+		}
+		
+		Map<Integer, Infermiere> infermieriMap = new HashMap<Integer,Infermiere>();
+		
+		for (Infermiere i : infermieri)
+			infermieriMap.put(i.getId_infermiere(), i);
+		
+		// inserimento ferie
+		for (Ferie f : ferie) {
+			DataTurni dt = parziale.get(f.getData());
+		
+			dt.getTurni().put(infermieriMap.get(f.getId_infermiere()), "Ferie");
+			
+		}
+		
+		LocalDate d = LocalDate.of(2019, Month.SEPTEMBER, 1);
+	
+		calcolaOrario(parziale, d);
+		
+		return parziale;
+		
+	}
+	// calcola orario attraverso la ricorsione
+	/*private void calcolaOrario(Map<LocalDate, DataTurni> parziale, LocalDate data) {
+		
+		
+		//ottengo tutti i candidati
+		List<Infermiere> candidati = this.trovaCandidatiMattino(data);
+		for(Infermiere candidato : candidati) {
+			if(!parziale.contains(candidato)) {
+				//è un candidato che non ho ancora considerato
+				parziale.add(candidato);
+				this.cercaPercorso(parziale);
+				parziale.remove(parziale.size()-1);
+			}
+		}
+		
+		
+		//vedere se la soluzione corrente è migliore della ottima corrente
+		if(parziale.size() > ottima.size()) {
+			this.ottima = new LinkedList(parziale);
+		}
+
+	}*/
+
+	private List<Infermiere> trovaCandidatiMattino(LocalDate data) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

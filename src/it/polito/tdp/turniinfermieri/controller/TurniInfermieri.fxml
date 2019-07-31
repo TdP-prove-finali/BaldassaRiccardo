@@ -124,14 +124,54 @@
           </Tab>
           <Tab fx:id="Tab_Genera_Orario" closable="false" text="Genera Orario">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <VBox alignment="CENTER">
+                           <children>
+                              <HBox alignment="CENTER" layoutX="120.0" prefHeight="57.0" prefWidth="530.0">
+                                 <children>
+                                    <Button alignment="CENTER" mnemonicParsing="false" onAction="#doGeneraOrario" text="Genera Orario">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                       <HBox.margin>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <ComboBox fx:id="ComboBoxMesi" onAction="#doSelezionaMese" prefWidth="150.0">
+                                       <HBox.margin>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </HBox.margin>
+                                    </ComboBox>
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </VBox.margin>
+                              </HBox>
+                              <TableView fx:id="TableViewOrarioGenerale">
+                                <columns>
+                                  <TableColumn fx:id="TableColumnData" prefWidth="75.0" text="Data" />
+                                  <TableColumn fx:id="TableColumnInf1" prefWidth="75.0" text="inf1" />
+                                    <TableColumn fx:id="TableColumnInf2" prefWidth="75.0" text="inf2" />
+                                    <TableColumn fx:id="TableColumnInf3" prefWidth="75.0" text="inf3" />
+                                    <TableColumn fx:id="TableColumnInf4" prefWidth="75.0" text="inf4" />
+                                    <TableColumn fx:id="TableColumnInf5" prefWidth="75.0" text="inf5" />
+                                    <TableColumn fx:id="TableColumnInf6" prefWidth="75.0" text="inf6" />
+                                    <TableColumn fx:id="TableColumnInf7" prefWidth="75.0" text="inf7" />
+                                    <TableColumn fx:id="TableColumnInf8" prefWidth="75.0" text="inf8" />
+                                    <TableColumn fx:id="TableColumnInf9" prefWidth="75.0" text="inf9" />
+                                    <TableColumn fx:id="TableColumnInf10" prefWidth="75.0" text="inf10" />
+                                    <TableColumn fx:id="TableColumnInf11" prefWidth="75.0" text="inf11" />
+                                </columns>
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </VBox.margin>
+                              </TableView>
+                           </children>
+                        </VBox>
+                     </children></AnchorPane>
             </content>
           </Tab>
-            <Tab fx:id="Tab_Orario_Reparto" closable="false" text="Orario Reparto">
-              <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-              </content>
-            </Tab>
             <Tab fx:id="Tab_Orario_Infermieri" closable="false" text="Orario Infermieri">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
