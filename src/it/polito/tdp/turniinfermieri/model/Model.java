@@ -426,7 +426,7 @@ public class Model {
 		
 		while(data.isBefore(fine)){
 			parziale.put(data, new HashMap<Infermiere,String>(turni));
-			this.soluzione.put(data, new HashMap<Infermiere,String>());
+			//this.soluzione.put(data, new HashMap<Infermiere,String>());
 			data = data.plusDays(1);
 		}
 		
@@ -478,15 +478,15 @@ public class Model {
 		//vedere se ho completato tutto l'anno		
   		if(data.isEqual(fine)) {
 				System.out.println(data);
-  			if (!trovata) {
   				trovata = true;
+  				//this.soluzione = new HashMap<LocalDate, Map<Infermiere,String>>(parziale);
   				LocalDate d = LocalDate.of(2019, Month.SEPTEMBER, 1);
   				
   				while (d.isBefore(fine)) {
-  					//this.soluzione.get(d).put(parziale.get(d).keySet(), new HashMap<Infermiere,String>(parziale.get(d).values()));
+  					this.soluzione.put(d, new HashMap<Infermiere,String>(parziale.get(d)));
   					d = d.plusDays(1);
   				}
-  			}
+  			
 			return;
 		}
   		

@@ -16,7 +16,7 @@ public class TestModel {
 		//System.out.println(prova);
 		
 		for (LocalDate l : prova.keySet()) {
-		//	System.out.println("" + l + prova.get(l));
+			System.out.println("" + l + prova.get(l));
 		}
 		
 		LocalDate data = LocalDate.of(2019, Month.SEPTEMBER, 1);
