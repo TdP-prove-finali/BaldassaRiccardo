@@ -13,10 +13,10 @@ public class TestModel {
 		Model model = new Model();
 		Map<LocalDate, Map<Infermiere, String>> prova = model.generaOrario();
 		List<Infermiere> inf = model.getInfermieri();
-		
+		//System.out.println(prova);
 		
 		for (LocalDate l : prova.keySet()) {
-			System.out.println("" + l + prova.get(l));
+		//	System.out.println("" + l + prova.get(l));
 		}
 		
 		LocalDate data = LocalDate.of(2019, Month.SEPTEMBER, 1);
@@ -24,7 +24,7 @@ public class TestModel {
 		
 		while(data.isBefore(fine)){
 
-			System.out.println(prova.get(data).get(inf.get(0)));
+	//		System.out.println(prova.get(data).get(inf.get(0)));
 
 			data = data.plusDays(1);
 		}
