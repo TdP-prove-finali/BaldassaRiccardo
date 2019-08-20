@@ -19,6 +19,10 @@ public class TestModel {
 			System.out.println("" + l + prova.get(l));
 		}
 		
+		for (Integer i : model.getRiposi()) {
+			System.out.println(i);
+		}
+		
 	//	LocalDate data = LocalDate.of(2019, Month.SEPTEMBER, 1);
 		//LocalDate fine = LocalDate.of(2020, Month.SEPTEMBER, 1);
 		

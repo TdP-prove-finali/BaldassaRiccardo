@@ -2,13 +2,14 @@ package it.polito.tdp.turniinfermieri.model;
 
 import java.time.LocalDate;
 
-public class Infermiere {
+public class Infermiere implements Comparable<Infermiere>{
 	
 	private int id_infermiere;
 	private String nome;
 	private String cognome;
 	private LocalDate data_nascita;
 	private int trimestre_ferie_lunghe;
+	private int numero_riposi;
 	
 	public Infermiere(int id_infermiere, String nome, String cognome, LocalDate data_nascita,
 			int trimestre_ferie_lunghe) {
@@ -18,6 +19,7 @@ public class Infermiere {
 		this.cognome = cognome;
 		this.data_nascita = data_nascita;
 		this.trimestre_ferie_lunghe = trimestre_ferie_lunghe;
+		this.numero_riposi = 0;
 	}
 
 	public int getId_infermiere() {
@@ -62,7 +64,20 @@ public class Infermiere {
 
 	@Override
 	public String toString() {
-		return String.format("%s %s %d", nome, cognome, trimestre_ferie_lunghe);
+		return String.format("%s %s %d %d", nome, cognome, trimestre_ferie_lunghe, numero_riposi);
+	}
+
+	public int getNumero_riposi() {
+		return numero_riposi;
+	}
+
+	public void setNumero_riposi(int numero_riposi) {
+		this.numero_riposi = numero_riposi;
+	}
+
+	@Override
+	public int compareTo(Infermiere altro) {
+		return altro.getNumero_riposi() - this.getNumero_riposi();
 	}
 
 }

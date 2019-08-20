@@ -4,6 +4,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -20,9 +21,7 @@ public class Model {
 	private List<Ferie> ferie;
 	private Map<LocalDate, Map<Infermiere, String>> soluzione;
 	private boolean trovata;
-	private List<Infermiere> candidatiMattino;
-	private List<Infermiere> candidatiPomeriggio;
-	private List<Infermiere> candidatiNotte;
+
 	private LocalDate inizio;
 	private List<Infermiere> infMat;
 	private List<Infermiere> infPom;
@@ -30,6 +29,7 @@ public class Model {
 	private Map<LocalDate, List<Infermiere>> infermieriMattino;
 	private Map<LocalDate, List<Infermiere>> infermieriPomeriggio;
 	private Map<LocalDate, List<Infermiere>> infermieriNotte;
+	private List<Integer> riposi;
 
 	public Model() {
 		dao = new TurniInfermieriDAO();
@@ -42,6 +42,7 @@ public class Model {
 		infermieriMattino = new HashMap<LocalDate, List<Infermiere>>();
 		infermieriPomeriggio = new HashMap<LocalDate, List<Infermiere>>();
 		infermieriNotte = new HashMap<LocalDate, List<Infermiere>>();
+		riposi = new ArrayList<Integer>();
 	}
 
 	public List<Infermiere> getInfermieri() {
@@ -481,12 +482,19 @@ public class Model {
 	private void calcolaOrario(Map<LocalDate, Map<Infermiere, String>> parziale, LocalDate data, LocalDate fine) {
 		// System.out.println(data);
 
+	//	System.out.println(data);
+		
 		if (trovata)
 			return;
+		
+		
 
 		if (data.isBefore(fine)) {
-
-			List<List<Infermiere>> combMattino = this.subsets(this.trovaCandidatiMattino(data, parziale), 3);
+			
+			List<Infermiere> candidatiMattino = this.trovaCandidatiMattino(data, parziale);
+			Collections.sort(candidatiMattino);
+			
+			List<List<Infermiere>> combMattino = this.subsets(candidatiMattino, 3);
 
 			if (combMattino.size() == 0)
 				return;
@@ -497,7 +505,10 @@ public class Model {
 					parziale.get(data).put(i, "Mattino");
 				}
 
-				List<List<Infermiere>> combPomeriggio = this.subsets(this.trovaCandidatiPomeriggio(data, parziale), 2);
+				List<Infermiere> candidatiPomeriggio = this.trovaCandidatiPomeriggio(data, parziale);
+				Collections.sort(candidatiPomeriggio);
+				
+				List<List<Infermiere>> combPomeriggio = this.subsets(candidatiPomeriggio, 2);
 
 				if (combPomeriggio.size() == 0)
 					return;
@@ -508,7 +519,10 @@ public class Model {
 						parziale.get(data).put(i, "Pomeriggio");
 					}
 
-					List<List<Infermiere>> combNotte = this.subsets(this.trovaCandidatiNotte(data, parziale), 1);
+					List<Infermiere> candidatiNotte = this.trovaCandidatiNotte(data, parziale);
+					Collections.sort(candidatiNotte);
+					
+					List<List<Infermiere>> combNotte = this.subsets(candidatiNotte, 1);
 
 					if (combNotte.size() == 0)
 						return;
@@ -520,15 +534,27 @@ public class Model {
 						}
 
 						for (Infermiere i : infermieri) {
-							if (parziale.get(data).get(i) == null)
+							if (parziale.get(data).get(i) == null) {
 								parziale.get(data).put(i, "Riposo");
+								i.setNumero_riposi(i.getNumero_riposi() + 1);
+							}
 						}
+						
+			//			if (data.getDayOfMonth() == data.lengthOfMonth()) {
+				//			if (contaRiposi(data, parziale)) {
+					//			System.out.println(contaRiposi(data, parziale));
+					//			this.calcolaOrario(parziale, data.plusDays(1), fine);
+				//			}
+			//			}
 
-						this.calcolaOrario(parziale, data.plusDays(1), fine);
+				//		else
+							this.calcolaOrario(parziale, data.plusDays(1), fine);
 
 						for (Infermiere i : infermieri) {
-							if (parziale.get(data).get(i) == "Riposo")
+							if (parziale.get(data).get(i) == "Riposo") {
 								parziale.get(data).put(i, null);
+								i.setNumero_riposi(i.getNumero_riposi() - 1);
+							}
 						}
 
 						for (Infermiere i : infermieri) {
@@ -565,6 +591,9 @@ public class Model {
 				this.soluzione.put(d, new HashMap<Infermiere, String>(parziale.get(d)));
 				d = d.plusDays(1);
 			}
+			
+			for (Infermiere i : infermieri)
+				riposi.add(i.getNumero_riposi());
 
 			return;
 		}
@@ -718,7 +747,7 @@ public class Model {
 				if (parziale.get(LocalDate.of(data.getYear(), data.getMonth(), i)).get(inf).equals("Riposo"))
 					riposi++;
 			}
-			if (riposi != cont)
+			if (riposi > cont + 4 || riposi < cont - 1)
 				return false;
 
 		}
@@ -765,6 +794,10 @@ public class Model {
 		for (int i = 0; i < subset.length; i++)
 			result.add(input.get(subset[i]));
 		return result;
+	}
+
+	public List<Integer> getRiposi() {
+		return riposi;
 	}
 
 }
