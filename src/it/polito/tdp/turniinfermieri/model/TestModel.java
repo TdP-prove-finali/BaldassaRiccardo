@@ -19,8 +19,8 @@ public class TestModel {
 			System.out.println("" + l + prova.get(l));
 		}
 		
-		for (Integer i : model.getRiposi()) {
-			System.out.println(i);
+		for (StatisticheInfermiere si : model.getStat()) {
+			System.out.println(si);
 		}
 		
 	//	LocalDate data = LocalDate.of(2019, Month.SEPTEMBER, 1);

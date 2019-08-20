@@ -10,6 +10,10 @@ public class Infermiere implements Comparable<Infermiere>{
 	private LocalDate data_nascita;
 	private int trimestre_ferie_lunghe;
 	private int numero_riposi;
+	private int numero_mattine;
+	private int numero_pomeriggi;
+	private int numero_notti;
+
 	
 	public Infermiere(int id_infermiere, String nome, String cognome, LocalDate data_nascita,
 			int trimestre_ferie_lunghe) {
@@ -20,6 +24,9 @@ public class Infermiere implements Comparable<Infermiere>{
 		this.data_nascita = data_nascita;
 		this.trimestre_ferie_lunghe = trimestre_ferie_lunghe;
 		this.numero_riposi = 0;
+		this.numero_mattine = 0;
+		this.numero_pomeriggi = 0;
+		this.numero_notti = 0;
 	}
 
 	public int getId_infermiere() {
@@ -64,7 +71,7 @@ public class Infermiere implements Comparable<Infermiere>{
 
 	@Override
 	public String toString() {
-		return String.format("%s %s %d %d", nome, cognome, trimestre_ferie_lunghe, numero_riposi);
+		return String.format("%s %s %d", nome, cognome, trimestre_ferie_lunghe);
 	}
 
 	public int getNumero_riposi() {
@@ -78,6 +85,30 @@ public class Infermiere implements Comparable<Infermiere>{
 	@Override
 	public int compareTo(Infermiere altro) {
 		return altro.getNumero_riposi() - this.getNumero_riposi();
+	}
+
+	public int getNumero_mattine() {
+		return numero_mattine;
+	}
+
+	public void setNumero_mattine(int numero_mattine) {
+		this.numero_mattine = numero_mattine;
+	}
+
+	public int getNumero_pomeriggi() {
+		return numero_pomeriggi;
+	}
+
+	public void setNumero_pomeriggi(int numero_pomeriggi) {
+		this.numero_pomeriggi = numero_pomeriggi;
+	}
+
+	public int getNumero_notti() {
+		return numero_notti;
+	}
+
+	public void setNumero_notti(int numero_notti) {
+		this.numero_notti = numero_notti;
 	}
 
 }

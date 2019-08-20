@@ -23,26 +23,28 @@ public class Model {
 	private boolean trovata;
 
 	private LocalDate inizio;
+	private LocalDate fine;
 	private List<Infermiere> infMat;
 	private List<Infermiere> infPom;
 	private List<Infermiere> infNot;
 	private Map<LocalDate, List<Infermiere>> infermieriMattino;
 	private Map<LocalDate, List<Infermiere>> infermieriPomeriggio;
 	private Map<LocalDate, List<Infermiere>> infermieriNotte;
-	private List<Integer> riposi;
+	private List<StatisticheInfermiere> stat;
 
 	public Model() {
 		dao = new TurniInfermieriDAO();
 		infermieri = dao.getInfermieri();
 		ferie = dao.getFerie();
 		inizio = LocalDate.of(2019, Month.SEPTEMBER, 1);
+		fine = LocalDate.of(2020, Month.SEPTEMBER, 1);
 		infMat = new ArrayList<Infermiere>();
 		infPom = new ArrayList<Infermiere>();
 		infNot = new ArrayList<Infermiere>();
 		infermieriMattino = new HashMap<LocalDate, List<Infermiere>>();
 		infermieriPomeriggio = new HashMap<LocalDate, List<Infermiere>>();
 		infermieriNotte = new HashMap<LocalDate, List<Infermiere>>();
-		riposi = new ArrayList<Integer>();
+		stat = new ArrayList<StatisticheInfermiere>();
 	}
 
 	public List<Infermiere> getInfermieri() {
@@ -434,7 +436,6 @@ public class Model {
 		Map<LocalDate, Map<Infermiere, String>> parziale = new TreeMap<LocalDate, Map<Infermiere, String>>();
 
 		LocalDate data = LocalDate.of(2019, Month.SEPTEMBER, 1);
-		LocalDate fine = LocalDate.of(2020, Month.SEPTEMBER, 1);
 		// inizializzazione orario
 
 		Map<Infermiere, String> turni = new HashMap<Infermiere, String>();
@@ -471,7 +472,7 @@ public class Model {
 			data = data.plusDays(1);
 		}
 
-		calcolaOrario(parziale, inizio, fine);
+		calcolaOrario(parziale, inizio);
 		// System.out.println(soluzione);
 
 		return this.soluzione;
@@ -479,7 +480,7 @@ public class Model {
 	}
 
 	// calcola orario attraverso la ricorsione
-	private void calcolaOrario(Map<LocalDate, Map<Infermiere, String>> parziale, LocalDate data, LocalDate fine) {
+	private void calcolaOrario(Map<LocalDate, Map<Infermiere, String>> parziale, LocalDate data) {
 		// System.out.println(data);
 
 	//	System.out.println(data);
@@ -503,6 +504,7 @@ public class Model {
 
 				for (Infermiere i : infMat) {
 					parziale.get(data).put(i, "Mattino");
+					i.setNumero_mattine(i.getNumero_mattine() + 1);
 				}
 
 				List<Infermiere> candidatiPomeriggio = this.trovaCandidatiPomeriggio(data, parziale);
@@ -517,6 +519,7 @@ public class Model {
 
 					for (Infermiere i : infPom) {
 						parziale.get(data).put(i, "Pomeriggio");
+						i.setNumero_pomeriggi(i.getNumero_pomeriggi() + 1);
 					}
 
 					List<Infermiere> candidatiNotte = this.trovaCandidatiNotte(data, parziale);
@@ -531,6 +534,7 @@ public class Model {
 
 						for (Infermiere i : infNot) {
 							parziale.get(data).put(i, "Notte");
+							i.setNumero_notti(i.getNumero_notti() + 1);
 						}
 
 						for (Infermiere i : infermieri) {
@@ -548,7 +552,7 @@ public class Model {
 			//			}
 
 				//		else
-							this.calcolaOrario(parziale, data.plusDays(1), fine);
+							this.calcolaOrario(parziale, data.plusDays(1));
 
 						for (Infermiere i : infermieri) {
 							if (parziale.get(data).get(i) == "Riposo") {
@@ -558,22 +562,28 @@ public class Model {
 						}
 
 						for (Infermiere i : infermieri) {
-							if (parziale.get(data).get(i) == "Notte")
+							if (parziale.get(data).get(i) == "Notte") {
 								parziale.get(data).put(i, null);
+								i.setNumero_notti(i.getNumero_notti() - 1);
+							}
 						}
 
 					}
 
 					for (Infermiere i : infermieri) {
-						if (parziale.get(data).get(i) == "Pomeriggio")
+						if (parziale.get(data).get(i) == "Pomeriggio") {
 							parziale.get(data).put(i, null);
+							i.setNumero_pomeriggi(i.getNumero_pomeriggi() - 1);
+						}
 					}
 
 				}
 
 				for (Infermiere i : infermieri) {
-					if (parziale.get(data).get(i) == "Mattino")
+					if (parziale.get(data).get(i) == "Mattino") {
 						parziale.get(data).put(i, null);
+						i.setNumero_mattine(i.getNumero_mattine() - 1);
+					}
 				}
 
 			}
@@ -593,7 +603,7 @@ public class Model {
 			}
 			
 			for (Infermiere i : infermieri)
-				riposi.add(i.getNumero_riposi());
+				stat.add(new StatisticheInfermiere(i, i.getNumero_riposi(), i.getNumero_mattine(), i.getNumero_pomeriggi(), i.getNumero_notti()));
 
 			return;
 		}
@@ -796,8 +806,9 @@ public class Model {
 		return result;
 	}
 
-	public List<Integer> getRiposi() {
-		return riposi;
+	public List<StatisticheInfermiere> getStat() {
+		return stat;
 	}
+
 
 }
