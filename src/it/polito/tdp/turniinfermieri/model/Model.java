@@ -14,7 +14,7 @@ import java.util.TreeMap;
 import it.polito.tdp.turniinfermieri.db.TurniInfermieriDAO;
 
 public class Model {
-	
+
 	private TurniInfermieriDAO dao;
 	private List<Infermiere> infermieri;
 	private List<Ferie> ferie;
@@ -27,9 +27,10 @@ public class Model {
 	private List<Infermiere> infMat;
 	private List<Infermiere> infPom;
 	private List<Infermiere> infNot;
-	private Map<LocalDate, List<Infermiere>> infermieriMattino; 
-	private Map<LocalDate, List<Infermiere>> infermieriPomeriggio; 
-	private Map<LocalDate, List<Infermiere>> infermieriNotte;	
+	private Map<LocalDate, List<Infermiere>> infermieriMattino;
+	private Map<LocalDate, List<Infermiere>> infermieriPomeriggio;
+	private Map<LocalDate, List<Infermiere>> infermieriNotte;
+
 	public Model() {
 		dao = new TurniInfermieriDAO();
 		infermieri = dao.getInfermieri();
@@ -38,44 +39,50 @@ public class Model {
 		infMat = new ArrayList<Infermiere>();
 		infPom = new ArrayList<Infermiere>();
 		infNot = new ArrayList<Infermiere>();
-		infermieriMattino = new HashMap<LocalDate, List<Infermiere>>(); 
-		infermieriPomeriggio = new HashMap<LocalDate, List<Infermiere>>(); 
-		infermieriNotte = new HashMap<LocalDate, List<Infermiere>>(); 
+		infermieriMattino = new HashMap<LocalDate, List<Infermiere>>();
+		infermieriPomeriggio = new HashMap<LocalDate, List<Infermiere>>();
+		infermieriNotte = new HashMap<LocalDate, List<Infermiere>>();
 	}
 
 	public List<Infermiere> getInfermieri() {
 		return infermieri;
 	}
-	// funzione che trova i giorni di ferie di un infermiere nel suo trimestre di ferie lunghe
-	public List<Ferie> getFerieLungheInfermiere(Infermiere infermiere){
-		
+
+	// funzione che trova i giorni di ferie di un infermiere nel suo trimestre di
+	// ferie lunghe
+	public List<Ferie> getFerieLungheInfermiere(Infermiere infermiere) {
+
 		List<Ferie> ferie_lunghe_infermiere = new ArrayList<Ferie>();
-		
+
 		for (Ferie f : ferie) {
 			if (f.getId_infermiere() == infermiere.getId_infermiere()) {
-				
+
 				if (infermiere.getTrimestre_ferie_lunghe() == 1 && (f.getData().getMonth().equals(Month.SEPTEMBER)
-						|| f.getData().getMonth().equals(Month.OCTOBER) || f.getData().getMonth().equals(Month.NOVEMBER)))
-				ferie_lunghe_infermiere.add(f);
-				
+						|| f.getData().getMonth().equals(Month.OCTOBER)
+						|| f.getData().getMonth().equals(Month.NOVEMBER)))
+					ferie_lunghe_infermiere.add(f);
+
 				else if (infermiere.getTrimestre_ferie_lunghe() == 2 && (f.getData().getMonth().equals(Month.DECEMBER)
-						|| f.getData().getMonth().equals(Month.JANUARY) || f.getData().getMonth().equals(Month.FEBRUARY)))
-				ferie_lunghe_infermiere.add(f);
-				
+						|| f.getData().getMonth().equals(Month.JANUARY)
+						|| f.getData().getMonth().equals(Month.FEBRUARY)))
+					ferie_lunghe_infermiere.add(f);
+
 				else if (infermiere.getTrimestre_ferie_lunghe() == 3 && (f.getData().getMonth().equals(Month.MARCH)
 						|| f.getData().getMonth().equals(Month.APRIL) || f.getData().getMonth().equals(Month.MAY)))
-				ferie_lunghe_infermiere.add(f);
-				
+					ferie_lunghe_infermiere.add(f);
+
 				else if (infermiere.getTrimestre_ferie_lunghe() == 4 && (f.getData().getMonth().equals(Month.JUNE)
 						|| f.getData().getMonth().equals(Month.JULY) || f.getData().getMonth().equals(Month.AUGUST)))
-				ferie_lunghe_infermiere.add(f);
+					ferie_lunghe_infermiere.add(f);
 			}
 		}
 		return ferie_lunghe_infermiere;
 	}
-	// funzione che trova i giorni di ferie di un infermiere al di fuori del suo trimestre di ferie lughe
-	public List<Ferie> getFerieBreviInfermiere(Infermiere infermiere){
-		
+
+	// funzione che trova i giorni di ferie di un infermiere al di fuori del suo
+	// trimestre di ferie lughe
+	public List<Ferie> getFerieBreviInfermiere(Infermiere infermiere) {
+
 		List<Ferie> ferie_brevi_infermiere = new ArrayList<Ferie>();
 		List<Ferie> ferie_lunghe_infermiere = this.getFerieLungheInfermiere(infermiere);
 
@@ -83,21 +90,21 @@ public class Model {
 			if (f.getId_infermiere() == infermiere.getId_infermiere()) {
 				ferie_brevi_infermiere.add(f);
 			}
-			
+
 		}
-		
+
 		ferie_brevi_infermiere.removeAll(ferie_lunghe_infermiere);
-		
+
 		return ferie_brevi_infermiere;
 	}
-	
+
 	public boolean trimestriAccettabili(List<Infermiere> infermieri) {
 
 		int cont_1 = 0;
 		int cont_2 = 0;
 		int cont_3 = 0;
 		int cont_4 = 0;
-		
+
 		for (Infermiere i : infermieri) {
 			if (i.getTrimestre_ferie_lunghe() == 1)
 				cont_1++;
@@ -113,93 +120,91 @@ public class Model {
 
 		if (cont_1 == 3 && cont_2 == 2 && cont_3 == 3 && cont_4 == 3)
 			return true;
-		
+
 		return false;
 	}
 
 	public void modificaTrimestri() {
 
-		for (int i = 0; i <infermieri.size(); i++) {
-				dao.modificaInfermiere(infermieri.get(i));
+		for (int i = 0; i < infermieri.size(); i++) {
+			dao.modificaInfermiere(infermieri.get(i));
 		}
 	}
-	// controllo se la modifica delle ferie nel periodo di vacanze lungo sono accettabili
+
+	// controllo se la modifica delle ferie nel periodo di vacanze lungo sono
+	// accettabili
 	public boolean ferieLungheAccettabili(Infermiere infermiere) {
-		
+
 		List<Ferie> ferie = this.getFerieLungheInfermiere(infermiere);
 		int cont = 0;
-		
-		Set<LocalDate> setDate= new HashSet<LocalDate>();
-		
+
+		Set<LocalDate> setDate = new HashSet<LocalDate>();
+
 		for (Ferie f : ferie) {
 			setDate.add(f.getData());
 		}
-		
+
 		if (setDate.size() != ferie.size())
 			return false;
 
-			
 		if (infermiere.getTrimestre_ferie_lunghe() == 1) {
-				
+
 			for (Ferie f : ferie) {
-				
+
 				if (f.getData().getMonth().equals(Month.SEPTEMBER) || f.getData().getMonth().equals(Month.OCTOBER)
 						|| f.getData().getMonth().equals(Month.NOVEMBER))
 					cont++;
-				
+
 			}
-	
-				
+
 		}
-		
+
 		else if (infermiere.getTrimestre_ferie_lunghe() == 2) {
-			
+
 			for (Ferie f : ferie) {
-				
-				if (f.getData().getMonth().equals(Month.DECEMBER)
-						|| f.getData().getMonth().equals(Month.JANUARY) || f.getData().getMonth().equals(Month.FEBRUARY))
+
+				if (f.getData().getMonth().equals(Month.DECEMBER) || f.getData().getMonth().equals(Month.JANUARY)
+						|| f.getData().getMonth().equals(Month.FEBRUARY))
 					cont++;
-				
+
 			}
-	
-				
+
 		}
-		
+
 		else if (infermiere.getTrimestre_ferie_lunghe() == 3) {
-			
+
 			for (Ferie f : ferie) {
-				
-				if (f.getData().getMonth().equals(Month.MARCH)
-						|| f.getData().getMonth().equals(Month.APRIL) || f.getData().getMonth().equals(Month.MAY))
+
+				if (f.getData().getMonth().equals(Month.MARCH) || f.getData().getMonth().equals(Month.APRIL)
+						|| f.getData().getMonth().equals(Month.MAY))
 					cont++;
-				
+
 			}
-	
-				
+
 		}
-		
+
 		else if (infermiere.getTrimestre_ferie_lunghe() == 4) {
-			
+
 			for (Ferie f : ferie) {
-				
-				if (f.getData().getMonth().equals(Month.JUNE)
-						|| f.getData().getMonth().equals(Month.JULY) || f.getData().getMonth().equals(Month.AUGUST))
+
+				if (f.getData().getMonth().equals(Month.JUNE) || f.getData().getMonth().equals(Month.JULY)
+						|| f.getData().getMonth().equals(Month.AUGUST))
 					cont++;
-				
+
 			}
-	
-				
+
 		}
-		
+
 		if (cont == 14)
 			return true;
-		
-		
+
 		return false;
 	}
-	// controllo se le modifiche delle vacanze nei mesi di vacanza brevi siano accettabili
+
+	// controllo se le modifiche delle vacanze nei mesi di vacanza brevi siano
+	// accettabili
 	public boolean ferieBreviAccettabili(Infermiere infermiere) {
-		
+
 		List<Ferie> ferie = this.getFerieBreviInfermiere(infermiere);
 		int cont1 = 0;
 		int cont2 = 0;
@@ -210,20 +215,20 @@ public class Model {
 		int cont7 = 0;
 		int cont8 = 0;
 		int cont9 = 0;
-		
-		Set<LocalDate> setDate= new HashSet<LocalDate>();
-		
+
+		Set<LocalDate> setDate = new HashSet<LocalDate>();
+
 		for (Ferie f : ferie) {
 			setDate.add(f.getData());
 		}
-		
+
 		if (setDate.size() != ferie.size())
 			return false;
 
-		if(infermiere.getTrimestre_ferie_lunghe() == 1) {
-			
+		if (infermiere.getTrimestre_ferie_lunghe() == 1) {
+
 			for (Ferie f : ferie) {
-				
+
 				if (f.getData().getMonth().equals(Month.DECEMBER))
 					cont1++;
 				else if (f.getData().getMonth().equals(Month.JANUARY))
@@ -243,17 +248,18 @@ public class Model {
 				else if (f.getData().getMonth().equals(Month.AUGUST))
 					cont9++;
 			}
-			
-			if (cont1 != 2 || cont2 != 2 || cont3 != 2 || cont4 != 2 || cont5 != 2 || cont6 != 2 || cont7 != 2 || cont8 != 2 || cont9 != 2)
+
+			if (cont1 != 2 || cont2 != 2 || cont3 != 2 || cont4 != 2 || cont5 != 2 || cont6 != 2 || cont7 != 2
+					|| cont8 != 2 || cont9 != 2)
 				return false;
-			
+
 			return true;
 		}
-		
-		else if(infermiere.getTrimestre_ferie_lunghe() == 2) {
-			
+
+		else if (infermiere.getTrimestre_ferie_lunghe() == 2) {
+
 			for (Ferie f : ferie) {
-				
+
 				if (f.getData().getMonth().equals(Month.SEPTEMBER))
 					cont1++;
 				else if (f.getData().getMonth().equals(Month.OCTOBER))
@@ -273,17 +279,18 @@ public class Model {
 				else if (f.getData().getMonth().equals(Month.AUGUST))
 					cont9++;
 			}
-			
-			if (cont1 != 2 || cont2 != 2 || cont3 != 2 || cont4 != 2 || cont5 != 2 || cont6 != 2 || cont7 != 2 || cont8 != 2 || cont9 != 2)
+
+			if (cont1 != 2 || cont2 != 2 || cont3 != 2 || cont4 != 2 || cont5 != 2 || cont6 != 2 || cont7 != 2
+					|| cont8 != 2 || cont9 != 2)
 				return false;
-			
+
 			return true;
 		}
-		
-		else if(infermiere.getTrimestre_ferie_lunghe() == 3) {
-			
+
+		else if (infermiere.getTrimestre_ferie_lunghe() == 3) {
+
 			for (Ferie f : ferie) {
-				
+
 				if (f.getData().getMonth().equals(Month.DECEMBER))
 					cont1++;
 				else if (f.getData().getMonth().equals(Month.JANUARY))
@@ -303,17 +310,18 @@ public class Model {
 				else if (f.getData().getMonth().equals(Month.AUGUST))
 					cont9++;
 			}
-			
-			if (cont1 != 2 || cont2 != 2 || cont3 != 2 || cont4 != 2 || cont5 != 2 || cont6 != 2 || cont7 != 2 || cont8 != 2 || cont9 != 2)
+
+			if (cont1 != 2 || cont2 != 2 || cont3 != 2 || cont4 != 2 || cont5 != 2 || cont6 != 2 || cont7 != 2
+					|| cont8 != 2 || cont9 != 2)
 				return false;
-			
+
 			return true;
 		}
-		
-		else if(infermiere.getTrimestre_ferie_lunghe() == 4) {
-			
+
+		else if (infermiere.getTrimestre_ferie_lunghe() == 4) {
+
 			for (Ferie f : ferie) {
-				
+
 				if (f.getData().getMonth().equals(Month.DECEMBER))
 					cont1++;
 				else if (f.getData().getMonth().equals(Month.JANUARY))
@@ -333,20 +341,19 @@ public class Model {
 				else if (f.getData().getMonth().equals(Month.NOVEMBER))
 					cont9++;
 			}
-			
-			if (cont1 != 2 || cont2 != 2 || cont3 != 2 || cont4 != 2 || cont5 != 2 || cont6 != 2 || cont7 != 2 || cont8 != 2 || cont9 != 2)
+
+			if (cont1 != 2 || cont2 != 2 || cont3 != 2 || cont4 != 2 || cont5 != 2 || cont6 != 2 || cont7 != 2
+					|| cont8 != 2 || cont9 != 2)
 				return false;
-			
+
 			return true;
 		}
-		
-		
-		
+
 		return false;
 	}
 
 	public void modificaFerie(Infermiere infermiere) {
-		
+
 		List<Ferie> ferie = new ArrayList<Ferie>();
 		ferie.addAll(this.getFerieBreviInfermiere(infermiere));
 		ferie.addAll(this.getFerieLungheInfermiere(infermiere));
@@ -354,69 +361,67 @@ public class Model {
 		for (int i = 0; i < ferie.size(); i++) {
 			dao.modificaFerieInfermiere(ferie.get(i));
 		}
-		
-		
+
 	}
+
 	// controllo se la nuova data inserita nelle ferie lunghe sia valida
 	public boolean controllaFerieLunghe(LocalDate value, int trimestre_ferie_lunghe) {
-		
+
 		LocalDate inizio = LocalDate.of(2019, Month.AUGUST, 31);
 		LocalDate fine = LocalDate.of(2020, Month.SEPTEMBER, 1);
 
-
 		if (value == null)
 			return false;
-		
+
 		if (!value.isAfter(inizio) || !value.isBefore(fine))
 			return false;
-		
+
 		if (trimestre_ferie_lunghe != 1 && (value.getMonth().equals(Month.SEPTEMBER)
-				|| value.getMonth().equals(Month.OCTOBER) || value.getMonth().equals(Month.NOVEMBER))) 
+				|| value.getMonth().equals(Month.OCTOBER) || value.getMonth().equals(Month.NOVEMBER)))
 			return false;
-			
+
 		else if (trimestre_ferie_lunghe != 2 && (value.getMonth().equals(Month.DECEMBER)
 				|| value.getMonth().equals(Month.JANUARY) || value.getMonth().equals(Month.FEBRUARY)))
 			return false;
-		
+
 		else if (trimestre_ferie_lunghe != 3 && (value.getMonth().equals(Month.MARCH)
 				|| value.getMonth().equals(Month.APRIL) || value.getMonth().equals(Month.MAY)))
 			return false;
-		
+
 		else if (trimestre_ferie_lunghe != 4 && (value.getMonth().equals(Month.JUNE)
 				|| value.getMonth().equals(Month.JULY) || value.getMonth().equals(Month.AUGUST)))
 			return false;
-		
+
 		return true;
 	}
 
 	public boolean controllaFerieBrevi(LocalDate value, int trimestre_ferie_lunghe) {
-		
+
 		LocalDate inizio = LocalDate.of(2019, Month.AUGUST, 31);
 		LocalDate fine = LocalDate.of(2020, Month.SEPTEMBER, 1);
 
-
 		if (value == null)
 			return false;
-		
+
 		if (!value.isAfter(inizio) || !value.isBefore(fine))
 			return false;
-		
+
 		if (trimestre_ferie_lunghe == 1 && (value.getMonth().equals(Month.SEPTEMBER)
 				|| value.getMonth().equals(Month.OCTOBER) || value.getMonth().equals(Month.NOVEMBER)))
 			return false;
-			
+
 		else if (trimestre_ferie_lunghe == 2 && (value.getMonth().equals(Month.DECEMBER)
 				|| value.getMonth().equals(Month.JANUARY) || value.getMonth().equals(Month.FEBRUARY)))
 			return false;
-		
+
 		else if (trimestre_ferie_lunghe == 3 && (value.getMonth().equals(Month.MARCH)
 				|| value.getMonth().equals(Month.APRIL) || value.getMonth().equals(Month.MAY)))
 			return false;
-		
+
 		else if (trimestre_ferie_lunghe == 4 && (value.getMonth().equals(Month.JUNE)
 				|| value.getMonth().equals(Month.JULY) || value.getMonth().equals(Month.AUGUST)))
 			return false;
-		
+
 		return true;
 	}
 
@@ -426,41 +431,38 @@ public class Model {
 
 		this.trovata = false;
 		Map<LocalDate, Map<Infermiere, String>> parziale = new TreeMap<LocalDate, Map<Infermiere, String>>();
-		
+
 		LocalDate data = LocalDate.of(2019, Month.SEPTEMBER, 1);
 		LocalDate fine = LocalDate.of(2020, Month.SEPTEMBER, 1);
 		// inizializzazione orario
-		
-		Map <Infermiere, String> turni = new HashMap<Infermiere,String>();
-		
+
+		Map<Infermiere, String> turni = new HashMap<Infermiere, String>();
+
 		for (Infermiere i : infermieri)
 			turni.put(i, null);
-		
-		while(data.isBefore(fine)){
-			parziale.put(data, new HashMap<Infermiere,String>(turni));
-			this.soluzione.put(data, new HashMap<Infermiere,String>());
+
+		while (data.isBefore(fine)) {
+			parziale.put(data, new HashMap<Infermiere, String>(turni));
+			this.soluzione.put(data, new HashMap<Infermiere, String>());
 			data = data.plusDays(1);
 		}
-		
-		Map<Integer, Infermiere> infermieriMap = new HashMap<Integer,Infermiere>();
-		
+
+		Map<Integer, Infermiere> infermieriMap = new HashMap<Integer, Infermiere>();
+
 		for (Infermiere i : infermieri)
 			infermieriMap.put(i.getId_infermiere(), i);
-		
+
 		// inserimento ferie
 		for (Ferie f : ferie) {
-			
+
 			Map<Infermiere, String> map = parziale.get(f.getData());
 			map.put(infermieriMap.get(f.getId_infermiere()), "Ferie");
-			
+
 		}
-		
-		
- 
-		
+
 		data = LocalDate.of(2019, Month.SEPTEMBER, 1);
-		
-		while(data.isBefore(fine)){
+
+		while (data.isBefore(fine)) {
 			infermieriMattino.put(data, new ArrayList<Infermiere>());
 			infermieriPomeriggio.put(data, new ArrayList<Infermiere>());
 			infermieriNotte.put(data, new ArrayList<Infermiere>());
@@ -468,139 +470,109 @@ public class Model {
 			data = data.plusDays(1);
 		}
 
-		
-		calcolaOrario(parziale, inizio, fine, 0, 0, 0);
-		//System.out.println(soluzione);
-		
+		calcolaOrario(parziale, inizio, fine);
+		// System.out.println(soluzione);
+
 		return this.soluzione;
-		
+
 	}
+
 	// calcola orario attraverso la ricorsione
-	private void calcolaOrario(Map<LocalDate, Map<Infermiere, String>> parziale, LocalDate data, LocalDate fine,
-			int numInfMat, int numInfPom, int numInfNot) {
-			//System.out.println(data);
+	private void calcolaOrario(Map<LocalDate, Map<Infermiere, String>> parziale, LocalDate data, LocalDate fine) {
+		// System.out.println(data);
 
 		if (trovata)
 			return;
-		
-  		
-  		if (data.isBefore(fine)){
 
-		
-			if (numInfMat == 3 && numInfPom == 2 && numInfNot == 1) {
-				for (Infermiere i : infermieri) {
-					if (parziale.get(data).get(i) == null)
-						parziale.get(data).put(i, "Riposo");
+		if (data.isBefore(fine)) {
+
+			List<List<Infermiere>> combMattino = this.subsets(this.trovaCandidatiMattino(data, parziale), 3);
+
+			if (combMattino.size() == 0)
+				return;
+
+			for (List<Infermiere> infMat : combMattino) {
+
+				for (Infermiere i : infMat) {
+					parziale.get(data).put(i, "Mattino");
 				}
-	
-				//System.out.println(parziale);
-				
-				
-		//		if (data.getDayOfMonth() == data.lengthOfMonth()) {
-			//		System.out.println("3");
-				//	if (!contaRiposi(data, parziale)) 
-					//	return;
-				//}
-						
-					//if (data.isBefore(fine)) {
-						//System.out.println(data);
-						//System.out.println(parziale.get(data));
-						this.calcolaOrario(parziale, data.plusDays(1), fine, 0, 0, 0);
+
+				List<List<Infermiere>> combPomeriggio = this.subsets(this.trovaCandidatiPomeriggio(data, parziale), 2);
+
+				if (combPomeriggio.size() == 0)
+					return;
+
+				for (List<Infermiere> infPom : combPomeriggio) {
+
+					for (Infermiere i : infPom) {
+						parziale.get(data).put(i, "Pomeriggio");
+					}
+
+					List<List<Infermiere>> combNotte = this.subsets(this.trovaCandidatiNotte(data, parziale), 1);
+
+					if (combNotte.size() == 0)
+						return;
+
+					for (List<Infermiere> infNot : combNotte) {
+
+						for (Infermiere i : infNot) {
+							parziale.get(data).put(i, "Notte");
+						}
+
 						for (Infermiere i : infermieri) {
-							if (parziale.get(data).get(i).equals("Riposo"))
+							if (parziale.get(data).get(i) == null)
+								parziale.get(data).put(i, "Riposo");
+						}
+
+						this.calcolaOrario(parziale, data.plusDays(1), fine);
+
+						for (Infermiere i : infermieri) {
+							if (parziale.get(data).get(i) == "Riposo")
 								parziale.get(data).put(i, null);
 						}
-					//}
-					
-					
-				
-				
-				return;
-			}
-			
-			else {
-				
-				if (numInfMat < 3) {
-						
-					candidatiMattino = this.trovaCandidatiMattino(data, parziale);
-			
-					for(Infermiere candidato : candidatiMattino) {
-						if(parziale.get(data).get(candidato) == null && !infermieriMattino.get(data).contains(candidato)) {
-							// candidato che non ho ancora considerato
-							parziale.get(data).put(candidato, "Mattino");
-							infermieriMattino.get(data).add(candidato);
-							this.calcolaOrario(parziale, data, fine, infermieriMattino.get(data).size(),
-									infermieriPomeriggio.get(data).size(), infermieriNotte.get(data).size());
-							parziale.get(data).put(candidato, null);
-							infermieriMattino.get(data).remove(infermieriMattino.get(data).size()-1);	
-								
-						}
-					}
-				
-				}
-				
-				
-				else if (numInfPom < 2) {
 
-				candidatiPomeriggio = this.trovaCandidatiPomeriggio(data, parziale);
-								
-					for(Infermiere candidato : candidatiPomeriggio) {
-						if(parziale.get(data).get(candidato) == null && !infermieriPomeriggio.get(data).contains(candidato)) {
-							// candidato che non ho ancora considerato
-							parziale.get(data).put(candidato, "Pomeriggio");
-							infermieriPomeriggio.get(data).add(candidato);
-							this.calcolaOrario(parziale, data, fine, infermieriMattino.get(data).size(),
-							infermieriPomeriggio.get(data).size(), infermieriNotte.get(data).size());
-							parziale.get(data).put(candidato, null);
-							infermieriPomeriggio.get(data).remove(infermieriPomeriggio.get(data).size()-1);	
-							
+						for (Infermiere i : infermieri) {
+							if (parziale.get(data).get(i) == "Notte")
+								parziale.get(data).put(i, null);
 						}
+
 					}
-				
-				}
-				
-				else if (numInfNot < 1) {
-				
-				candidatiNotte = this.trovaCandidatiNotte(data, parziale);
-				
-					for(Infermiere candidato : candidatiNotte) {
-						if(parziale.get(data).get(candidato) == null && !infermieriNotte.get(data).contains(candidato)) {
-							// candidato che non ho ancora considerato
-							parziale.get(data).put(candidato, "Notte");
-							infermieriNotte.get(data).add(candidato);
-							this.calcolaOrario(parziale, data, fine, infermieriMattino.get(data).size(),
-							infermieriPomeriggio.get(data).size(), infermieriNotte.get(data).size());
-							parziale.get(data).put(candidato, null);
-							infermieriNotte.get(data).remove(infermieriNotte.get(data).size()-1);	
-							
-						}
+
+					for (Infermiere i : infermieri) {
+						if (parziale.get(data).get(i) == "Pomeriggio")
+							parziale.get(data).put(i, null);
 					}
-				
+
 				}
-			
+
+				for (Infermiere i : infermieri) {
+					if (parziale.get(data).get(i) == "Mattino")
+						parziale.get(data).put(i, null);
+				}
+
 			}
-			
-  		}
-  		
-  	//vedere se ho completato tutto l'anno		
-  			else if(data.isEqual(fine)) {
-  					//System.out.println(data);
-  	  				trovata = true;
-  	  				//this.soluzione = new HashMap<LocalDate, Map<Infermiere,String>>(parziale);
-  	  				LocalDate d = LocalDate.of(2019, Month.SEPTEMBER, 1);
-  	  				
-  	  				while (d.isBefore(fine)) {
-  	  					this.soluzione.put(d, new HashMap<Infermiere,String>(parziale.get(d)));
-  	  					d = d.plusDays(1);
-  	  				}
-  	  			
-  				return;
-  			}
+
+		}
+
+		// vedere se ho completato tutto l'anno
+		else if (data.isEqual(fine)) {
+			// System.out.println(data);
+			trovata = true;
+			// this.soluzione = new HashMap<LocalDate, Map<Infermiere,String>>(parziale);
+			LocalDate d = LocalDate.of(2019, Month.SEPTEMBER, 1);
+
+			while (d.isBefore(fine)) {
+				this.soluzione.put(d, new HashMap<Infermiere, String>(parziale.get(d)));
+				d = d.plusDays(1);
+			}
+
+			return;
+		}
 
 	}
 
 	private List<Infermiere> trovaCandidatiMattino(LocalDate data, Map<LocalDate, Map<Infermiere, String>> parziale) {
-		
+
 		infMat.clear();
 
 		if (data.equals(this.inizio)) {
@@ -608,36 +580,37 @@ public class Model {
 				if (parziale.get(data).get(i) == null)
 					infMat.add(i);
 			}
-		}
-		else if (data.isBefore(LocalDate.of(2019, Month.SEPTEMBER, 7)) && data.isAfter(LocalDate.of(2019, Month.SEPTEMBER, 1))) {
+		} else if (data.isBefore(LocalDate.of(2019, Month.SEPTEMBER, 7))
+				&& data.isAfter(LocalDate.of(2019, Month.SEPTEMBER, 1))) {
 			for (Infermiere i : infermieri) {
-				if (parziale.get(data).get(i) == null && !parziale.get(data.minusDays(1)).get(i).equals("Notte") && !parziale.get(data.minusDays(1)).get(i).equals("Pomeriggio")) 
+				if (parziale.get(data).get(i) == null && !parziale.get(data.minusDays(1)).get(i).equals("Notte")
+						&& !parziale.get(data.minusDays(1)).get(i).equals("Pomeriggio"))
 					infMat.add(i);
 			}
-		}
-		else {
+		} else {
 			int cont;
-			
-			
+
 			for (Infermiere i : infermieri) {
 				cont = 0;
 
 				for (int j = 6; j > 0; j--) {
-					if (!parziale.get(data.minusDays(j)).get(i).equals("Riposo") && !parziale.get(data.minusDays(j)).get(i).equals("Ferie"))
-						cont ++;
+					if (!parziale.get(data.minusDays(j)).get(i).equals("Riposo")
+							&& !parziale.get(data.minusDays(j)).get(i).equals("Ferie"))
+						cont++;
 				}
-				
-				if (cont < 6 && parziale.get(data).get(i) == null && !parziale.get(data.minusDays(1)).get(i).equals("Notte") && !parziale.get(data.minusDays(1)).get(i).equals("Pomeriggio")) 
+
+				if (cont < 6 && parziale.get(data).get(i) == null
+						&& !parziale.get(data.minusDays(1)).get(i).equals("Notte")
+						&& !parziale.get(data.minusDays(1)).get(i).equals("Pomeriggio"))
 					infMat.add(i);
 			}
 		}
 		return infMat;
 	}
-	
-	
 
-	private List<Infermiere> trovaCandidatiPomeriggio(LocalDate data, Map<LocalDate, Map<Infermiere, String>> parziale) {
-		
+	private List<Infermiere> trovaCandidatiPomeriggio(LocalDate data,
+			Map<LocalDate, Map<Infermiere, String>> parziale) {
+
 		infPom.clear();
 
 		if (data.equals(LocalDate.of(2019, Month.SEPTEMBER, 1))) {
@@ -645,78 +618,77 @@ public class Model {
 				if (parziale.get(data).get(i) == null)
 					infPom.add(i);
 			}
-		}
-		else if (data.isBefore(LocalDate.of(2019, Month.SEPTEMBER, 7)) && data.isAfter(LocalDate.of(2019, Month.SEPTEMBER, 1))) {
+		} else if (data.isBefore(LocalDate.of(2019, Month.SEPTEMBER, 7))
+				&& data.isAfter(LocalDate.of(2019, Month.SEPTEMBER, 1))) {
 			for (Infermiere i : infermieri) {
-				if (parziale.get(data).get(i) == null && !parziale.get(data.minusDays(1)).get(i).equals("Notte")) 
+				if (parziale.get(data).get(i) == null && !parziale.get(data.minusDays(1)).get(i).equals("Notte"))
 					infPom.add(i);
 			}
-		}
-		else {
+		} else {
 			int cont;
-			
-			
+
 			for (Infermiere i : infermieri) {
 				cont = 0;
-				
+
 				for (int j = 6; j > 0; j--) {
-					if (!parziale.get(data.minusDays(j)).get(i).equals("Riposo") && !parziale.get(data.minusDays(j)).get(i).equals("Ferie"))
-						cont ++;
+					if (!parziale.get(data.minusDays(j)).get(i).equals("Riposo")
+							&& !parziale.get(data.minusDays(j)).get(i).equals("Ferie"))
+						cont++;
 				}
-				
-				if (cont < 6 && parziale.get(data).get(i) == null && !parziale.get(data.minusDays(1)).get(i).equals("Notte")) 
+
+				if (cont < 6 && parziale.get(data).get(i) == null
+						&& !parziale.get(data.minusDays(1)).get(i).equals("Notte"))
 					infPom.add(i);
 			}
 		}
 		return infPom;
 	}
 
-	
 	private List<Infermiere> trovaCandidatiNotte(LocalDate data, Map<LocalDate, Map<Infermiere, String>> parziale) {
-		
+
 		infNot.clear();
 		if (data.equals(LocalDate.of(2019, Month.SEPTEMBER, 1))) {
 			for (Infermiere i : infermieri) {
 				if (parziale.get(data).get(i) == null)
 					infNot.add(i);
 			}
-		}
-		else if (data.isBefore(LocalDate.of(2019, Month.SEPTEMBER, 7)) && data.isAfter(LocalDate.of(2019, Month.SEPTEMBER, 1))) {
+		} else if (data.isBefore(LocalDate.of(2019, Month.SEPTEMBER, 7))
+				&& data.isAfter(LocalDate.of(2019, Month.SEPTEMBER, 1))) {
 			for (Infermiere i : infermieri) {
-				if (parziale.get(data).get(i) == null) 
+				if (parziale.get(data).get(i) == null)
 					infNot.add(i);
 			}
-		}
-		else {
+		} else {
 			int cont;
-			
-			
+
 			for (Infermiere i : infermieri) {
 				cont = 0;
-				
+
 				for (int j = 6; j > 0; j--) {
-					if (!parziale.get(data.minusDays(j)).get(i).equals("Riposo") && !parziale.get(data.minusDays(j)).get(i).equals("Ferie"))
-						cont ++;
+					if (!parziale.get(data.minusDays(j)).get(i).equals("Riposo")
+							&& !parziale.get(data.minusDays(j)).get(i).equals("Ferie"))
+						cont++;
 				}
-				
-				if (cont < 6 && parziale.get(data).get(i) == null) 
+
+				if (cont < 6 && parziale.get(data).get(i) == null)
 					infNot.add(i);
 			}
 		}
 		return infNot;
 	}
-	
+
 	// conteggio dei riposi in base alle festività mensili
 	public boolean contaRiposi(LocalDate data, Map<LocalDate, Map<Infermiere, String>> parziale) {
-				
+
 		int cont = 0;
 		int riposi;
-		
+
 		for (int i = 1; i <= data.lengthOfMonth(); i++) {
-			if (LocalDate.of(data.getYear(), data.getMonth(), i).getDayOfWeek().equals(DayOfWeek.SATURDAY) || LocalDate.of(data.getYear(), data.getMonth(), i).getDayOfWeek().equals(DayOfWeek.SUNDAY))
+			if (LocalDate.of(data.getYear(), data.getMonth(), i).getDayOfWeek().equals(DayOfWeek.SATURDAY)
+					|| LocalDate.of(data.getYear(), data.getMonth(), i).getDayOfWeek().equals(DayOfWeek.SUNDAY))
 				cont++;
 		}
-		
+
 		// capodanno ed epifania
 		if (data.getMonth().equals(Month.JANUARY))
 			cont = cont + 2;
@@ -735,11 +707,11 @@ public class Model {
 		// tutti i santi (1 novembre)
 		else if (data.getMonth().equals(Month.NOVEMBER))
 			cont = cont + 1;
-		// immacolata concezione (8 dicembre), natale (25 dicembre) e santo stefano (26 dicembre)
+		// immacolata concezione (8 dicembre), natale (25 dicembre) e santo stefano (26
+		// dicembre)
 		else if (data.getMonth().equals(Month.DECEMBER))
 			cont = cont + 3;
-		
-		
+
 		for (Infermiere inf : infermieri) {
 			riposi = 0;
 			for (int i = 1; i <= data.lengthOfMonth(); i++) {
@@ -748,10 +720,51 @@ public class Model {
 			}
 			if (riposi != cont)
 				return false;
-			
+
 		}
-			
-		
+
 		return true;
 	}
+
+	List<List<Infermiere>> subsets(List<Infermiere> input, int k) {
+
+		// int[] input = {10, 20, 30, 40, 50}; // input array
+		// int k = 3; // sequence length
+
+		List<List<Infermiere>> subsets = new ArrayList<>();
+
+		int[] s = new int[k]; // here we'll keep indices
+								// pointing to elements in input array
+
+		if (k <= input.size()) {
+			// first index sequence: 0, 1, 2, ...
+			for (int i = 0; (s[i] = i) < k - 1; i++)
+				;
+			subsets.add(getSubset(input, s));
+			for (;;) {
+				int i;
+				// find position of item that can be incremented
+				for (i = k - 1; i >= 0 && s[i] == input.size() - k + i; i--)
+					;
+				if (i < 0) {
+					break;
+				}
+				s[i]++; // increment this item
+				for (++i; i < k; i++) { // fill up remaining items
+					s[i] = s[i - 1] + 1;
+				}
+				subsets.add(getSubset(input, s));
+			}
+		}
+		return subsets;
+	}
+
+	// generate actual subset by index sequence
+	List<Infermiere> getSubset(List<Infermiere> input, int[] subset) {
+		List<Infermiere> result = new ArrayList<Infermiere>();
+		for (int i = 0; i < subset.length; i++)
+			result.add(input.get(subset[i]));
+		return result;
+	}
+
 }

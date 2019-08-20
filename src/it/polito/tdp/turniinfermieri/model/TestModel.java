@@ -15,9 +15,9 @@ public class TestModel {
 	//	List<Infermiere> inf = model.getInfermieri();
 		//System.out.println(prova);
 		
-		//for (LocalDate l : prova.keySet()) {
-		//	System.out.println("" + l + prova.get(l));
-		//}
+		for (LocalDate l : prova.keySet()) {
+			System.out.println("" + l + prova.get(l));
+		}
 		
 	//	LocalDate data = LocalDate.of(2019, Month.SEPTEMBER, 1);
 		//LocalDate fine = LocalDate.of(2020, Month.SEPTEMBER, 1);
@@ -30,6 +30,8 @@ public class TestModel {
 	//	}
 
 		
+	//	for (List<Infermiere> i : model.subsets(model.getInfermieri(),2))
+		//	System.out.println(i);
 		
 	}
 	
