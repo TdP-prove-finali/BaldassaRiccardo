@@ -15,13 +15,17 @@ public class TestModel {
 	//	List<Infermiere> inf = model.getInfermieri();
 		//System.out.println(prova);
 		
-		for (LocalDate l : prova.keySet()) {
-			System.out.println("" + l + prova.get(l));
-		}
+//		for (LocalDate l : prova.keySet()) {
+	//		System.out.println("" + l + prova.get(l));
+	//	}
 		
-		for (StatisticheInfermiere si : model.getStat()) {
-			System.out.println(si);
-		}
+//		for (StatisticheInfermiere si : model.getStat()) {
+	//		System.out.println(si);
+	//	}
+		
+		Infermiere inf = model.getInfermieri().get(0);
+		
+		System.out.println(model.turniInfermiere(inf, Month.SEPTEMBER));
 		
 	//	LocalDate data = LocalDate.of(2019, Month.SEPTEMBER, 1);
 		//LocalDate fine = LocalDate.of(2020, Month.SEPTEMBER, 1);

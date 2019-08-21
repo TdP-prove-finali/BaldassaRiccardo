@@ -809,6 +809,41 @@ public class Model {
 	public List<StatisticheInfermiere> getStat() {
 		return stat;
 	}
+	
+	public InfermiereTurni turniInfermiere(Infermiere infermiere, Month mese) {
+		
+		int anno;
+		List<String> turni = new ArrayList<String>();
+		
+		if (mese.equals(Month.SEPTEMBER) || mese.equals(Month.OCTOBER) || mese.equals(Month.NOVEMBER) || mese.equals(Month.DECEMBER))
+			anno = 2019;
+		else
+			anno = 2020;
+		
+		
+		LocalDate d = LocalDate.of(anno, mese, 1);
+		
+		while (d.getMonth().equals(mese)) {
+			turni.add(soluzione.get(d).get(infermiere).substring(0, 1));
+			
+			d = d.plusDays(1);
+		}
+		
+		InfermiereTurni it = new InfermiereTurni(infermiere,turni.get(0),turni.get(1),turni.get(2),turni.get(3),turni.get(4),
+				turni.get(5),turni.get(6),turni.get(7),turni.get(8),turni.get(9),turni.get(10),turni.get(11),turni.get(12),turni.get(13),
+				turni.get(14),turni.get(15),turni.get(16),turni.get(17),turni.get(18),turni.get(19),turni.get(20),turni.get(21),
+				turni.get(22),turni.get(23),turni.get(24),turni.get(25),turni.get(26),turni.get(27));
+		
+		if (turni.size() >= 29)
+			it.setGiorno29(turni.get(28));
+		if (turni.size() >= 30)
+			it.setGiorno30(turni.get(29));
+		if (turni.size() == 31)
+			it.setGiorno31(turni.get(30));
+		
+		return it;
+		
+	}
 
 
 }

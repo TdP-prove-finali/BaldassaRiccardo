@@ -9,13 +9,14 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-import it.polito.tdp.turniinfermieri.model.DataTurni;
 import it.polito.tdp.turniinfermieri.model.Ferie;
 import it.polito.tdp.turniinfermieri.model.Infermiere;
+import it.polito.tdp.turniinfermieri.model.InfermiereTurni;
 import it.polito.tdp.turniinfermieri.model.Model;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -50,6 +51,9 @@ public class TurniInfermieriController {
     
     @FXML // fx:id="Tab_Genera_Orario"
     private Tab Tab_Genera_Orario; // Value injected by FXMLLoader
+    
+    @FXML // fx:id="TextFieldOrario"
+    private TextField TextFieldOrario; // Value injected by FXMLLoader
 
     @FXML // fx:id="Tab_Orario_Infermieri"
     private Tab Tab_Orario_Infermieri; // Value injected by FXMLLoader
@@ -88,46 +92,107 @@ public class TurniInfermieriController {
     private TableColumn<Ferie, LocalDate> TableColumnFerieLunghe; // Value injected by FXMLLoader
     
     @FXML // fx:id="TableViewOrarioGenerale"
-    private TableView<DataTurni> TableViewOrarioGenerale; // Value injected by FXMLLoader
+    private TableView<InfermiereTurni> TableViewOrarioGenerale; // Value injected by FXMLLoader
 
-    @FXML // fx:id="TableColumnData"
-    private TableColumn<DataTurni, LocalDate> TableColumnData; // Value injected by FXMLLoader
+    @FXML // fx:id="TableColumnInfermiere"
+    private TableColumn<InfermiereTurni, Infermiere> TableColumnInfermiere; // Value injected by FXMLLoader
 
-    @FXML // fx:id="TableColumnInf1"
-    private TableColumn<DataTurni, String> TableColumnInf1; // Value injected by FXMLLoader
+    @FXML // fx:id="TableColumn01"
+    private TableColumn<InfermiereTurni, String> TableColumn01; // Value injected by FXMLLoader
 
-    @FXML // fx:id="TableColumnInf2"
-    private TableColumn<DataTurni, String> TableColumnInf2; // Value injected by FXMLLoader
+    @FXML // fx:id="TableColumn02"
+    private TableColumn<InfermiereTurni, String> TableColumn02; // Value injected by FXMLLoader
 
-    @FXML // fx:id="TableColumnInf3"
-    private TableColumn<DataTurni, String> TableColumnInf3; // Value injected by FXMLLoader
+    @FXML // fx:id="TableColumn03"
+    private TableColumn<InfermiereTurni, String> TableColumn03; // Value injected by FXMLLoader
 
-    @FXML // fx:id="TableColumnInf4"
-    private TableColumn<DataTurni, String> TableColumnInf4; // Value injected by FXMLLoader
+    @FXML // fx:id="TableColumn04"
+    private TableColumn<InfermiereTurni, String> TableColumn04; // Value injected by FXMLLoader
 
-    @FXML // fx:id="TableColumnInf5"
-    private TableColumn<DataTurni, String> TableColumnInf5; // Value injected by FXMLLoader
+    @FXML // fx:id="TableColumn05"
+    private TableColumn<InfermiereTurni, String> TableColumn05; // Value injected by FXMLLoader
 
-    @FXML // fx:id="TableColumnInf6"
-    private TableColumn<DataTurni, String> TableColumnInf6; // Value injected by FXMLLoader
+    @FXML // fx:id="TableColumn06"
+    private TableColumn<InfermiereTurni, String> TableColumn06; // Value injected by FXMLLoader
 
-    @FXML // fx:id="TableColumnInf7"
-    private TableColumn<DataTurni, String> TableColumnInf7; // Value injected by FXMLLoader
+    @FXML // fx:id="TableColumn07"
+    private TableColumn<InfermiereTurni, String> TableColumn07; // Value injected by FXMLLoader
 
-    @FXML // fx:id="TableColumnInf8"
-    private TableColumn<DataTurni, String> TableColumnInf8; // Value injected by FXMLLoader
+    @FXML // fx:id="TableColumn08"
+    private TableColumn<InfermiereTurni, String> TableColumn08; // Value injected by FXMLLoader
 
-    @FXML // fx:id="TableColumnInf9"
-    private TableColumn<DataTurni, String> TableColumnInf9; // Value injected by FXMLLoader
+    @FXML // fx:id="TableColumn09"
+    private TableColumn<InfermiereTurni, String> TableColumn09; // Value injected by FXMLLoader
 
-    @FXML // fx:id="TableColumnInf10"
-    private TableColumn<DataTurni, String> TableColumnInf10; // Value injected by FXMLLoader
+    @FXML // fx:id="TableColumn10"
+    private TableColumn<InfermiereTurni, String> TableColumn10; // Value injected by FXMLLoader
 
-    @FXML // fx:id="TableColumnInf11"
-    private TableColumn<DataTurni, String> TableColumnInf11; // Value injected by FXMLLoader
+    @FXML // fx:id="TableColumn11"
+    private TableColumn<InfermiereTurni, String> TableColumn11; // Value injected by FXMLLoader
+
+    @FXML // fx:id="TableColumn12"
+    private TableColumn<InfermiereTurni, String> TableColumn12; // Value injected by FXMLLoader
+
+    @FXML // fx:id="TableColumn13"
+    private TableColumn<InfermiereTurni, String> TableColumn13; // Value injected by FXMLLoader
+
+    @FXML // fx:id="TableColumn14"
+    private TableColumn<InfermiereTurni, String> TableColumn14; // Value injected by FXMLLoader
+
+    @FXML // fx:id="TableColumn15"
+    private TableColumn<InfermiereTurni, String> TableColumn15; // Value injected by FXMLLoader
+
+    @FXML // fx:id="TableColumn16"
+    private TableColumn<InfermiereTurni, String> TableColumn16; // Value injected by FXMLLoader
+
+    @FXML // fx:id="TableColumn17"
+    private TableColumn<InfermiereTurni, String> TableColumn17; // Value injected by FXMLLoader
+
+    @FXML // fx:id="TableColumn18"
+    private TableColumn<InfermiereTurni, String> TableColumn18; // Value injected by FXMLLoader
+
+    @FXML // fx:id="TableColumn19"
+    private TableColumn<InfermiereTurni, String> TableColumn19; // Value injected by FXMLLoader
+
+    @FXML // fx:id="TableColumn20"
+    private TableColumn<InfermiereTurni, String> TableColumn20; // Value injected by FXMLLoader
+
+    @FXML // fx:id="TableColumn21"
+    private TableColumn<InfermiereTurni, String> TableColumn21; // Value injected by FXMLLoader
+
+    @FXML // fx:id="TableColumn22"
+    private TableColumn<InfermiereTurni, String> TableColumn22; // Value injected by FXMLLoader
+
+    @FXML // fx:id="TableColumn23"
+    private TableColumn<InfermiereTurni, String> TableColumn23; // Value injected by FXMLLoader
+
+    @FXML // fx:id="TableColumn24"
+    private TableColumn<InfermiereTurni, String> TableColumn24; // Value injected by FXMLLoader
+
+    @FXML // fx:id="TableColumn25"
+    private TableColumn<InfermiereTurni, String> TableColumn25; // Value injected by FXMLLoader
+
+    @FXML // fx:id="TableColumn26"
+    private TableColumn<InfermiereTurni, String> TableColumn26; // Value injected by FXMLLoader
+
+    @FXML // fx:id="TableColumn27"
+    private TableColumn<InfermiereTurni, String> TableColumn27; // Value injected by FXMLLoader
+
+    @FXML // fx:id="TableColumn28"
+    private TableColumn<InfermiereTurni, String> TableColumn28; // Value injected by FXMLLoader
+
+    @FXML // fx:id="TableColumn29"
+    private TableColumn<InfermiereTurni, String> TableColumn29; // Value injected by FXMLLoader
+
+    @FXML // fx:id="TableColumn30"
+    private TableColumn<InfermiereTurni, String> TableColumn30; // Value injected by FXMLLoader
+
+    @FXML // fx:id="TableColumn31"
+    private TableColumn<InfermiereTurni, String> TableColumn31; // Value injected by FXMLLoader
+
 
     @FXML // fx:id="ComboBoxMesi"
-    private ComboBox<String> ComboBoxMesi; // Value injected by FXMLLoader
+    private ComboBox<Month> ComboBoxMesi; // Value injected by FXMLLoader
     
     @FXML
     void doModificaFerie(ActionEvent event) {
@@ -269,12 +334,37 @@ public class TurniInfermieriController {
     @FXML
     void doGeneraOrario(ActionEvent event) {
     	
-    	//List<Data> orario = model.generaOrario();
-
+    	ComboBoxMesi.setValue(null);
+    	TextFieldOrario.setText("Premere sul bottone per generare l'orario!");
+    	
+    	model.generaOrario();
+    	
+    	TextFieldOrario.setText("Orario generato! Seleziona mese da visualizzare");
+    	
+    	
     }
 
     @FXML
     void doSelezionaMese(ActionEvent event) {
+    	
+    	Month mese = ComboBoxMesi.getValue();
+    	List<InfermiereTurni> inf = new ArrayList<InfermiereTurni>();
+
+    	if (mese != null) {
+    	
+	    	for (Infermiere i : model.getInfermieri()) {
+	    		
+	    		inf.add(model.turniInfermiere(i, mese));
+	    		
+	    	}
+	    	
+	    	
+	    	ObservableList<InfermiereTurni> rows = FXCollections.observableArrayList();
+			rows.addAll(inf);
+	
+			
+			TableViewOrarioGenerale.setItems(rows);
+    	}
 
     }
     
@@ -294,19 +384,40 @@ public class TurniInfermieriController {
         assert TableViewFerieLunghe != null : "fx:id=\"TableViewFerieLunghe\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
         assert TableColumnFerieLunghe != null : "fx:id=\"TableColumnFerieLunghe\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
         assert Tab_Genera_Orario != null : "fx:id=\"Tab_Genera_Orario\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert TextFieldOrario != null : "fx:id=\"TextFieldOrario\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
         assert TableViewOrarioGenerale != null : "fx:id=\"TableViewOrarioGenerale\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
-        assert TableColumnData != null : "fx:id=\"TableColumnData\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
-        assert TableColumnInf1 != null : "fx:id=\"TableColumnInf1\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
-        assert TableColumnInf2 != null : "fx:id=\"TableColumnInf2\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
-        assert TableColumnInf3 != null : "fx:id=\"TableColumnInf3\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
-        assert TableColumnInf4 != null : "fx:id=\"TableColumnInf4\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
-        assert TableColumnInf5 != null : "fx:id=\"TableColumnInf5\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
-        assert TableColumnInf6 != null : "fx:id=\"TableColumnInf6\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
-        assert TableColumnInf7 != null : "fx:id=\"TableColumnInf7\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
-        assert TableColumnInf8 != null : "fx:id=\"TableColumnInf8\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
-        assert TableColumnInf9 != null : "fx:id=\"TableColumnInf9\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
-        assert TableColumnInf10 != null : "fx:id=\"TableColumnInf10\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
-        assert TableColumnInf11 != null : "fx:id=\"TableColumnInf11\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert TableColumnInfermiere != null : "fx:id=\"TableColumnInfermiere\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert TableColumn01 != null : "fx:id=\"TableColumn01\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert TableColumn02 != null : "fx:id=\"TableColumn02\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert TableColumn03 != null : "fx:id=\"TableColumn03\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert TableColumn04 != null : "fx:id=\"TableColumn04\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert TableColumn05 != null : "fx:id=\"TableColumn05\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert TableColumn06 != null : "fx:id=\"TableColumn06\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert TableColumn07 != null : "fx:id=\"TableColumn07\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert TableColumn08 != null : "fx:id=\"TableColumn08\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert TableColumn09 != null : "fx:id=\"TableColumn09\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert TableColumn10 != null : "fx:id=\"TableColumn10\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert TableColumn11 != null : "fx:id=\"TableColumn11\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert TableColumn12 != null : "fx:id=\"TableColumn12\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert TableColumn13 != null : "fx:id=\"TableColumn13\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert TableColumn14 != null : "fx:id=\"TableColumn14\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert TableColumn15 != null : "fx:id=\"TableColumn15\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert TableColumn16 != null : "fx:id=\"TableColumn16\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert TableColumn17 != null : "fx:id=\"TableColumn17\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert TableColumn18 != null : "fx:id=\"TableColumn18\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert TableColumn19 != null : "fx:id=\"TableColumn19\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert TableColumn20 != null : "fx:id=\"TableColumn20\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert TableColumn21 != null : "fx:id=\"TableColumn21\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert TableColumn22 != null : "fx:id=\"TableColumn22\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert TableColumn23 != null : "fx:id=\"TableColumn23\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert TableColumn24 != null : "fx:id=\"TableColumn24\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert TableColumn25 != null : "fx:id=\"TableColumn25\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert TableColumn26 != null : "fx:id=\"TableColumn26\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert TableColumn27 != null : "fx:id=\"TableColumn27\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert TableColumn28 != null : "fx:id=\"TableColumn28\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert TableColumn29 != null : "fx:id=\"TableColumn29\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert TableColumn30 != null : "fx:id=\"TableColumn30\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert TableColumn31 != null : "fx:id=\"TableColumn31\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
         assert Tab_Orario_Infermieri != null : "fx:id=\"Tab_Orario_Infermieri\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
 
     }
@@ -422,21 +533,49 @@ public class TurniInfermieriController {
 		TableColumnFerieLunghe.setCellValueFactory(new PropertyValueFactory<Ferie, LocalDate>("data"));
 		
 		// tabella orario generale terza tab
-    	TableColumnData.setCellValueFactory(new PropertyValueFactory<DataTurni, LocalDate>("data"));
-		TableColumnInf1.setCellValueFactory(new PropertyValueFactory<DataTurni, String>("turno_inf1"));
-		TableColumnInf2.setCellValueFactory(new PropertyValueFactory<DataTurni, String>("turno_inf2"));
-		TableColumnInf3.setCellValueFactory(new PropertyValueFactory<DataTurni, String>("turno_inf3"));
-		TableColumnInf4.setCellValueFactory(new PropertyValueFactory<DataTurni, String>("turno_inf4"));
-		TableColumnInf5.setCellValueFactory(new PropertyValueFactory<DataTurni, String>("turno_inf5"));
-		TableColumnInf6.setCellValueFactory(new PropertyValueFactory<DataTurni, String>("turno_inf6"));
-		TableColumnInf7.setCellValueFactory(new PropertyValueFactory<DataTurni, String>("turno_inf7"));
-		TableColumnInf8.setCellValueFactory(new PropertyValueFactory<DataTurni, String>("turno_inf8"));
-		TableColumnInf9.setCellValueFactory(new PropertyValueFactory<DataTurni, String>("turno_inf9"));
-		TableColumnInf10.setCellValueFactory(new PropertyValueFactory<DataTurni, String>("turno_inf10"));
-		TableColumnInf11.setCellValueFactory(new PropertyValueFactory<DataTurni, String>("turno_inf11"));
+    
+		
+		TableColumnInfermiere.setCellValueFactory(new PropertyValueFactory<InfermiereTurni, Infermiere>("Infermiere"));
+		TableColumn01.setCellValueFactory(new PropertyValueFactory<InfermiereTurni, String>("giorno1"));
+		TableColumn02.setCellValueFactory(new PropertyValueFactory<InfermiereTurni, String>("giorno2"));
+		TableColumn03.setCellValueFactory(new PropertyValueFactory<InfermiereTurni, String>("giorno3"));
+		TableColumn04.setCellValueFactory(new PropertyValueFactory<InfermiereTurni, String>("giorno4"));
+		TableColumn05.setCellValueFactory(new PropertyValueFactory<InfermiereTurni, String>("giorno5"));
+		TableColumn06.setCellValueFactory(new PropertyValueFactory<InfermiereTurni, String>("giorno6"));
+		TableColumn07.setCellValueFactory(new PropertyValueFactory<InfermiereTurni, String>("giorno7"));
+		TableColumn08.setCellValueFactory(new PropertyValueFactory<InfermiereTurni, String>("giorno8"));
+		TableColumn09.setCellValueFactory(new PropertyValueFactory<InfermiereTurni, String>("giorno9"));
+		TableColumn10.setCellValueFactory(new PropertyValueFactory<InfermiereTurni, String>("giorno10"));
+		TableColumn11.setCellValueFactory(new PropertyValueFactory<InfermiereTurni, String>("giorno11"));
+		TableColumn12.setCellValueFactory(new PropertyValueFactory<InfermiereTurni, String>("giorno12"));
+		TableColumn13.setCellValueFactory(new PropertyValueFactory<InfermiereTurni, String>("giorno13"));
+		TableColumn14.setCellValueFactory(new PropertyValueFactory<InfermiereTurni, String>("giorno14"));
+		TableColumn15.setCellValueFactory(new PropertyValueFactory<InfermiereTurni, String>("giorno15"));
+		TableColumn16.setCellValueFactory(new PropertyValueFactory<InfermiereTurni, String>("giorno16"));
+		TableColumn17.setCellValueFactory(new PropertyValueFactory<InfermiereTurni, String>("giorno17"));
+		TableColumn18.setCellValueFactory(new PropertyValueFactory<InfermiereTurni, String>("giorno18"));
+		TableColumn19.setCellValueFactory(new PropertyValueFactory<InfermiereTurni, String>("giorno19"));
+		TableColumn20.setCellValueFactory(new PropertyValueFactory<InfermiereTurni, String>("giorno20"));
+		TableColumn21.setCellValueFactory(new PropertyValueFactory<InfermiereTurni, String>("giorno21"));
+		TableColumn22.setCellValueFactory(new PropertyValueFactory<InfermiereTurni, String>("giorno22"));
+		TableColumn23.setCellValueFactory(new PropertyValueFactory<InfermiereTurni, String>("giorno23"));
+		TableColumn24.setCellValueFactory(new PropertyValueFactory<InfermiereTurni, String>("giorno24"));
+		TableColumn25.setCellValueFactory(new PropertyValueFactory<InfermiereTurni, String>("giorno25"));
+		TableColumn26.setCellValueFactory(new PropertyValueFactory<InfermiereTurni, String>("giorno26"));
+		TableColumn27.setCellValueFactory(new PropertyValueFactory<InfermiereTurni, String>("giorno27"));
+		TableColumn28.setCellValueFactory(new PropertyValueFactory<InfermiereTurni, String>("giorno28"));
+		TableColumn29.setCellValueFactory(new PropertyValueFactory<InfermiereTurni, String>("giorno29"));
+		TableColumn30.setCellValueFactory(new PropertyValueFactory<InfermiereTurni, String>("giorno30"));
+		TableColumn31.setCellValueFactory(new PropertyValueFactory<InfermiereTurni, String>("giorno31"));
 
-		for (int i = 1; i <=12; i++) {
-			ComboBoxMesi.getItems().add(Month.of(i).getDisplayName(TextStyle.FULL, Locale.ITALY));
+
+
+		 
+		for (int i = 9; i <=12; i++) {
+			ComboBoxMesi.getItems().add(Month.of(i));
+		}
+		for (int i = 1; i <=8; i++) {
+			ComboBoxMesi.getItems().add(Month.of(i));
 		}
 
     	
