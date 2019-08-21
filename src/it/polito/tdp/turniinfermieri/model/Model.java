@@ -844,6 +844,56 @@ public class Model {
 		return it;
 		
 	}
+	
+	public List<Integer> statInfermiere(Infermiere infermiere){
+		
+		int mat = 0;
+		int pome = 0;
+		int notti = 0;
+		
+		LocalDate d = LocalDate.of(2019, Month.SEPTEMBER, 1);
+		
+		while (d.isBefore(fine)) {
+			if (soluzione.get(d).get(infermiere).equals("Mattino"))
+				mat ++;
+			else if (soluzione.get(d).get(infermiere).equals("Pomeriggio"))
+				pome ++;
+			else if (soluzione.get(d).get(infermiere).equals("Notte"))
+				notti ++;
+			
+			d = d.plusDays(1);
+		}
+		
+		List<Integer> stat = new ArrayList<Integer>();
+		stat.add(mat);
+		stat.add(pome);
+		stat.add(notti);
+		
+		return stat;
+		
+	}
 
 
+	public List<Integer> statMedie(){
+		
+		List<Integer> stat = new ArrayList<Integer>();
+		
+		int mat = 0;
+		int pome = 0;
+		int notti = 0;
+		
+		for (Infermiere inf : this.getInfermieri()) {
+			mat += this.statInfermiere(inf).get(0);
+			pome += this.statInfermiere(inf).get(1);
+			notti += this.statInfermiere(inf).get(2);
+
+		}
+		
+		stat.add(mat/this.getInfermieri().size());
+		stat.add(pome/this.getInfermieri().size());
+		stat.add(notti/this.getInfermieri().size());
+
+		return stat;
+	}
+	
 }

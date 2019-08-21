@@ -8,10 +8,9 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
-import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import it.polito.tdp.turniinfermieri.model.Ferie;
@@ -22,6 +21,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
@@ -56,7 +56,7 @@ public class TurniInfermieriController {
     private TextField TextFieldOrario; // Value injected by FXMLLoader
 
     @FXML // fx:id="Tab_Orario_Infermieri"
-    private Tab Tab_Orario_Infermieri; // Value injected by FXMLLoader
+    private Tab Tab_Statistiche_Infermieri; // Value injected by FXMLLoader
 
     @FXML // fx:id="TableViewTrimestri"
     private TableView<Infermiere> TableViewTrimestri; // Value injected by FXMLLoader
@@ -190,9 +190,17 @@ public class TurniInfermieriController {
     @FXML // fx:id="TableColumn31"
     private TableColumn<InfermiereTurni, String> TableColumn31; // Value injected by FXMLLoader
 
-
     @FXML // fx:id="ComboBoxMesi"
     private ComboBox<Month> ComboBoxMesi; // Value injected by FXMLLoader
+    
+    @FXML // fx:id="ComboBoxInfermieri2"
+    private ComboBox<Infermiere> ComboBoxInfermieriStat; // Value injected by FXMLLoader
+
+    @FXML // fx:id="PieChartInf"
+    private PieChart PieChartInf; // Value injected by FXMLLoader
+
+    @FXML // fx:id="PieChartMedia"
+    private PieChart PieChartMedia; // Value injected by FXMLLoader
     
     @FXML
     void doModificaFerie(ActionEvent event) {
@@ -334,12 +342,29 @@ public class TurniInfermieriController {
     @FXML
     void doGeneraOrario(ActionEvent event) {
     	
+    	TableViewOrarioGenerale.getItems().clear();
+    	
     	ComboBoxMesi.setValue(null);
     	TextFieldOrario.setText("Premere sul bottone per generare l'orario!");
     	
-    	model.generaOrario();
+    	 Map<LocalDate, Map<Infermiere, String>> soluzione = model.generaOrario();
+    	 
+    	 if (soluzione == null) {
+    	    	TextFieldOrario.setText("Creazione orario non riuscita, modificare ferie e riprovare");
+    	 }
+    	 
+    	 else {
     	
-    	TextFieldOrario.setText("Orario generato! Seleziona mese da visualizzare");
+	    	TextFieldOrario.setText("Orario generato! Seleziona mese da visualizzare");
+	    	
+	    	for (int i = 9; i <=12; i++) {
+				ComboBoxMesi.getItems().add(Month.of(i));
+			}
+			for (int i = 1; i <=8; i++) {
+				ComboBoxMesi.getItems().add(Month.of(i));
+			}
+		
+    	}
     	
     	
     }
@@ -365,6 +390,37 @@ public class TurniInfermieriController {
 			
 			TableViewOrarioGenerale.setItems(rows);
     	}
+
+    }
+    
+    @FXML
+    void doSelezionaInfermiereStat(ActionEvent event) {
+    	
+    	Infermiere infermiere = ComboBoxInfermieriStat.getValue();
+
+    	if (infermiere != null) {
+    		
+    		List<Integer> statInf = model.statInfermiere(infermiere);
+    		List<Integer> statMedie = model.statMedie();
+    		
+    		ObservableList<PieChart.Data> pieChartInfData = FXCollections.observableArrayList(
+    				new PieChart.Data("Mattino", statInf.get(0)),
+    				new PieChart.Data("Pomeriggio", statInf.get(1)),
+    				new PieChart.Data("Notte", statInf.get(2)));
+    		
+    		ObservableList<PieChart.Data> pieChartMedieData = FXCollections.observableArrayList(
+    				new PieChart.Data("Mattino", statMedie.get(0)),
+    				new PieChart.Data("Pomeriggio", statMedie.get(1)),
+    				new PieChart.Data("Notte", statMedie.get(2)));
+    		
+    		PieChartInf.setData(pieChartInfData);
+    		PieChartMedia.setData(pieChartMedieData);
+    		PieChartInf.setStartAngle(90);
+    		PieChartMedia.setStartAngle(90);
+
+    		
+    	}
+    	
 
     }
     
@@ -418,14 +474,18 @@ public class TurniInfermieriController {
         assert TableColumn29 != null : "fx:id=\"TableColumn29\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
         assert TableColumn30 != null : "fx:id=\"TableColumn30\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
         assert TableColumn31 != null : "fx:id=\"TableColumn31\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
-        assert Tab_Orario_Infermieri != null : "fx:id=\"Tab_Orario_Infermieri\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
-
+        assert Tab_Statistiche_Infermieri != null : "fx:id=\"Tab_Orario_Infermieri\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert ComboBoxInfermieriStat != null : "fx:id=\"ComboBoxInfermieri2\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert PieChartInf != null : "fx:id=\"PieChartInf\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert PieChartMedia != null : "fx:id=\"PieChartMedia\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
     }
 
 	public void setModel(Model model) {
 		this.model = model;
 		// popolazione combobox
 		ComboBoxInfermieri.getItems().addAll(model.getInfermieri());
+		ComboBoxInfermieriStat.getItems().addAll(model.getInfermieri());
+
 		
 		// popolazione tabella prima tab
     	TableColumnTrimestre.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter() {
@@ -571,12 +631,7 @@ public class TurniInfermieriController {
 
 
 		 
-		for (int i = 9; i <=12; i++) {
-			ComboBoxMesi.getItems().add(Month.of(i));
-		}
-		for (int i = 1; i <=8; i++) {
-			ComboBoxMesi.getItems().add(Month.of(i));
-		}
+		
 
     	
 	}
