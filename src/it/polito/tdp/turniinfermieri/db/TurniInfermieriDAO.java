@@ -29,8 +29,7 @@ public class TurniInfermieriDAO {
 					list.add(new Infermiere(res.getInt("id_infermiere"),
 							res.getString("nome"), 
 							res.getString("cognome"), 
-							res.getDate("data_nascita").toLocalDate(),
-							res.getInt("trimestre_ferie_lunghe")));
+							res.getDate("data_nascita").toLocalDate()));
 				} catch (Throwable t) {
 					t.printStackTrace();
 					System.out.println(res.getInt("id_infermiere"));
@@ -47,25 +46,6 @@ public class TurniInfermieriDAO {
 		}
 	}
 
-	public void modificaInfermiere(Infermiere infermiere) {
-
-		String sql = "UPDATE infermiere SET trimestre_ferie_lunghe = ? WHERE id_infermiere = ?" ;
-		try {
-			Connection conn = DBConnect.getConnection() ;
-
-			PreparedStatement st = conn.prepareStatement(sql) ;
-			st.setInt(1, infermiere.getTrimestre_ferie_lunghe());
-			st.setInt(2, infermiere.getId_infermiere());
-			
-			st.executeUpdate();
-			
-			conn.close();
-
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 	
 	public List<Ferie> getFerie() {
 		String sql = "SELECT * FROM ferie" ;

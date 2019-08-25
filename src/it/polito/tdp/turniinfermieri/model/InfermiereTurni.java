@@ -70,6 +70,9 @@ public class InfermiereTurni {
 		this.giorno26 = giorno26;
 		this.giorno27 = giorno27;
 		this.giorno28 = giorno28;
+		this.giorno29 = null;
+		this.giorno30 = null;
+		this.giorno31 = null;
 	}
 	public Infermiere getInfermiere() {
 		return infermiere;

@@ -8,21 +8,18 @@ public class Infermiere implements Comparable<Infermiere>{
 	private String nome;
 	private String cognome;
 	private LocalDate data_nascita;
-	private int trimestre_ferie_lunghe;
 	private int numero_riposi;
 	private int numero_mattine;
 	private int numero_pomeriggi;
 	private int numero_notti;
 
 	
-	public Infermiere(int id_infermiere, String nome, String cognome, LocalDate data_nascita,
-			int trimestre_ferie_lunghe) {
+	public Infermiere(int id_infermiere, String nome, String cognome, LocalDate data_nascita) {
 		super();
 		this.id_infermiere = id_infermiere;
 		this.nome = nome;
 		this.cognome = cognome;
 		this.data_nascita = data_nascita;
-		this.trimestre_ferie_lunghe = trimestre_ferie_lunghe;
 		this.numero_riposi = 0;
 		this.numero_mattine = 0;
 		this.numero_pomeriggi = 0;
@@ -61,17 +58,9 @@ public class Infermiere implements Comparable<Infermiere>{
 		this.data_nascita = data_nascita;
 	}
 
-	public int getTrimestre_ferie_lunghe() {
-		return trimestre_ferie_lunghe;
-	}
-
-	public void setTrimestre_ferie_lunghe(int trimestre_ferie_lunghe) {
-		this.trimestre_ferie_lunghe = trimestre_ferie_lunghe;
-	}
-
 	@Override
 	public String toString() {
-		return String.format("%s %s %d", nome, cognome, trimestre_ferie_lunghe);
+		return String.format("%s %s", nome, cognome);
 	}
 
 	public int getNumero_riposi() {

@@ -8,8 +8,10 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -24,13 +26,12 @@ import javafx.fxml.FXML;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.util.converter.IntegerStringConverter;
 import javafx.util.converter.LocalDateStringConverter;
 
 public class TurniInfermieriController {
@@ -42,9 +43,6 @@ public class TurniInfermieriController {
 
     @FXML // URL location of the FXML file that was given to the FXMLLoader
     private URL location;   
-
-    @FXML // fx:id="Tab_Periodi_Ferie"
-    private Tab Tab_Periodi_Ferie; // Value injected by FXMLLoader
     
     @FXML // fx:id="Tab_Richieste_Giorni_Ferie"
     private Tab Tab_Richieste_Giorni_Ferie; // Value injected by FXMLLoader
@@ -58,38 +56,35 @@ public class TurniInfermieriController {
     @FXML // fx:id="Tab_Orario_Infermieri"
     private Tab Tab_Statistiche_Infermieri; // Value injected by FXMLLoader
 
-    @FXML // fx:id="TableViewTrimestri"
-    private TableView<Infermiere> TableViewTrimestri; // Value injected by FXMLLoader
-
-    @FXML // fx:id="TableColumnNome"
-    private TableColumn<Infermiere, String> TableColumnNome; // Value injected by FXMLLoader
-
-    @FXML // fx:id="TableColumnCognome"
-    private TableColumn<Infermiere, String> TableColumnCognome; // Value injected by FXMLLoader
-
-    @FXML // fx:id="TableColumnTrimestre"
-    private TableColumn<Infermiere, Integer> TableColumnTrimestre; // Value injected by FXMLLoader
-
-    @FXML // fx:id="TextAreaErrore"
-    private TextArea TextAreaErrore; // Value injected by FXMLLoader
-
     @FXML // fx:id="ComboBoxInfermieri"
     private ComboBox<Infermiere> ComboBoxInfermieri; // Value injected by FXMLLoader
 
     @FXML // fx:id="TextFieldFerie"
     private TextField TextFieldFerie; // Value injected by FXMLLoader
 
-    @FXML // fx:id="TableViewFerieBrevi"
-    private TableView<Ferie> TableViewFerieBrevi; // Value injected by FXMLLoader
+    @FXML // fx:id="TableViewFerie1"
+    private TableView<Ferie> TableViewFerie1; // Value injected by FXMLLoader
 
-    @FXML // fx:id="TableColumnFerieBrevi"
-    private TableColumn<Ferie, LocalDate> TableColumnFerieBrevi; // Value injected by FXMLLoader
+    @FXML // fx:id="TableColumnFerie1"
+    private TableColumn<Ferie, LocalDate> TableColumnFerie1; // Value injected by FXMLLoader
 
-    @FXML // fx:id="TableViewFerieLunghe"
-    private TableView<Ferie> TableViewFerieLunghe; // Value injected by FXMLLoader
+    @FXML // fx:id="TableViewFerie2"
+    private TableView<Ferie> TableViewFerie2; // Value injected by FXMLLoader
 
-    @FXML // fx:id="TableColumnFerieLunghe"
-    private TableColumn<Ferie, LocalDate> TableColumnFerieLunghe; // Value injected by FXMLLoader
+    @FXML // fx:id="TableColumnFerie2"
+    private TableColumn<Ferie, LocalDate> TableColumnFerie2; // Value injected by FXMLLoader
+
+    @FXML // fx:id="TableViewFerie3"
+    private TableView<Ferie> TableViewFerie3; // Value injected by FXMLLoader
+
+    @FXML // fx:id="TableColumnFerie3"
+    private TableColumn<Ferie, LocalDate> TableColumnFerie3; // Value injected by FXMLLoader
+
+    @FXML // fx:id="TableViewFerie4"
+    private TableView<Ferie> TableViewFerie4; // Value injected by FXMLLoader
+
+    @FXML // fx:id="TableColumnFerie4"
+    private TableColumn<Ferie, LocalDate> TableColumnFerie4; // Value injected by FXMLLoader
     
     @FXML // fx:id="TableViewOrarioGenerale"
     private TableView<InfermiereTurni> TableViewOrarioGenerale; // Value injected by FXMLLoader
@@ -191,7 +186,7 @@ public class TurniInfermieriController {
     private TableColumn<InfermiereTurni, String> TableColumn31; // Value injected by FXMLLoader
 
     @FXML // fx:id="ComboBoxMesi"
-    private ComboBox<Month> ComboBoxMesi; // Value injected by FXMLLoader
+    private ComboBox<String> ComboBoxMesi; // Value injected by FXMLLoader
     
     @FXML // fx:id="ComboBoxInfermieri2"
     private ComboBox<Infermiere> ComboBoxInfermieriStat; // Value injected by FXMLLoader
@@ -201,7 +196,7 @@ public class TurniInfermieriController {
 
     @FXML // fx:id="PieChartMedia"
     private PieChart PieChartMedia; // Value injected by FXMLLoader
-    
+        
     @FXML
     void doModificaFerie(ActionEvent event) {
     	
@@ -211,26 +206,23 @@ public class TurniInfermieriController {
     	
     	if (infermiere != null) {
     		
-    		if (!model.ferieLungheAccettabili(infermiere) && !model.ferieBreviAccettabili(infermiere)) {
-    			TextFieldFerie.setText("ferie brevi e lunghe non accettabili");
-    			Tab_Periodi_Ferie.setDisable(true);
-    			Tab_Genera_Orario.setDisable(true);
+    		List<LocalDate> ferieDuplicate = model.controlloFerieDuplicate(infermiere);
+    		List<LocalDate> ferieMax = model.controlloFerieMax();
+    		
+    		if (ferieDuplicate.size() != 0 && ferieMax.size() != 0) {
+    			TextFieldFerie.setText("Sono stati indicati più volte i giorni: " + ferieDuplicate + " ; Già altri due infermieri hanno indicato i giorni: " + ferieMax);
     		}
-    		else if (!model.ferieBreviAccettabili(infermiere)) {
-    			TextFieldFerie.setText("ferie brevi non accettabili");
-    			Tab_Periodi_Ferie.setDisable(true);
-    			Tab_Genera_Orario.setDisable(true);
+    		else if (ferieDuplicate.size() != 0) {
+    			TextFieldFerie.setText("Sono stati indicati più volte i giorni: " + ferieDuplicate);
     		}
-    		else if (!model.ferieLungheAccettabili(infermiere)) {
-    			TextFieldFerie.setText("ferie lunghe non accettabili");
-    			Tab_Periodi_Ferie.setDisable(true);
-    			Tab_Genera_Orario.setDisable(true);
+    		else if (ferieMax.size() != 0) {
+    			TextFieldFerie.setText("Già altri due infermieri hanno indicato i giorni: " + ferieMax);
     		}
-    		else if (model.ferieLungheAccettabili(infermiere) && model.ferieBreviAccettabili(infermiere)) {
-    			TextFieldFerie.setText("ferie brevi e lunghe accettate");
-    			Tab_Periodi_Ferie.setDisable(false);
+    		else if (ferieDuplicate.size() == 0 && ferieMax.size() == 0) {
+    			TextFieldFerie.setText("ferie accettate");
     			Tab_Genera_Orario.setDisable(false);
     			model.modificaFerie(infermiere);
+    	    	ComboBoxInfermieri.setDisable(false);
     		}
     	}
     	else
@@ -238,80 +230,19 @@ public class TurniInfermieriController {
 
 
     }
-
-    @FXML
-    void doPeriodiFerie(ActionEvent event) {
-    	
-    	List<Infermiere> infermieri = model.getInfermieri();
-    	
-    	TextAreaErrore.clear();
-    	// controllo se modifiche apportate ai valori della tabella siano accettabili
-    	if (!model.trimestriAccettabili(infermieri)) {
-	    	TextAreaErrore.setText("Regole non rispettate, modificare la \nscelta dei trimestri e confermare \nnuovamente");
-	    	Tab_Richieste_Giorni_Ferie.setDisable(true);
-	    	Tab_Genera_Orario.setDisable(true);
-    	}
-	    else {
-    		TextAreaErrore.setText("Regole rispettate, ferie accettate");
-	    	Tab_Richieste_Giorni_Ferie.setDisable(false);
-	    	Tab_Genera_Orario.setDisable(false);
-    		model.modificaTrimestri();
-    	}
-    }
-
     
     @FXML
-    void onEditCommitTrimestre(TableColumn.CellEditEvent<Infermiere, Integer> trimestreCellEditEvent) {
-    	
-    	Tab_Richieste_Giorni_Ferie.setDisable(true);
-    	Tab_Genera_Orario.setDisable(true);
-    	
-    	//modifica tabella  trimestre ferie
-    	Infermiere infermiere = TableViewTrimestri.getSelectionModel().getSelectedItem();
-    	Integer newValue = trimestreCellEditEvent.getNewValue();
-    	if (newValue != null)
-    		infermiere.setTrimestre_ferie_lunghe(newValue);
-
-  
-
-    }
-    
-
-    @FXML
-    void onEditCommitFerieBrevi(TableColumn.CellEditEvent<Ferie, LocalDate> ferieBreviCellEditEvent) {
-    	
-    	Tab_Periodi_Ferie.setDisable(true);
+    void onEditCommitFerie(TableColumn.CellEditEvent<Ferie, LocalDate> ferieCellEditEvent) {
+    	ComboBoxInfermieri.setDisable(true);
     	Tab_Genera_Orario.setDisable(true);
 
-    	//modifica tabella ferie brevi
-    	Ferie ferie = TableViewFerieBrevi.getSelectionModel().getSelectedItem();    	
-    	LocalDate newValue = ferieBreviCellEditEvent.getNewValue();
+    	//modifica tabella ferie 
+    	//Ferie ferie = TableViewFerie4.getSelectionModel().getSelectedItem();   
+    	Ferie ferie = ferieCellEditEvent.getTableView().getSelectionModel().getSelectedItem();
+    	LocalDate newValue = ferieCellEditEvent.getNewValue();
     	
-    	Infermiere infermiere = ComboBoxInfermieri.getValue();
-		
-		if (model.controllaFerieBrevi(newValue, infermiere.getTrimestre_ferie_lunghe()))
     		ferie.setData(newValue);
-    	
     }
-
-    @FXML
-    void onEditCommitFerieLunghe(TableColumn.CellEditEvent<Ferie, LocalDate> ferieLungheCellEditEvent) {
-
-    	Tab_Periodi_Ferie.setDisable(true);
-    	Tab_Genera_Orario.setDisable(true);
-    	
-    	//modifica tabella ferie lunghe
-    	Ferie ferie = TableViewFerieLunghe.getSelectionModel().getSelectedItem();    	
-    	LocalDate newValue = ferieLungheCellEditEvent.getNewValue();
-    	
-    	Infermiere infermiere = ComboBoxInfermieri.getValue();
-    	
-		if (model.controllaFerieLunghe(newValue, infermiere.getTrimestre_ferie_lunghe()))
-    		ferie.setData(newValue);
-
-    }
-    
-
 
     @FXML
     void doSelezionaInfermiere(ActionEvent event) {
@@ -321,22 +252,33 @@ public class TurniInfermieriController {
 	Infermiere infermiere = ComboBoxInfermieri.getValue();
     	
     	if (infermiere != null) {
-    		//popolazione tabella seconda tab
-    		List<Ferie> ferie_lunghe = model.getFerieLungheInfermiere(infermiere);
-    		List<Ferie> ferie_brevi = model.getFerieBreviInfermiere(infermiere);
+    		//popolazione tabelle ferie
+    		List<Ferie> ferie = model.getFerieInfermiere(infermiere);
 
     		
     		ObservableList<Ferie> rows1 = FXCollections.observableArrayList();
     		ObservableList<Ferie> rows2 = FXCollections.observableArrayList();
-
-    		rows1.addAll(ferie_brevi);
-    		rows2.addAll(ferie_lunghe);
+    		ObservableList<Ferie> rows3 = FXCollections.observableArrayList();
+    		ObservableList<Ferie> rows4 = FXCollections.observableArrayList();
     		
-    		TableViewFerieBrevi.setItems(rows1);
-    		TableViewFerieLunghe.setItems(rows2);
+    		for (int i = 0 ; i < ferie.size() ; i++) {
+    			
+    			if (i < 8)
+    				rows1.add(ferie.get(i));
+    			else if (i < 16 && i > 7)
+    				rows2.add(ferie.get(i));
+    			else if (i < 24 && i > 15)
+        			rows3.add(ferie.get(i));
+        		else 
+            		rows4.add(ferie.get(i));
+    		}
+    		
+    		TableViewFerie1.setItems(rows1);
+    		TableViewFerie2.setItems(rows2);
+    		TableViewFerie3.setItems(rows3);
+    		TableViewFerie4.setItems(rows4);
 
     	}
-
     }
 
     @FXML
@@ -351,17 +293,21 @@ public class TurniInfermieriController {
     	 
     	 if (soluzione == null) {
     	    	TextFieldOrario.setText("Creazione orario non riuscita, modificare ferie e riprovare");
+    	    	Tab_Statistiche_Infermieri.setDisable(true);
     	 }
     	 
     	 else {
+ 	    	Tab_Statistiche_Infermieri.setDisable(false);
     	
 	    	TextFieldOrario.setText("Orario generato! Seleziona mese da visualizzare");
 	    	
+	    	ComboBoxMesi.getItems().clear();
+	    	
 	    	for (int i = 9; i <=12; i++) {
-				ComboBoxMesi.getItems().add(Month.of(i));
+				ComboBoxMesi.getItems().add(Month.of(i).getDisplayName(TextStyle.FULL, Locale.ITALY));
 			}
 			for (int i = 1; i <=8; i++) {
-				ComboBoxMesi.getItems().add(Month.of(i));
+				ComboBoxMesi.getItems().add(Month.of(i).getDisplayName(TextStyle.FULL, Locale.ITALY));
 			}
 		
     	}
@@ -372,7 +318,36 @@ public class TurniInfermieriController {
     @FXML
     void doSelezionaMese(ActionEvent event) {
     	
-    	Month mese = ComboBoxMesi.getValue();
+    	TableColumn29.setVisible(false);
+    	TableColumn30.setVisible(false);
+    	TableColumn31.setVisible(false);
+
+    	
+    	
+    	String m = ComboBoxMesi.getValue();
+    	
+    	List<String> mesiIta= new ArrayList<>();
+    	mesiIta.add("gennaio");
+    	mesiIta.add("febbraio");
+    	mesiIta.add("marzo");
+    	mesiIta.add("aprile");
+    	mesiIta.add("maggio");
+    	mesiIta.add("giugno");
+    	mesiIta.add("luglio");
+    	mesiIta.add("agosto");
+    	mesiIta.add("settembre");
+    	mesiIta.add("ottobre");
+    	mesiIta.add("novembre");
+    	mesiIta.add("dicembre");
+
+    	Month mese = null;
+    	
+    	for (int i = 0 ; i < 12 ; i++) {
+    		if (mesiIta.get(i).equals(m))
+    			mese = Month.of(i+1);
+    	}
+    	
+    	
     	List<InfermiereTurni> inf = new ArrayList<InfermiereTurni>();
 
     	if (mese != null) {
@@ -384,7 +359,212 @@ public class TurniInfermieriController {
 	    	}
 	    	
 	    	
+	    	
+	    	int anno;
+			
+			if (mese.equals(Month.SEPTEMBER) || mese.equals(Month.OCTOBER) || mese.equals(Month.NOVEMBER) || mese.equals(Month.DECEMBER))
+				anno = 2019;
+			else
+				anno = 2020;
+	    	
+	    	InfermiereTurni giorni = new InfermiereTurni(null, LocalDate.of(anno, mese, 1).getDayOfWeek().getDisplayName(TextStyle.SHORT,Locale.ITALY),
+	    			LocalDate.of(anno, mese, 2).getDayOfWeek().getDisplayName(TextStyle.SHORT,Locale.ITALY),
+	    			LocalDate.of(anno, mese, 3).getDayOfWeek().getDisplayName(TextStyle.SHORT,Locale.ITALY),
+	    			LocalDate.of(anno, mese, 4).getDayOfWeek().getDisplayName(TextStyle.SHORT,Locale.ITALY),
+	    			LocalDate.of(anno, mese, 5).getDayOfWeek().getDisplayName(TextStyle.SHORT,Locale.ITALY),
+	    			LocalDate.of(anno, mese, 6).getDayOfWeek().getDisplayName(TextStyle.SHORT,Locale.ITALY),
+	    			LocalDate.of(anno, mese, 7).getDayOfWeek().getDisplayName(TextStyle.SHORT,Locale.ITALY),
+	    			LocalDate.of(anno, mese, 8).getDayOfWeek().getDisplayName(TextStyle.SHORT,Locale.ITALY),
+	    			LocalDate.of(anno, mese, 9).getDayOfWeek().getDisplayName(TextStyle.SHORT,Locale.ITALY),
+	    			LocalDate.of(anno, mese, 10).getDayOfWeek().getDisplayName(TextStyle.SHORT,Locale.ITALY),
+	    			LocalDate.of(anno, mese, 11).getDayOfWeek().getDisplayName(TextStyle.SHORT,Locale.ITALY),
+	    			LocalDate.of(anno, mese, 12).getDayOfWeek().getDisplayName(TextStyle.SHORT,Locale.ITALY),
+	    			LocalDate.of(anno, mese, 13).getDayOfWeek().getDisplayName(TextStyle.SHORT,Locale.ITALY),
+	    			LocalDate.of(anno, mese, 14).getDayOfWeek().getDisplayName(TextStyle.SHORT,Locale.ITALY),
+	    			LocalDate.of(anno, mese, 15).getDayOfWeek().getDisplayName(TextStyle.SHORT,Locale.ITALY),
+	    			LocalDate.of(anno, mese, 16).getDayOfWeek().getDisplayName(TextStyle.SHORT,Locale.ITALY),
+	    			LocalDate.of(anno, mese, 17).getDayOfWeek().getDisplayName(TextStyle.SHORT,Locale.ITALY),
+	    			LocalDate.of(anno, mese, 18).getDayOfWeek().getDisplayName(TextStyle.SHORT,Locale.ITALY),
+	    			LocalDate.of(anno, mese, 19).getDayOfWeek().getDisplayName(TextStyle.SHORT,Locale.ITALY),
+	    			LocalDate.of(anno, mese, 20).getDayOfWeek().getDisplayName(TextStyle.SHORT,Locale.ITALY),
+	    			LocalDate.of(anno, mese, 21).getDayOfWeek().getDisplayName(TextStyle.SHORT,Locale.ITALY),
+	    			LocalDate.of(anno, mese, 22).getDayOfWeek().getDisplayName(TextStyle.SHORT,Locale.ITALY),
+	    			LocalDate.of(anno, mese, 23).getDayOfWeek().getDisplayName(TextStyle.SHORT,Locale.ITALY),
+	    			LocalDate.of(anno, mese, 24).getDayOfWeek().getDisplayName(TextStyle.SHORT,Locale.ITALY),
+	    			LocalDate.of(anno, mese, 25).getDayOfWeek().getDisplayName(TextStyle.SHORT,Locale.ITALY),
+	    			LocalDate.of(anno, mese, 26).getDayOfWeek().getDisplayName(TextStyle.SHORT,Locale.ITALY),
+	    			LocalDate.of(anno, mese, 27).getDayOfWeek().getDisplayName(TextStyle.SHORT,Locale.ITALY),
+	    			LocalDate.of(anno, mese, 28).getDayOfWeek().getDisplayName(TextStyle.SHORT,Locale.ITALY));
+	    			
+	    	
+	    	if (inf.get(0).getGiorno29() != null) {
+	        	TableColumn29.setVisible(true);
+	        	giorni.setGiorno29(LocalDate.of(anno, mese, 29).getDayOfWeek().getDisplayName(TextStyle.SHORT,Locale.ITALY));
+	    	}
+	    	if (inf.get(0).getGiorno30() != null) {
+	        	TableColumn30.setVisible(true);
+	        	giorni.setGiorno30(LocalDate.of(anno, mese, 30).getDayOfWeek().getDisplayName(TextStyle.SHORT,Locale.ITALY));
+
+	    	}
+	    	if (inf.get(0).getGiorno31() != null) {
+	        	TableColumn31.setVisible(true);
+	        	giorni.setGiorno31(LocalDate.of(anno, mese, 31).getDayOfWeek().getDisplayName(TextStyle.SHORT,Locale.ITALY));
+	    	}
+	    	
 	    	ObservableList<InfermiereTurni> rows = FXCollections.observableArrayList();
+    		
+	    	pulisciColonna(TableColumn01);
+	    	pulisciColonna(TableColumn02);
+	    	pulisciColonna(TableColumn03);
+	    	pulisciColonna(TableColumn04);
+	    	pulisciColonna(TableColumn05);
+	    	pulisciColonna(TableColumn06);
+	    	pulisciColonna(TableColumn07);
+	    	pulisciColonna(TableColumn08);
+	    	pulisciColonna(TableColumn09);
+	    	pulisciColonna(TableColumn10);
+	    	pulisciColonna(TableColumn11);
+	    	pulisciColonna(TableColumn12);
+	    	pulisciColonna(TableColumn13);
+	    	pulisciColonna(TableColumn14);
+	    	pulisciColonna(TableColumn15);
+	    	pulisciColonna(TableColumn16);
+	    	pulisciColonna(TableColumn17);
+	    	pulisciColonna(TableColumn18);
+	    	pulisciColonna(TableColumn19);
+	    	pulisciColonna(TableColumn20);
+	    	pulisciColonna(TableColumn21);
+	    	pulisciColonna(TableColumn22);
+	    	pulisciColonna(TableColumn23);
+	    	pulisciColonna(TableColumn24);
+	    	pulisciColonna(TableColumn25);
+	    	pulisciColonna(TableColumn26);
+	    	pulisciColonna(TableColumn27);
+	    	pulisciColonna(TableColumn28);
+	    	pulisciColonna(TableColumn29);
+	    	pulisciColonna(TableColumn30);
+	    	pulisciColonna(TableColumn31);
+	    	
+	    	List<LocalDate> festivita = new ArrayList<LocalDate>();
+	    	
+	    	// giorni festivita in italia
+	    	festivita.add(LocalDate.of(2020, Month.JANUARY, 1));
+	    	festivita.add(LocalDate.of(2020, Month.JANUARY, 6));
+	    	festivita.add(LocalDate.of(2020, Month.APRIL, 12));
+	    	festivita.add(LocalDate.of(2020, Month.APRIL, 13));
+	    	festivita.add(LocalDate.of(2020, Month.APRIL, 25));
+	    	festivita.add(LocalDate.of(2020, Month.MAY, 1));
+	    	festivita.add(LocalDate.of(2020, Month.JUNE, 2));
+	    	festivita.add(LocalDate.of(2020, Month.AUGUST, 15));
+	    	festivita.add(LocalDate.of(2019, Month.NOVEMBER, 1));
+	    	festivita.add(LocalDate.of(2019, Month.DECEMBER, 8));
+	    	festivita.add(LocalDate.of(2019, Month.DECEMBER, 25));
+	    	festivita.add(LocalDate.of(2019, Month.DECEMBER, 26));
+
+
+	    	
+	    	if (giorni.getGiorno1().equals("dom") || giorni.getGiorno1().equals("sab") || festivita.contains(LocalDate.of(anno, mese, 1))) {
+	    		festivitaColonna(TableColumn01);
+	    	}
+	    	if (giorni.getGiorno2().equals("dom") || giorni.getGiorno2().equals("sab") || festivita.contains(LocalDate.of(anno, mese, 2))) {
+	    		festivitaColonna(TableColumn02);
+	    	}
+	    	if (giorni.getGiorno3().equals("dom") || giorni.getGiorno3().equals("sab") || festivita.contains(LocalDate.of(anno, mese, 3))) {
+	    		festivitaColonna(TableColumn03);
+	    	}
+	    	if (giorni.getGiorno4().equals("dom") || giorni.getGiorno4().equals("sab") || festivita.contains(LocalDate.of(anno, mese, 4))) {
+	    		festivitaColonna(TableColumn04);
+	    	}
+	    	if (giorni.getGiorno5().equals("dom") || giorni.getGiorno5().equals("sab") || festivita.contains(LocalDate.of(anno, mese, 5))) {
+	    		festivitaColonna(TableColumn05);
+	    	}
+	    	if (giorni.getGiorno6().equals("dom") || giorni.getGiorno6().equals("sab") || festivita.contains(LocalDate.of(anno, mese, 6))) {
+	    		festivitaColonna(TableColumn06);
+	    	}
+	    	if (giorni.getGiorno7().equals("dom") || giorni.getGiorno7().equals("sab") || festivita.contains(LocalDate.of(anno, mese, 7))) {
+	    		festivitaColonna(TableColumn07);
+	    	}
+	    	if (giorni.getGiorno8().equals("dom") || giorni.getGiorno8().equals("sab") || festivita.contains(LocalDate.of(anno, mese, 8))) {
+	    		festivitaColonna(TableColumn08);
+	    	}
+	    	if (giorni.getGiorno9().equals("dom") || giorni.getGiorno9().equals("sab") || festivita.contains(LocalDate.of(anno, mese, 9))) {
+	    		festivitaColonna(TableColumn09);
+	    	}
+	    	if (giorni.getGiorno10().equals("dom") || giorni.getGiorno10().equals("sab") || festivita.contains(LocalDate.of(anno, mese, 10))) {
+	    		festivitaColonna(TableColumn10);
+	    	}
+	    	if (giorni.getGiorno11().equals("dom") || giorni.getGiorno11().equals("sab") || festivita.contains(LocalDate.of(anno, mese, 11))) {
+	    		festivitaColonna(TableColumn11);
+	    	}
+	    	if (giorni.getGiorno12().equals("dom") || giorni.getGiorno12().equals("sab") || festivita.contains(LocalDate.of(anno, mese, 12))) {
+	    		festivitaColonna(TableColumn12);
+	    	}
+	    	if (giorni.getGiorno13().equals("dom") || giorni.getGiorno13().equals("sab") || festivita.contains(LocalDate.of(anno, mese, 13))) {
+	    		festivitaColonna(TableColumn13);
+	    	}
+	    	if (giorni.getGiorno14().equals("dom") || giorni.getGiorno14().equals("sab") || festivita.contains(LocalDate.of(anno, mese, 14))) {
+	    		festivitaColonna(TableColumn14);
+	    	}
+	    	if (giorni.getGiorno15().equals("dom") || giorni.getGiorno15().equals("sab") || festivita.contains(LocalDate.of(anno, mese, 15))) {
+	    		festivitaColonna(TableColumn15);
+	    	}
+	    	if (giorni.getGiorno16().equals("dom") || giorni.getGiorno16().equals("sab") || festivita.contains(LocalDate.of(anno, mese, 16))) {
+	    		festivitaColonna(TableColumn16);
+	    	}
+	    	if (giorni.getGiorno17().equals("dom") || giorni.getGiorno17().equals("sab") || festivita.contains(LocalDate.of(anno, mese, 17))) {
+	    		festivitaColonna(TableColumn17);
+	    	}
+	    	if (giorni.getGiorno18().equals("dom") || giorni.getGiorno18().equals("sab") || festivita.contains(LocalDate.of(anno, mese, 18))) {
+	    		festivitaColonna(TableColumn18);
+	    	}
+	    	if (giorni.getGiorno19().equals("dom") || giorni.getGiorno19().equals("sab") || festivita.contains(LocalDate.of(anno, mese, 19))) {
+	    		festivitaColonna(TableColumn19);
+	    	}
+	    	if (giorni.getGiorno20().equals("dom") || giorni.getGiorno20().equals("sab") || festivita.contains(LocalDate.of(anno, mese, 20))) {
+	    		festivitaColonna(TableColumn20);
+	    	}
+	    	if (giorni.getGiorno21().equals("dom") || giorni.getGiorno21().equals("sab") || festivita.contains(LocalDate.of(anno, mese, 21))) {
+	    		festivitaColonna(TableColumn21);
+	    	}
+	    	if (giorni.getGiorno22().equals("dom") || giorni.getGiorno22().equals("sab") || festivita.contains(LocalDate.of(anno, mese, 22))) {
+	    		festivitaColonna(TableColumn22);
+	    	}
+	    	if (giorni.getGiorno23().equals("dom") || giorni.getGiorno23().equals("sab") || festivita.contains(LocalDate.of(anno, mese, 23))) {
+	    		festivitaColonna(TableColumn23);
+	    	}
+	    	if (giorni.getGiorno24().equals("dom") || giorni.getGiorno24().equals("sab") || festivita.contains(LocalDate.of(anno, mese, 24))) {
+	    		festivitaColonna(TableColumn24);
+	    	}
+	    	if (giorni.getGiorno25().equals("dom") || giorni.getGiorno25().equals("sab") || festivita.contains(LocalDate.of(anno, mese, 25))) {
+	    		festivitaColonna(TableColumn25);
+	    	}
+	    	if (giorni.getGiorno26().equals("dom") || giorni.getGiorno26().equals("sab") || festivita.contains(LocalDate.of(anno, mese, 26))) {
+	    		festivitaColonna(TableColumn26);
+	    	}
+	    	if (giorni.getGiorno27().equals("dom") || giorni.getGiorno27().equals("sab") || festivita.contains(LocalDate.of(anno, mese, 27))) {
+	    		festivitaColonna(TableColumn27);
+	    	}
+	    	if (giorni.getGiorno28().equals("dom") || giorni.getGiorno28().equals("sab") || festivita.contains(LocalDate.of(anno, mese, 28))) {
+	    		festivitaColonna(TableColumn28);
+	    	}
+	    	if (giorni.getGiorno29() != null) {
+	    		if (giorni.getGiorno29().equals("dom") || giorni.getGiorno29().equals("sab") || festivita.contains(LocalDate.of(anno, mese, 29))) {
+	    			festivitaColonna(TableColumn29);
+	    		}
+	    	}
+	    	if (giorni.getGiorno30() != null) {
+		    	if (giorni.getGiorno30().equals("dom") || giorni.getGiorno30().equals("sab") || festivita.contains(LocalDate.of(anno, mese, 30))) {
+		    		festivitaColonna(TableColumn30);
+		    	}
+	    	}
+	    	if (giorni.getGiorno31() != null) {
+		    	if (giorni.getGiorno31().equals("dom") || giorni.getGiorno31().equals("sab") || festivita.contains(LocalDate.of(anno, mese, 31))) {
+		    		festivitaColonna(TableColumn31);
+		    	}
+	    	}
+	    
+	    	
+	    	rows.add(giorni);
 			rows.addAll(inf);
 	
 			
@@ -392,6 +572,39 @@ public class TurniInfermieriController {
     	}
 
     }
+    
+    void festivitaColonna(TableColumn<InfermiereTurni, String> col) {
+    	
+    	col.setCellFactory(column ->  {
+    	    return new TableCell<InfermiereTurni, String>() {
+    	                @Override
+    	                protected void updateItem(String item, boolean empty) {
+    	                    super.updateItem(item, empty);
+    	                     
+    	                        setStyle("-fx-background-color: yellow ; -fx-text-background-color: black ; ");
+    	                        setText(item);   
+    	                }
+    	            };
+    	});
+    	
+    }
+    
+    
+    void pulisciColonna(TableColumn<InfermiereTurni, String> col) {
+    	
+    	col.setCellFactory(column ->  {
+    	    return new TableCell<InfermiereTurni, String>() {
+    	                @Override
+    	                protected void updateItem(String item, boolean empty) {
+    	                    super.updateItem(item, empty);
+    	                    
+    	                    setStyle(null);
+    	                    setText(item);   
+    	                }
+    	            };
+    	});
+    	
+    }   
     
     @FXML
     void doSelezionaInfermiereStat(ActionEvent event) {
@@ -426,19 +639,17 @@ public class TurniInfermieriController {
     
     @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
-        assert Tab_Periodi_Ferie != null : "fx:id=\"Tab_Periodi_Ferie\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
-        assert TableViewTrimestri != null : "fx:id=\"TableViewTrimestri\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
-        assert TableColumnNome != null : "fx:id=\"TableColumnNome\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
-        assert TableColumnCognome != null : "fx:id=\"TableColumnCognome\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
-        assert TableColumnTrimestre != null : "fx:id=\"TableColumnTrimestre\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
-        assert TextAreaErrore != null : "fx:id=\"TextAreaErrore\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
         assert Tab_Richieste_Giorni_Ferie != null : "fx:id=\"Tab_Richieste_Giorni_Ferie\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
         assert ComboBoxInfermieri != null : "fx:id=\"ComboBoxInfermieri\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
         assert TextFieldFerie != null : "fx:id=\"TextFieldFerie\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
-        assert TableViewFerieBrevi != null : "fx:id=\"TableViewFerieBrevi\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
-        assert TableColumnFerieBrevi != null : "fx:id=\"TableColumnFerieBrevi\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
-        assert TableViewFerieLunghe != null : "fx:id=\"TableViewFerieLunghe\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
-        assert TableColumnFerieLunghe != null : "fx:id=\"TableColumnFerieLunghe\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert TableViewFerie1 != null : "fx:id=\"TableViewFerie1\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert TableColumnFerie1 != null : "fx:id=\"TableColumnFerie1\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert TableViewFerie2 != null : "fx:id=\"TableViewFerie2\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert TableColumnFerie2 != null : "fx:id=\"TableColumnFerie2\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert TableViewFerie3 != null : "fx:id=\"TableViewFerie3\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert TableColumnFerie3 != null : "fx:id=\"TableColumnFerie3\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert TableViewFerie4 != null : "fx:id=\"TableViewFerie4\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert TableColumnFerie4 != null : "fx:id=\"TableColumnFerie4\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
         assert Tab_Genera_Orario != null : "fx:id=\"Tab_Genera_Orario\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
         assert TextFieldOrario != null : "fx:id=\"TextFieldOrario\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
         assert TableViewOrarioGenerale != null : "fx:id=\"TableViewOrarioGenerale\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
@@ -485,57 +696,14 @@ public class TurniInfermieriController {
 		// popolazione combobox
 		ComboBoxInfermieri.getItems().addAll(model.getInfermieri());
 		ComboBoxInfermieriStat.getItems().addAll(model.getInfermieri());
-
 		
-		// popolazione tabella prima tab
-    	TableColumnTrimestre.setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter() {
-    		
-    		@Override
-    		public String toString(Integer value) {
-
-    			if (value == null)
-    				return "valore non valido";
-    			
-    			return super.toString(value);
-    		}
-    		
-    		@Override
-    		public Integer fromString(String value) {
-
-    			// controllo che il nuovo numero inserito sia un numero valido
-    			
-    			try {
-					Integer.parseInt(value);
-				} catch (Exception NumberFormatException) {
-					return null;
-				}
-    			
-    			if (Integer.parseInt(value) > 4 || Integer.parseInt(value) < 1)
-    				return null;
-    			
-    			return super.fromString(value);
-    		}
-    	}));
-		
-		TableColumnNome.setCellValueFactory(new PropertyValueFactory<Infermiere, String>("nome"));
-		TableColumnCognome.setCellValueFactory(new PropertyValueFactory<Infermiere, String>("cognome"));
-		TableColumnTrimestre.setCellValueFactory(new PropertyValueFactory<Infermiere, Integer>("trimestre_ferie_lunghe"));
-		
-		ObservableList<Infermiere> rows = FXCollections.observableArrayList();
-		rows.addAll(model.getInfermieri());
-
-		
-		TableViewTrimestri.setItems(rows);
-		
-		// tabelle ferie brevi e lunghe seconda tab
-    	TableColumnFerieBrevi.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateStringConverter() {
+		// tabelle ferie
+    	TableColumnFerie1.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateStringConverter() {
     		
     		@Override
     		public String toString(LocalDate value) {
-
-    			Infermiere infermiere = ComboBoxInfermieri.getValue();
     			
-    			if (!model.controllaFerieBrevi(value, infermiere.getTrimestre_ferie_lunghe()))
+    			if (!model.controllaFerie(value))
     				return "valore non valido";
     			
     			return super.toString(value);
@@ -558,14 +726,12 @@ public class TurniInfermieriController {
     			return super.fromString(value);
     		}
     	}));
-    	TableColumnFerieLunghe.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateStringConverter() {
+    	TableColumnFerie2.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateStringConverter() {
     		
     		@Override
     		public String toString(LocalDate value) {
-    			
-    			Infermiere infermiere = ComboBoxInfermieri.getValue();
-    			
-    			if (!model.controllaFerieLunghe(value, infermiere.getTrimestre_ferie_lunghe()))
+    			    			
+    			if (!model.controllaFerie(value))
     				return "valore non valido";
     			
     			return super.toString(value);
@@ -589,12 +755,71 @@ public class TurniInfermieriController {
     		}
     	}));
     	
-    	TableColumnFerieBrevi.setCellValueFactory(new PropertyValueFactory<Ferie, LocalDate>("data"));
-		TableColumnFerieLunghe.setCellValueFactory(new PropertyValueFactory<Ferie, LocalDate>("data"));
+    	TableColumnFerie3.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateStringConverter() {
+    		
+    		@Override
+    		public String toString(LocalDate value) {
+    			    			
+    			if (!model.controllaFerie(value))
+    				return "valore non valido";
+    			
+    			return super.toString(value);
+    		}
+    		
+    		@Override
+    		public LocalDate fromString(String value) {
+
+    			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+    			
+    			//controllo che la nuova data inserita sia valida
+    			
+    			try {
+        			LocalDate.parse(value, formatter);
+				} catch (Exception DateTimeParseException) {
+					return null;
+				}
+    			
+    			return super.fromString(value);
+    		}
+    	}));
+    	
+    	TableColumnFerie4.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateStringConverter() {
+    		
+    		@Override
+    		public String toString(LocalDate value) {
+    			    			
+    			if (!model.controllaFerie(value))
+    				return "valore non valido";
+    			
+    			return super.toString(value);
+    		}
+    		
+    		@Override
+    		public LocalDate fromString(String value) {
+
+    			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+    			
+    			//controllo che la nuova data inserita sia valida
+    			
+    			try {
+        			LocalDate.parse(value, formatter);
+				} catch (Exception DateTimeParseException) {
+					return null;
+				}
+    			
+    			return super.fromString(value);
+    		}
+    	}));
+    	
+    	// tabelle ferie
+    	TableColumnFerie1.setCellValueFactory(new PropertyValueFactory<Ferie, LocalDate>("data"));
+		TableColumnFerie2.setCellValueFactory(new PropertyValueFactory<Ferie, LocalDate>("data"));
+		TableColumnFerie3.setCellValueFactory(new PropertyValueFactory<Ferie, LocalDate>("data"));
+		TableColumnFerie4.setCellValueFactory(new PropertyValueFactory<Ferie, LocalDate>("data"));
 		
-		// tabella orario generale terza tab
-    
-		
+		// tabella generazione orario
 		TableColumnInfermiere.setCellValueFactory(new PropertyValueFactory<InfermiereTurni, Infermiere>("Infermiere"));
 		TableColumn01.setCellValueFactory(new PropertyValueFactory<InfermiereTurni, String>("giorno1"));
 		TableColumn02.setCellValueFactory(new PropertyValueFactory<InfermiereTurni, String>("giorno2"));
@@ -627,12 +852,6 @@ public class TurniInfermieriController {
 		TableColumn29.setCellValueFactory(new PropertyValueFactory<InfermiereTurni, String>("giorno29"));
 		TableColumn30.setCellValueFactory(new PropertyValueFactory<InfermiereTurni, String>("giorno30"));
 		TableColumn31.setCellValueFactory(new PropertyValueFactory<InfermiereTurni, String>("giorno31"));
-
-
-
-		 
-		
-
     	
 	}
 }

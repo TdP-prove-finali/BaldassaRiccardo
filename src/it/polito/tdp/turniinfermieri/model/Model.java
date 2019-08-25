@@ -6,10 +6,8 @@ import java.time.Month;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 
 import it.polito.tdp.turniinfermieri.db.TurniInfermieriDAO;
@@ -51,381 +49,76 @@ public class Model {
 		return infermieri;
 	}
 
-	// funzione che trova i giorni di ferie di un infermiere nel suo trimestre di
-	// ferie lunghe
-	public List<Ferie> getFerieLungheInfermiere(Infermiere infermiere) {
+	
+	public boolean controllaFerie(LocalDate value) {
 
-		List<Ferie> ferie_lunghe_infermiere = new ArrayList<Ferie>();
-
-		for (Ferie f : ferie) {
-			if (f.getId_infermiere() == infermiere.getId_infermiere()) {
-
-				if (infermiere.getTrimestre_ferie_lunghe() == 1 && (f.getData().getMonth().equals(Month.SEPTEMBER)
-						|| f.getData().getMonth().equals(Month.OCTOBER)
-						|| f.getData().getMonth().equals(Month.NOVEMBER)))
-					ferie_lunghe_infermiere.add(f);
-
-				else if (infermiere.getTrimestre_ferie_lunghe() == 2 && (f.getData().getMonth().equals(Month.DECEMBER)
-						|| f.getData().getMonth().equals(Month.JANUARY)
-						|| f.getData().getMonth().equals(Month.FEBRUARY)))
-					ferie_lunghe_infermiere.add(f);
-
-				else if (infermiere.getTrimestre_ferie_lunghe() == 3 && (f.getData().getMonth().equals(Month.MARCH)
-						|| f.getData().getMonth().equals(Month.APRIL) || f.getData().getMonth().equals(Month.MAY)))
-					ferie_lunghe_infermiere.add(f);
-
-				else if (infermiere.getTrimestre_ferie_lunghe() == 4 && (f.getData().getMonth().equals(Month.JUNE)
-						|| f.getData().getMonth().equals(Month.JULY) || f.getData().getMonth().equals(Month.AUGUST)))
-					ferie_lunghe_infermiere.add(f);
-			}
-		}
-		return ferie_lunghe_infermiere;
-	}
-
-	// funzione che trova i giorni di ferie di un infermiere al di fuori del suo
-	// trimestre di ferie lughe
-	public List<Ferie> getFerieBreviInfermiere(Infermiere infermiere) {
-
-		List<Ferie> ferie_brevi_infermiere = new ArrayList<Ferie>();
-		List<Ferie> ferie_lunghe_infermiere = this.getFerieLungheInfermiere(infermiere);
-
-		for (Ferie f : ferie) {
-			if (f.getId_infermiere() == infermiere.getId_infermiere()) {
-				ferie_brevi_infermiere.add(f);
-			}
-
-		}
-
-		ferie_brevi_infermiere.removeAll(ferie_lunghe_infermiere);
-
-		return ferie_brevi_infermiere;
-	}
-
-	public boolean trimestriAccettabili(List<Infermiere> infermieri) {
-
-		int cont_1 = 0;
-		int cont_2 = 0;
-		int cont_3 = 0;
-		int cont_4 = 0;
-
-		for (Infermiere i : infermieri) {
-			if (i.getTrimestre_ferie_lunghe() == 1)
-				cont_1++;
-			else if (i.getTrimestre_ferie_lunghe() == 2)
-				cont_2++;
-			else if (i.getTrimestre_ferie_lunghe() == 3)
-				cont_3++;
-			else if (i.getTrimestre_ferie_lunghe() == 4)
-				cont_4++;
-			else
-				return false;
-		}
-
-		if (cont_1 == 3 && cont_2 == 2 && cont_3 == 3 && cont_4 == 3)
-			return true;
-
-		return false;
-	}
-
-	public void modificaTrimestri() {
-
-		for (int i = 0; i < infermieri.size(); i++) {
-			dao.modificaInfermiere(infermieri.get(i));
-		}
-	}
-
-	// controllo se la modifica delle ferie nel periodo di vacanze lungo sono
-	// accettabili
-	public boolean ferieLungheAccettabili(Infermiere infermiere) {
-
-		List<Ferie> ferie = this.getFerieLungheInfermiere(infermiere);
-		int cont = 0;
-
-		Set<LocalDate> setDate = new HashSet<LocalDate>();
-
-		for (Ferie f : ferie) {
-			setDate.add(f.getData());
-		}
-
-		if (setDate.size() != ferie.size())
+		if (value == null)
 			return false;
 
-		if (infermiere.getTrimestre_ferie_lunghe() == 1) {
-
-			for (Ferie f : ferie) {
-
-				if (f.getData().getMonth().equals(Month.SEPTEMBER) || f.getData().getMonth().equals(Month.OCTOBER)
-						|| f.getData().getMonth().equals(Month.NOVEMBER))
-					cont++;
-
-			}
-
-		}
-
-		else if (infermiere.getTrimestre_ferie_lunghe() == 2) {
-
-			for (Ferie f : ferie) {
-
-				if (f.getData().getMonth().equals(Month.DECEMBER) || f.getData().getMonth().equals(Month.JANUARY)
-						|| f.getData().getMonth().equals(Month.FEBRUARY))
-					cont++;
-
-			}
-
-		}
-
-		else if (infermiere.getTrimestre_ferie_lunghe() == 3) {
-
-			for (Ferie f : ferie) {
-
-				if (f.getData().getMonth().equals(Month.MARCH) || f.getData().getMonth().equals(Month.APRIL)
-						|| f.getData().getMonth().equals(Month.MAY))
-					cont++;
-
-			}
-
-		}
-
-		else if (infermiere.getTrimestre_ferie_lunghe() == 4) {
-
-			for (Ferie f : ferie) {
-
-				if (f.getData().getMonth().equals(Month.JUNE) || f.getData().getMonth().equals(Month.JULY)
-						|| f.getData().getMonth().equals(Month.AUGUST))
-					cont++;
-
-			}
-
-		}
-
-		if (cont == 14)
-			return true;
-
-		return false;
-	}
-
-	// controllo se le modifiche delle vacanze nei mesi di vacanza brevi siano
-	// accettabili
-	public boolean ferieBreviAccettabili(Infermiere infermiere) {
-
-		List<Ferie> ferie = this.getFerieBreviInfermiere(infermiere);
-		int cont1 = 0;
-		int cont2 = 0;
-		int cont3 = 0;
-		int cont4 = 0;
-		int cont5 = 0;
-		int cont6 = 0;
-		int cont7 = 0;
-		int cont8 = 0;
-		int cont9 = 0;
-
-		Set<LocalDate> setDate = new HashSet<LocalDate>();
-
-		for (Ferie f : ferie) {
-			setDate.add(f.getData());
-		}
-
-		if (setDate.size() != ferie.size())
+		if (!value.isAfter(inizio.minusDays(1)) || !value.isBefore(fine.plusDays(1)))
 			return false;
+		
+		return true;
+	}
+	
+	
+	public List<Ferie> getFerieInfermiere(Infermiere infermiere) {
 
-		if (infermiere.getTrimestre_ferie_lunghe() == 1) {
-
-			for (Ferie f : ferie) {
-
-				if (f.getData().getMonth().equals(Month.DECEMBER))
-					cont1++;
-				else if (f.getData().getMonth().equals(Month.JANUARY))
-					cont2++;
-				else if (f.getData().getMonth().equals(Month.FEBRUARY))
-					cont3++;
-				else if (f.getData().getMonth().equals(Month.MARCH))
-					cont4++;
-				else if (f.getData().getMonth().equals(Month.APRIL))
-					cont5++;
-				else if (f.getData().getMonth().equals(Month.MAY))
-					cont6++;
-				else if (f.getData().getMonth().equals(Month.JUNE))
-					cont7++;
-				else if (f.getData().getMonth().equals(Month.JULY))
-					cont8++;
-				else if (f.getData().getMonth().equals(Month.AUGUST))
-					cont9++;
-			}
-
-			if (cont1 != 2 || cont2 != 2 || cont3 != 2 || cont4 != 2 || cont5 != 2 || cont6 != 2 || cont7 != 2
-					|| cont8 != 2 || cont9 != 2)
-				return false;
-
-			return true;
+		List<Ferie> f =  new ArrayList<Ferie>();
+		
+		for (Ferie fe : ferie) {
+			if (fe.getId_infermiere() == infermiere.getId_infermiere())
+				f.add(fe);
 		}
-
-		else if (infermiere.getTrimestre_ferie_lunghe() == 2) {
-
-			for (Ferie f : ferie) {
-
-				if (f.getData().getMonth().equals(Month.SEPTEMBER))
-					cont1++;
-				else if (f.getData().getMonth().equals(Month.OCTOBER))
-					cont2++;
-				else if (f.getData().getMonth().equals(Month.NOVEMBER))
-					cont3++;
-				else if (f.getData().getMonth().equals(Month.MARCH))
-					cont4++;
-				else if (f.getData().getMonth().equals(Month.APRIL))
-					cont5++;
-				else if (f.getData().getMonth().equals(Month.MAY))
-					cont6++;
-				else if (f.getData().getMonth().equals(Month.JUNE))
-					cont7++;
-				else if (f.getData().getMonth().equals(Month.JULY))
-					cont8++;
-				else if (f.getData().getMonth().equals(Month.AUGUST))
-					cont9++;
-			}
-
-			if (cont1 != 2 || cont2 != 2 || cont3 != 2 || cont4 != 2 || cont5 != 2 || cont6 != 2 || cont7 != 2
-					|| cont8 != 2 || cont9 != 2)
-				return false;
-
-			return true;
-		}
-
-		else if (infermiere.getTrimestre_ferie_lunghe() == 3) {
-
-			for (Ferie f : ferie) {
-
-				if (f.getData().getMonth().equals(Month.DECEMBER))
-					cont1++;
-				else if (f.getData().getMonth().equals(Month.JANUARY))
-					cont2++;
-				else if (f.getData().getMonth().equals(Month.FEBRUARY))
-					cont3++;
-				else if (f.getData().getMonth().equals(Month.SEPTEMBER))
-					cont4++;
-				else if (f.getData().getMonth().equals(Month.OCTOBER))
-					cont5++;
-				else if (f.getData().getMonth().equals(Month.NOVEMBER))
-					cont6++;
-				else if (f.getData().getMonth().equals(Month.JUNE))
-					cont7++;
-				else if (f.getData().getMonth().equals(Month.JULY))
-					cont8++;
-				else if (f.getData().getMonth().equals(Month.AUGUST))
-					cont9++;
-			}
-
-			if (cont1 != 2 || cont2 != 2 || cont3 != 2 || cont4 != 2 || cont5 != 2 || cont6 != 2 || cont7 != 2
-					|| cont8 != 2 || cont9 != 2)
-				return false;
-
-			return true;
-		}
-
-		else if (infermiere.getTrimestre_ferie_lunghe() == 4) {
-
-			for (Ferie f : ferie) {
-
-				if (f.getData().getMonth().equals(Month.DECEMBER))
-					cont1++;
-				else if (f.getData().getMonth().equals(Month.JANUARY))
-					cont2++;
-				else if (f.getData().getMonth().equals(Month.FEBRUARY))
-					cont3++;
-				else if (f.getData().getMonth().equals(Month.MARCH))
-					cont4++;
-				else if (f.getData().getMonth().equals(Month.APRIL))
-					cont5++;
-				else if (f.getData().getMonth().equals(Month.MAY))
-					cont6++;
-				else if (f.getData().getMonth().equals(Month.SEPTEMBER))
-					cont7++;
-				else if (f.getData().getMonth().equals(Month.OCTOBER))
-					cont8++;
-				else if (f.getData().getMonth().equals(Month.NOVEMBER))
-					cont9++;
-			}
-
-			if (cont1 != 2 || cont2 != 2 || cont3 != 2 || cont4 != 2 || cont5 != 2 || cont6 != 2 || cont7 != 2
-					|| cont8 != 2 || cont9 != 2)
-				return false;
-
-			return true;
-		}
-
-		return false;
+		
+		
+		return f;
 	}
 
 	public void modificaFerie(Infermiere infermiere) {
 
-		List<Ferie> ferie = new ArrayList<Ferie>();
-		ferie.addAll(this.getFerieBreviInfermiere(infermiere));
-		ferie.addAll(this.getFerieLungheInfermiere(infermiere));
+		List<Ferie> f = new ArrayList<Ferie>();
+		//ferie.addAll(this.getFerieBreviInfermiere(infermiere));
+		//ferie.addAll(this.getFerieLungheInfermiere(infermiere));
 
-		for (int i = 0; i < ferie.size(); i++) {
-			dao.modificaFerieInfermiere(ferie.get(i));
+		for (int i = 0; i < f.size(); i++) {
+	//		dao.modificaFerieInfermiere(f.get(i));
 		}
 
 	}
-
-	// controllo se la nuova data inserita nelle ferie lunghe sia valida
-	public boolean controllaFerieLunghe(LocalDate value, int trimestre_ferie_lunghe) {
-
-		LocalDate inizio = LocalDate.of(2019, Month.AUGUST, 31);
-		LocalDate fine = LocalDate.of(2020, Month.SEPTEMBER, 1);
-
-		if (value == null)
-			return false;
-
-		if (!value.isAfter(inizio) || !value.isBefore(fine))
-			return false;
-
-		if (trimestre_ferie_lunghe != 1 && (value.getMonth().equals(Month.SEPTEMBER)
-				|| value.getMonth().equals(Month.OCTOBER) || value.getMonth().equals(Month.NOVEMBER)))
-			return false;
-
-		else if (trimestre_ferie_lunghe != 2 && (value.getMonth().equals(Month.DECEMBER)
-				|| value.getMonth().equals(Month.JANUARY) || value.getMonth().equals(Month.FEBRUARY)))
-			return false;
-
-		else if (trimestre_ferie_lunghe != 3 && (value.getMonth().equals(Month.MARCH)
-				|| value.getMonth().equals(Month.APRIL) || value.getMonth().equals(Month.MAY)))
-			return false;
-
-		else if (trimestre_ferie_lunghe != 4 && (value.getMonth().equals(Month.JUNE)
-				|| value.getMonth().equals(Month.JULY) || value.getMonth().equals(Month.AUGUST)))
-			return false;
-
-		return true;
+	
+	public List<LocalDate> controlloFerieDuplicate(Infermiere infermiere) {
+		List<LocalDate> giorni = new ArrayList<LocalDate>();
+		int cont = 0 ;
+		
+		for (Ferie f1 : getFerieInfermiere(infermiere)) {
+			cont = 0;
+			for (Ferie f2 : getFerieInfermiere(infermiere)) {
+				if (f1.getData().isEqual(f2.getData()))
+					cont ++;
+			}
+			if (cont > 1)
+				if (!giorni.contains(f1.getData()))
+					giorni.add(f1.getData());
+		}	
+		return giorni;
 	}
+	
+	public List<LocalDate> controlloFerieMax() {
 
-	public boolean controllaFerieBrevi(LocalDate value, int trimestre_ferie_lunghe) {
-
-		LocalDate inizio = LocalDate.of(2019, Month.AUGUST, 31);
-		LocalDate fine = LocalDate.of(2020, Month.SEPTEMBER, 1);
-
-		if (value == null)
-			return false;
-
-		if (!value.isAfter(inizio) || !value.isBefore(fine))
-			return false;
-
-		if (trimestre_ferie_lunghe == 1 && (value.getMonth().equals(Month.SEPTEMBER)
-				|| value.getMonth().equals(Month.OCTOBER) || value.getMonth().equals(Month.NOVEMBER)))
-			return false;
-
-		else if (trimestre_ferie_lunghe == 2 && (value.getMonth().equals(Month.DECEMBER)
-				|| value.getMonth().equals(Month.JANUARY) || value.getMonth().equals(Month.FEBRUARY)))
-			return false;
-
-		else if (trimestre_ferie_lunghe == 3 && (value.getMonth().equals(Month.MARCH)
-				|| value.getMonth().equals(Month.APRIL) || value.getMonth().equals(Month.MAY)))
-			return false;
-
-		else if (trimestre_ferie_lunghe == 4 && (value.getMonth().equals(Month.JUNE)
-				|| value.getMonth().equals(Month.JULY) || value.getMonth().equals(Month.AUGUST)))
-			return false;
-
-		return true;
+		List<LocalDate> giorni = new ArrayList<LocalDate>();		
+		int cont = 0 ;
+		
+		for (Ferie f1 : ferie) {
+			cont = 0;
+			for (Ferie f2 : ferie) {
+				if (f1.getData().isEqual(f2.getData()))
+					cont ++;
+			}
+			if (cont > 2)
+				giorni.add(f1.getData());
+		}
+		return giorni;	
 	}
 
 	public Map<LocalDate, Map<Infermiere, String>> generaOrario() {
@@ -895,5 +588,7 @@ public class Model {
 
 		return stat;
 	}
+
+
 	
 }
