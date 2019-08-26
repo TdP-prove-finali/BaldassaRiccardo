@@ -1,12 +1,24 @@
 package it.polito.tdp.turniinfermieri.model;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -71,20 +83,16 @@ public class Model {
 				f.add(fe);
 		}
 		
-		
+		Collections.sort(f);
 		return f;
 	}
 
 	public void modificaFerie(Infermiere infermiere) {
-
-		List<Ferie> f = new ArrayList<Ferie>();
-		//ferie.addAll(this.getFerieBreviInfermiere(infermiere));
-		//ferie.addAll(this.getFerieLungheInfermiere(infermiere));
-
-		for (int i = 0; i < f.size(); i++) {
-	//		dao.modificaFerieInfermiere(f.get(i));
+		
+		for (Ferie f : ferie) {
+			if (f.getId_infermiere() == infermiere.getId_infermiere())
+				dao.modificaFerieInfermiere(f);
 		}
-
 	}
 	
 	public List<LocalDate> controlloFerieDuplicate(Infermiere infermiere) {
@@ -116,7 +124,8 @@ public class Model {
 					cont ++;
 			}
 			if (cont > 2)
-				giorni.add(f1.getData());
+				if (!giorni.contains(f1.getData()))
+					giorni.add(f1.getData());
 		}
 		return giorni;	
 	}
@@ -589,6 +598,78 @@ public class Model {
 		return stat;
 	}
 
+	public void salvaOrario(){
+		
+		PrintWriter writer = null;
+		try {
+			writer = new PrintWriter("OrarioInfermieri.txt", "UTF-8");
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		writer.println("ORARIO INFERMIERI");
+		writer.println("");
 
+		LocalDate d = inizio;
+		LocalDate d2 = inizio;
+		
+		for (int i = 9 ; i < 13 ; i++) {
+			
+				Month mese = Month.of(i);
+			
+			writer.print(String.format("%12s", mese.getDisplayName(TextStyle.FULL, Locale.ITALY).toUpperCase()) + " " + d.getYear());
+			while (d.getMonth().equals(mese)) {
+				writer.print("\t" + d.getDayOfMonth());
+				d = d.plusDays(1);
+			}
+			writer.println("");
+			
+			writer.print("\t\t");
+			while (d2.getMonth().equals(mese)) {
+				writer.print("\t" + d2.getDayOfWeek().getDisplayName(TextStyle.SHORT,Locale.ITALY));
+				d2 = d2.plusDays(1);
+			}			
+			writer.println("");
+			
+			for (Infermiere inf : infermieri) {
+	    		writer.println(this.turniInfermiere(inf, mese).toString().replace("null", ""));
+	    	}
+			writer.println("");
+			writer.println("");
+		}
+		
+		for (int i = 1 ; i < 9 ; i++) {
+			
+			Month mese = Month.of(i);
+		
+		writer.print(String.format("%12s", mese.getDisplayName(TextStyle.FULL, Locale.ITALY).toUpperCase()) + " " + d.getYear());
+		while (d.getMonth().equals(mese)) {
+			writer.print("\t" + d.getDayOfMonth());
+			d = d.plusDays(1);
+		}
+		writer.println("");
+		
+		writer.print("\t\t");
+		while (d2.getMonth().equals(mese)) {
+			writer.print("\t" + d2.getDayOfWeek().getDisplayName(TextStyle.SHORT,Locale.ITALY));
+			d2 = d2.plusDays(1);
+		}
+		
+		writer.println("");		
+		for (Infermiere inf : infermieri) {
+    		writer.println(this.turniInfermiere(inf, mese).toString().replace("null", ""));
+    	}
+		writer.println("");
+		writer.println("");
+	}
+		
+
+		writer.close();
+		
+	}
 	
 }

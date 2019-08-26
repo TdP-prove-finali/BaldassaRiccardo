@@ -24,6 +24,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.PieChart;
+import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableCell;
@@ -37,6 +38,9 @@ import javafx.util.converter.LocalDateStringConverter;
 public class TurniInfermieriController {
 	
 	private Model model;
+	
+    @FXML // fx:id="ButtonSalvaOrario"
+    private Button ButtonSalvaOrario; // Value injected by FXMLLoader
 
     @FXML // ResourceBundle that was given to the FXMLLoader
     private ResourceBundle resources;
@@ -210,19 +214,33 @@ public class TurniInfermieriController {
     		List<LocalDate> ferieMax = model.controlloFerieMax();
     		
     		if (ferieDuplicate.size() != 0 && ferieMax.size() != 0) {
-    			TextFieldFerie.setText("Sono stati indicati più volte i giorni: " + ferieDuplicate + " ; Già altri due infermieri hanno indicato i giorni: " + ferieMax);
+    			if (ferieDuplicate.size() == 1 && ferieMax.size() == 1)
+    				TextFieldFerie.setText("È stato indicato più volte il giorno: " + ferieDuplicate + " ; Già altri due infermieri hanno indicato il giorno: " + ferieMax);
+    			else if (ferieDuplicate.size() == 1 && ferieMax.size() != 1)
+        			TextFieldFerie.setText("È stato indicato più volte il giorno: " + ferieDuplicate + " ; Già altri due infermieri hanno indicato i giorni: " + ferieMax);
+    			else if (ferieDuplicate.size() != 1 && ferieMax.size() == 1)
+        			TextFieldFerie.setText("Sono stati indicati più volte i giorni: " + ferieDuplicate + " ; Già altri due infermieri hanno indicato il giorno: " + ferieMax);
+    			else 
+    				TextFieldFerie.setText("Sono stati indicati più volte i giorni: " + ferieDuplicate + " ; Già altri due infermieri hanno indicato i giorni: " + ferieMax);
     		}
     		else if (ferieDuplicate.size() != 0) {
-    			TextFieldFerie.setText("Sono stati indicati più volte i giorni: " + ferieDuplicate);
+    			if (ferieDuplicate.size() == 1)
+    				TextFieldFerie.setText("È stato indicato più volte il giorno: " + ferieDuplicate);
+    			else
+    				TextFieldFerie.setText("Sono stati indicati più volte i giorni: " + ferieDuplicate);
     		}
     		else if (ferieMax.size() != 0) {
-    			TextFieldFerie.setText("Già altri due infermieri hanno indicato i giorni: " + ferieMax);
+    			if (ferieMax.size() == 1)
+        			TextFieldFerie.setText("Già altri due infermieri hanno indicato il giorno: " + ferieMax);
+    			else
+    				TextFieldFerie.setText("Già altri due infermieri hanno indicato i giorni: " + ferieMax);
     		}
     		else if (ferieDuplicate.size() == 0 && ferieMax.size() == 0) {
     			TextFieldFerie.setText("ferie accettate");
     			Tab_Genera_Orario.setDisable(false);
     			model.modificaFerie(infermiere);
     	    	ComboBoxInfermieri.setDisable(false);
+    	    	this.doSelezionaInfermiere(event);
     		}
     	}
     	else
@@ -241,7 +259,9 @@ public class TurniInfermieriController {
     	Ferie ferie = ferieCellEditEvent.getTableView().getSelectionModel().getSelectedItem();
     	LocalDate newValue = ferieCellEditEvent.getNewValue();
     	
+    	if (model.controllaFerie(newValue)) {
     		ferie.setData(newValue);
+    	}
     }
 
     @FXML
@@ -287,17 +307,19 @@ public class TurniInfermieriController {
     	TableViewOrarioGenerale.getItems().clear();
     	
     	ComboBoxMesi.setValue(null);
-    	TextFieldOrario.setText("Premere sul bottone per generare l'orario!");
+    	TextFieldOrario.setText("Premere sul bottone per generare l'orario");
     	
     	 Map<LocalDate, Map<Infermiere, String>> soluzione = model.generaOrario();
     	 
     	 if (soluzione == null) {
     	    	TextFieldOrario.setText("Creazione orario non riuscita, modificare ferie e riprovare");
     	    	Tab_Statistiche_Infermieri.setDisable(true);
+     	    	ButtonSalvaOrario.setDisable(true);
     	 }
     	 
     	 else {
  	    	Tab_Statistiche_Infermieri.setDisable(false);
+ 	    	ButtonSalvaOrario.setDisable(false);
     	
 	    	TextFieldOrario.setText("Orario generato! Seleziona mese da visualizzare");
 	    	
@@ -633,8 +655,12 @@ public class TurniInfermieriController {
 
     		
     	}
-    	
-
+    }
+    
+    @FXML
+    void doSalvaOrario(ActionEvent event) {   	
+    	model.salvaOrario();  	
+    	TextFieldOrario.setText("Orario salvato nel file 'OrarioInfermieri.txt'");
     }
     
     @FXML // This method is called by the FXMLLoader when initialization is complete
@@ -779,6 +805,7 @@ public class TurniInfermieriController {
 				} catch (Exception DateTimeParseException) {
 					return null;
 				}
+    			
     			
     			return super.fromString(value);
     		}

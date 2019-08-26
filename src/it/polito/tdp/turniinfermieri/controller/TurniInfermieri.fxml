@@ -53,7 +53,7 @@
                               </HBox>
                               <HBox alignment="CENTER" prefHeight="25.0" prefWidth="232.0">
                                  <children>
-                                    <TextField fx:id="TextFieldFerie" editable="false" prefHeight="25.0" prefWidth="1014.0" />
+                                    <TextField fx:id="TextFieldFerie" editable="false" prefHeight="25.0" prefWidth="1014.0" text="Ferie dal 01/09/2019 al 31/08/2020, si può scegliere qualsiasi giorno (formato: dd/mm/aaaa) ma sono accettate massimo due richieste di due infermieri diversi per lo stesso giorno" />
                                  </children>
                                  <VBox.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -108,12 +108,13 @@
                                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                        </HBox.margin>
                                     </Button>
-                                    <TextField fx:id="TextFieldOrario" editable="false" prefHeight="25.0" prefWidth="295.0" text="Premere sul bottone per generare l'orario!" />
+                                    <TextField fx:id="TextFieldOrario" editable="false" prefHeight="25.0" prefWidth="295.0" text="Premere sul bottone per generare l'orario" />
                                     <ComboBox fx:id="ComboBoxMesi" onAction="#doSelezionaMese" prefWidth="150.0">
                                        <HBox.margin>
                                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                        </HBox.margin>
                                     </ComboBox>
+                                    <Button fx:id="ButtonSalvaOrario" disable="true" mnemonicParsing="false" onAction="#doSalvaOrario" text="Salva Orario" />
                                  </children>
                                  <VBox.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

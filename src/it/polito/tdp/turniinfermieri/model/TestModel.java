@@ -11,7 +11,10 @@ public class TestModel {
 	public static void main(String[] args) {
 
 		Model model = new Model();
+		
 		Map<LocalDate, Map<Infermiere, String>> prova = model.generaOrario();
+		model.salvaOrario();
+
 	//	List<Infermiere> inf = model.getInfermieri();
 		//System.out.println(prova);
 		
@@ -23,9 +26,9 @@ public class TestModel {
 	//		System.out.println(si);
 	//	}
 		
-		Infermiere inf = model.getInfermieri().get(0);
+	//	Infermiere inf = model.getInfermieri().get(0);
 		
-		System.out.println(model.turniInfermiere(inf, Month.SEPTEMBER));
+	//	System.out.println(model.turniInfermiere(inf, Month.SEPTEMBER));
 		
 	//	LocalDate data = LocalDate.of(2019, Month.SEPTEMBER, 1);
 		//LocalDate fine = LocalDate.of(2020, Month.SEPTEMBER, 1);

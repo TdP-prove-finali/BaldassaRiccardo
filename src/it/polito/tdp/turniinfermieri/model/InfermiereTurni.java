@@ -269,7 +269,7 @@ public class InfermiereTurni {
 	@Override
 	public String toString() {
 		return String.format(
-				"InfermiereTurni [infermiere=%s, giorno1=%s, giorno2=%s, giorno3=%s, giorno4=%s, giorno5=%s, giorno6=%s, giorno7=%s, giorno8=%s, giorno9=%s, giorno10=%s, giorno11=%s, giorno12=%s, giorno13=%s, giorno14=%s, giorno15=%s, giorno16=%s, giorno17=%s, giorno18=%s, giorno19=%s, giorno20=%s, giorno21=%s, giorno22=%s, giorno23=%s, giorno24=%s, giorno25=%s, giorno26=%s, giorno27=%s, giorno28=%s, giorno29=%s, giorno30=%s, giorno31=%s]",
+				"%s\t\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s",
 				infermiere, giorno1, giorno2, giorno3, giorno4, giorno5, giorno6, giorno7, giorno8, giorno9, giorno10,
 				giorno11, giorno12, giorno13, giorno14, giorno15, giorno16, giorno17, giorno18, giorno19, giorno20,
 				giorno21, giorno22, giorno23, giorno24, giorno25, giorno26, giorno27, giorno28, giorno29, giorno30,

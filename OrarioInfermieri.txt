@@ -1,0 +1,182 @@
+ORARIO INFERMIERI
+
+   SETTEMBRE 2019	1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	20	21	22	23	24	25	26	27	28	29	30
+			dom	lun	mar	mer	gio	ven	sab	dom	lun	mar	mer	gio	ven	sab	dom	lun	mar	mer	gio	ven	sab	dom	lun	mar	mer	gio	ven	sab	dom	lun
+Mario Rossi		F	F	F	F	F	R	R	R	M	P	R	M	N	R	M	N	R	M	R	M	P	R	M	R	M	M	P	R	M	N	
+Martina Saro		M	P	R	M	N	R	M	F	F	F	F	F	R	R	R	R	M	P	R	M	N	R	P	R	M	P	N	R	P	R	
+Gianni Allegro		M	N	R	P	R	M	P	R	M	N	R	P	R	M	M	R	M	P	R	M	R	M	P	R	F	F	F	F	F	R	
+Luca Marrone		M	R	M	P	R	M	P	R	M	R	M	P	R	M	P	R	M	N	R	P	R	M	N	F	R	F	R	M	P	R	
+Paola Montalba		P	R	M	N	R	M	N	R	P	R	M	N	F	R	P	R	F	R	M	P	R	M	R	M	M	P	R	M	N	R	
+Cristina Pace		P	R	M	R	M	F	R	M	P	R	M	R	M	M	N	R	P	R	M	N	R	P	R	M	F	N	R	M	R	M	
+Mauro Salino		N	R	P	R	M	P	R	M	N	R	P	F	R	P	R	M	P	R	M	R	M	P	R	M	P	R	M	P	R	F	
+Laura Bartoli		R	M	P	R	M	P	R	M	R	M	P	R	M	P	R	M	N	F	R	R	M	N	R	F	P	R	M	P	R	M	
+Benedetta Sacco		R	M	N	R	P	N	R	P	R	M	N	R	M	N	R	M	R	M	P	R	F	R	M	P	N	R	F	N	R	M	
+Daniele Giari		R	M	R	M	P	R	M	P	R	M	R	M	P	R	F	P	R	F	P	R	M	R	M	P	R	M	M	R	M	P	
+Stefania Allec		R	P	R	M	F	R	M	N	R	P	R	M	P	R	M	P	R	M	N	R	P	F	R	N	R	M	P	R	M	P	
+
+
+     OTTOBRE 2019	1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	20	21	22	23	24	25	26	27	28	29	30	31
+			mar	mer	gio	ven	sab	dom	lun	mar	mer	gio	ven	sab	dom	lun	mar	mer	gio	ven	sab	dom	lun	mar	mer	gio	ven	sab	dom	lun	mar	mer	gio
+Mario Rossi		R	M	R	M	M	N	R	M	N	R	M	R	M	F	F	F	F	F	R	R	R	M	N	R	P	R	M	P	R	M	R
+Martina Saro		M	P	R	M	P	R	M	P	R	M	P	R	M	N	R	P	R	M	M	F	F	F	F	F	R	R	R	N	R	P	R
+Gianni Allegro		R	P	F	F	F	F	F	R	R	R	P	R	M	R	M	P	R	M	P	R	M	M	R	M	P	R	M	R	M	P	R
+Luca Marrone		M	N	R	M	P	R	M	P	R	M	N	R	P	R	M	N	R	M	P	R	M	P	R	M	N	R	F	F	R	N	R
+Paola Montalba		M	R	M	P	N	R	M	N	R	M	R	M	P	R	M	R	M	F	N	R	F	P	R	M	R	M	P	R	M	R	M
+Cristina Pace		P	R	M	F	R	F	P	R	M	P	R	M	N	R	P	R	M	P	R	M	M	N	R	P	R	M	P	R	M	R	M
+Mauro Salino		P	R	M	P	R	M	F	R	M	P	R	M	R	M	P	R	F	P	R	M	P	R	M	P	R	M	N	R	P	R	M
+Laura Bartoli		N	R	F	N	R	M	P	R	F	N	R	P	R	M	N	R	M	N	R	M	P	R	M	N	R	P	R	M	P	R	P
+Benedetta Sacco		R	M	P	R	F	M	N	R	M	R	F	P	R	M	R	M	P	R	M	P	N	R	M	R	M	P	R	M	N	R	P
+Daniele Giari		F	R	P	R	M	P	R	M	P	R	M	N	R	P	R	M	P	R	F	P	R	M	P	R	M	N	R	M	R	M	N
+Stefania Allec		R	M	N	R	M	P	R	M	P	R	M	R	F	P	R	M	N	R	M	N	R	F	P	R	M	R	M	P	R	M	R
+
+
+    NOVEMBRE 2019	1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	20	21	22	23	24	25	26	27	28	29	30
+			ven	sab	dom	lun	mar	mer	gio	ven	sab	dom	lun	mar	mer	gio	ven	sab	dom	lun	mar	mer	gio	ven	sab	dom	lun	mar	mer	gio	ven	sab
+Mario Rossi		M	R	M	M	R	M	N	R	P	R	M	R	M	P	R	M	P	R	M	P	R	M	F	F	F	F	R	R	P	R	
+Martina Saro		M	R	M	P	R	M	R	M	P	R	M	R	F	F	F	F	R	R	M	P	R	M	M	R	M	P	R	M	N	R	
+Gianni Allegro		P	R	M	P	R	P	R	M	N	R	P	R	M	P	R	M	F	F	F	F	R	R	P	R	M	N	R	M	R	M	
+Luca Marrone		P	R	F	N	R	P	R	M	R	M	P	R	M	N	R	P	N	R	M	N	R	M	P	R	M	R	M	M	F	R	
+Paola Montalba		N	R	F	R	M	N	R	P	R	F	N	R	P	R	M	P	R	M	P	R	M	P	N	R	P	R	M	P	R	M	
+Cristina Pace		R	M	P	R	M	R	M	P	R	M	R	M	P	R	M	N	R	M	P	F	R	P	R	M	P	F	R	P	R	M	
+Mauro Salino		R	M	P	R	M	R	M	N	R	M	R	M	F	R	M	R	M	F	N	R	M	N	R	M	N	R	M	N	R	P	
+Laura Bartoli		R	M	N	R	P	R	M	F	R	P	R	M	N	R	P	R	M	M	R	M	M	F	R	M	R	M	P	R	M	P	
+Benedetta Sacco		R	P	R	F	P	R	P	R	M	P	R	P	R	M	P	F	R	P	R	M	P	R	M	P	R	M	P	R	M	N	
+Daniele Giari		R	P	R	M	N	F	R	R	M	N	R	P	R	M	N	R	M	P	F	R	P	R	M	P	R	M	N	R	M	R	
+Stefania Allec		M	N	R	M	R	M	P	R	M	R	M	N	R	M	R	M	P	N	R	M	N	F	R	N	R	P	R	F	P	R	
+
+
+    DICEMBRE 2019	1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	20	21	22	23	24	25	26	27	28	29	30	31
+			dom	lun	mar	mer	gio	ven	sab	dom	lun	mar	mer	gio	ven	sab	dom	lun	mar	mer	gio	ven	sab	dom	lun	mar	mer	gio	ven	sab	dom	lun	mar
+Mario Rossi		M	P	R	M	P	R	M	N	R	P	N	R	M	P	R	M	P	R	P	R	M	R	F	F	R	M	R	M	N	R	P
+Martina Saro		P	N	R	P	N	R	P	R	M	F	R	M	M	P	R	F	N	R	P	R	P	R	M	P	R	M	R	M	R	M	P
+Gianni Allegro		F	R	M	P	R	M	P	R	M	P	F	R	M	N	R	M	R	M	N	R	P	R	M	P	R	P	R	M	R	M	N
+Luca Marrone		P	R	M	F	F	F	F	F	R	R	R	M	P	R	M	P	R	M	R	M	N	R	P	N	R	P	R	P	R	M	R
+Paola Montalba		N	R	M	N	R	M	N	R	M	F	F	F	F	F	R	R	R	M	R	M	R	M	P	R	M	N	R	P	R	P	R
+Cristina Pace		F	R	P	R	M	M	R	M	P	N	R	F	P	R	M	P	R	P	R	M	R	M	N	R	M	R	M	N	R	P	R
+Mauro Salino		R	M	P	F	R	P	R	M	P	R	M	M	N	R	M	N	R	P	R	P	R	M	R	M	M	R	M	R	M	F	R
+Laura Bartoli		R	M	N	R	M	P	R	F	N	R	M	P	R	M	P	R	M	N	R	P	R	P	R	F	P	R	M	R	M	N	R
+Benedetta Sacco		R	M	R	M	F	N	R	M	R	M	M	P	R	F	P	R	M	R	M	N	R	P	R	M	P	R	P	R	M	R	M
+Daniele Giari		M	F	R	M	M	R	M	P	R	M	P	N	R	M	N	R	M	R	M	R	M	N	F	R	N	R	P	R	P	R	M
+Stefania Allec		M	P	F	R	P	R	M	P	R	M	P	R	F	M	R	M	P	R	M	R	M	R	M	M	R	M	N	R	P	R	M
+
+
+     GENNAIO 2020	1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	20	21	22	23	24	25	26	27	28	29	30	31
+			mer	gio	ven	sab	dom	lun	mar	mer	gio	ven	sab	dom	lun	mar	mer	gio	ven	sab	dom	lun	mar	mer	gio	ven	sab	dom	lun	mar	mer	gio	ven
+Mario Rossi		R	M	R	M	P	R	M	N	R	M	P	R	M	N	R	M	R	M	P	R	M	N	R	M	F	F	R	N	R	P	R
+Martina Saro		R	P	R	M	N	R	P	R	M	F	N	R	M	R	M	P	R	M	F	R	M	R	M	P	N	R	P	R	M	N	R
+Gianni Allegro		R	P	R	M	R	M	F	R	M	P	R	M	P	F	R	P	R	P	N	R	P	R	M	P	R	M	P	R	M	R	M
+Luca Marrone		M	N	R	P	R	M	P	R	M	P	R	M	P	R	M	N	R	F	F	F	F	F	R	R	R	M	N	R	M	R	M
+Paola Montalba		M	R	M	P	F	F	F	F	F	R	R	R	N	R	M	R	M	P	R	M	P	R	M	N	R	M	R	M	P	R	M
+Cristina Pace		M	R	M	N	R	M	N	R	F	N	R	M	R	M	P	R	M	F	R	M	N	R	P	R	M	P	R	M	P	R	P
+Mauro Salino		P	F	R	R	M	P	R	M	P	R	M	P	R	M	P	R	M	N	R	M	R	M	P	R	M	P	F	R	N	R	P
+Laura Bartoli		P	R	M	R	M	P	R	M	P	R	M	F	R	M	N	R	P	R	M	P	R	M	F	R	M	N	R	M	R	M	N
+Benedetta Sacco		N	R	P	R	M	N	R	M	N	F	R	P	R	P	R	M	P	R	M	P	R	M	N	R	P	R	M	F	R	M	R
+Daniele Giari		R	M	P	R	P	R	M	P	R	M	M	N	R	F	R	M	N	R	M	N	R	P	R	M	F	R	M	P	R	M	R
+Stefania Allec		R	M	N	F	R	R	M	P	R	M	P	R	M	P	R	F	R	M	P	R	M	P	R	M	P	R	M	P	R	P	R
+
+
+    FEBBRAIO 2020	1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	20	21	22	23	24	25	26	27	28	29
+			sab	dom	lun	mar	mer	gio	ven	sab	dom	lun	mar	mer	gio	ven	sab	dom	lun	mar	mer	gio	ven	sab	dom	lun	mar	mer	gio	ven	sab
+Mario Rossi		P	R	M	F	R	M	R	M	P	R	M	N	R	P	R	M	R	M	P	N	R	M	P	R	M	N	R	F	R		
+Martina Saro		P	F	R	N	R	P	R	M	N	R	P	R	M	P	R	M	R	M	F	R	M	M	N	R	M	R	M	P	R		
+Gianni Allegro		N	R	M	R	M	P	R	P	R	M	P	R	M	N	R	P	R	M	P	R	M	F	R	M	F	R	M	N	R		
+Luca Marrone		R	M	P	R	M	N	F	F	F	F	R	R	R	R	M	P	R	P	N	R	M	P	R	M	P	R	M	R	M		
+Paola Montalba		R	M	P	R	M	R	M	P	R	M	N	R	M	R	M	N	F	F	F	F	R	R	R	M	P	R	P	R	M		
+Cristina Pace		R	M	N	R	P	R	M	N	R	M	R	M	P	F	R	R	M	P	R	M	P	P	R	P	N	R	P	R	F		
+Mauro Salino		R	P	R	M	P	R	M	R	M	P	F	R	P	R	M	R	M	N	R	F	P	N	R	P	R	M	N	R	M		
+Laura Bartoli		R	P	R	M	F	R	P	R	M	P	R	M	N	R	P	R	M	R	M	M	F	R	M	N	R	M	R	M	P		
+Benedetta Sacco		M	N	R	M	N	R	P	F	R	N	R	M	R	M	P	R	P	R	M	M	N	R	M	R	F	M	R	M	P		
+Daniele Giari		M	R	M	P	R	M	N	R	M	R	M	P	R	M	N	R	P	F	R	P	F	R	M	R	M	P	R	M	N		
+Stefania Allec		M	R	F	P	R	M	R	M	P	R	M	P	R	M	R	M	N	R	M	P	R	M	P	F	R	P	R	P	R		
+
+
+       MARZO 2020	1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	20	21	22	23	24	25	26	27	28	29	30	31
+			dom	lun	mar	mer	gio	ven	sab	dom	lun	mar	mer	gio	ven	sab	dom	lun	mar	mer	gio	ven	sab	dom	lun	mar	mer	gio	ven	sab	dom	lun	mar
+Mario Rossi		M	R	M	P	R	M	P	P	F	R	P	R	M	M	N	R	P	R	M	R	M	N	R	F	R	M	P	R	M	N	R
+Martina Saro		M	R	F	P	R	M	F	N	R	M	N	R	M	P	R	M	P	R	M	R	M	R	M	P	R	M	N	R	P	R	M
+Gianni Allegro		P	R	M	N	R	M	P	R	M	F	R	M	F	P	R	M	N	R	P	R	M	R	M	P	R	M	R	M	P	R	M
+Luca Marrone		P	R	M	R	M	P	F	R	M	P	F	R	M	N	R	M	R	M	P	R	P	R	M	N	R	P	R	M	N	R	M
+Paola Montalba		N	R	P	R	M	P	N	R	M	P	R	M	P	R	F	P	R	M	N	R	P	R	P	R	M	P	R	M	F	R	P
+Cristina Pace		R	M	P	R	M	N	R	M	P	F	F	F	F	F	R	R	R	M	R	M	N	R	P	R	M	N	R	P	R	M	P
+Mauro Salino		R	M	F	F	F	F	R	F	R	N	R	M	P	R	M	P	R	P	R	M	R	M	N	R	M	R	M	P	R	M	N
+Laura Bartoli		R	M	N	R	P	R	M	M	P	R	M	P	N	R	M	N	R	P	R	M	R	M	F	F	F	F	F	R	R	R	R
+Benedetta Sacco		R	P	R	M	P	R	M	F	N	R	M	P	R	M	M	R	M	F	R	P	R	M	R	M	P	R	M	N	R	M	R
+Daniele Giari		R	P	R	M	F	R	M	M	R	M	M	F	R	M	P	R	M	N	R	P	R	P	R	M	P	R	M	R	M	P	R
+Stefania Allec		M	N	R	M	N	F	R	P	R	M	P	N	R	F	P	R	M	R	M	N	R	P	R	M	N	R	P	R	M	P	R
+
+
+      APRILE 2020	1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	20	21	22	23	24	25	26	27	28	29	30
+			mer	gio	ven	sab	dom	lun	mar	mer	gio	ven	sab	dom	lun	mar	mer	gio	ven	sab	dom	lun	mar	mer	gio	ven	sab	dom	lun	mar	mer	gio
+Mario Rossi		P	R	M	N	R	M	P	R	M	F	R	M	R	M	P	R	M	N	R	M	N	R	P	R	M	F	R	M	R	M	
+Martina Saro		N	R	M	R	M	M	N	R	M	N	R	P	F	R	N	R	M	R	M	M	R	M	F	R	M	N	R	P	R	M	
+Gianni Allegro		R	M	P	R	M	P	R	M	P	R	M	P	R	M	F	R	P	R	M	F	R	M	N	R	P	R	M	P	R	M	
+Luca Marrone		R	M	P	R	M	P	R	M	P	R	M	N	R	M	F	R	P	R	F	P	R	M	R	M	P	R	M	N	R	P	
+Paola Montalba		R	M	N	F	R	N	R	M	N	R	M	R	M	P	R	M	N	R	M	P	R	P	R	M	N	R	M	R	M	F	
+Cristina Pace		R	F	R	M	F	F	F	F	R	R	P	R	M	P	R	M	R	M	P	N	R	P	R	M	R	M	P	R	M	P	
+Mauro Salino		R	P	R	M	P	R	M	P	R	M	P	R	M	N	R	M	R	M	P	R	M	N	R	P	F	F	F	F	F	R	
+Laura Bartoli		M	F	F	F	F	F	R	R	R	M	N	R	P	R	M	P	R	M	N	R	M	R	M	P	R	M	P	R	M	N	
+Benedetta Sacco		M	P	R	M	P	R	M	P	R	M	R	M	P	R	M	P	F	R	R	M	M	R	M	F	R	M	N	R	P	R	
+Daniele Giari		M	N	R	P	N	R	M	N	R	P	R	F	N	R	M	N	R	P	F	R	P	R	M	N	R	P	R	M	P	R	
+Stefania Allec		P	R	M	P	R	M	P	R	M	P	R	M	F	R	P	R	M	P	R	F	P	R	P	R	M	P	R	M	N	R	
+
+
+      MAGGIO 2020	1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	20	21	22	23	24	25	26	27	28	29	30	31
+			ven	sab	dom	lun	mar	mer	gio	ven	sab	dom	lun	mar	mer	gio	ven	sab	dom	lun	mar	mer	gio	ven	sab	dom	lun	mar	mer	gio	ven	sab	dom
+Mario Rossi		P	R	M	R	M	N	R	P	R	M	P	R	M	M	N	F	R	N	R	M	P	R	M	R	M	P	R	F	R	M	P
+Martina Saro		P	R	M	R	M	R	M	N	R	M	N	R	M	P	F	R	M	R	M	P	N	R	P	R	F	P	R	M	R	M	P
+Gianni Allegro		N	R	P	R	M	R	M	R	M	P	F	R	M	P	R	M	P	R	M	P	R	M	P	R	M	N	R	P	F	R	N
+Luca Marrone		R	M	P	R	P	R	M	R	M	F	R	M	P	N	R	M	P	R	M	N	R	M	N	R	M	R	M	P	F	R	R
+Paola Montalba		R	M	N	R	P	R	P	R	M	P	R	M	P	F	R	M	N	R	P	R	M	M	R	F	P	R	M	N	R	M	R
+Cristina Pace		R	M	R	M	N	R	P	R	P	N	R	M	N	R	M	P	F	F	F	F	R	R	R	M	P	R	M	R	M	P	R
+Mauro Salino		R	R	R	M	R	M	N	F	F	F	F	R	R	R	M	P	R	M	P	R	M	P	R	M	N	R	P	R	M	P	R
+Laura Bartoli		R	P	R	M	R	M	R	M	P	R	M	F	F	F	F	R	R	M	N	R	M	P	R	M	R	M	P	R	M	N	R
+Benedetta Sacco		M	P	R	P	R	M	R	M	N	R	M	P	F	R	M	N	R	M	F	R	P	N	R	P	R	M	N	R	P	R	M
+Daniele Giari		M	N	R	P	R	P	R	M	F	R	M	P	R	M	P	R	M	P	R	M	F	R	M	P	R	M	R	M	P	R	M
+Stefania Allec		M	R	M	N	R	P	R	P	R	M	P	N	R	M	P	R	M	P	R	M	F	R	M	N	F	R	R	M	N	R	M
+
+
+      GIUGNO 2020	1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	20	21	22	23	24	25	26	27	28	29	30
+			lun	mar	mer	gio	ven	sab	dom	lun	mar	mer	gio	ven	sab	dom	lun	mar	mer	gio	ven	sab	dom	lun	mar	mer	gio	ven	sab	dom	lun	mar
+Mario Rossi		R	F	P	R	M	R	M	P	R	P	R	M	M	N	R	M	N	R	M	P	R	M	R	F	P	R	M	N	R	P	
+Martina Saro		R	M	N	R	P	R	M	N	R	P	F	R	P	R	M	P	R	M	M	N	R	P	R	M	P	R	F	R	M	P	
+Gianni Allegro		R	M	R	M	P	R	M	R	M	N	R	M	P	R	M	P	F	R	M	R	M	P	R	M	N	R	M	R	M	F	
+Luca Marrone		M	P	R	M	N	R	P	R	M	R	M	M	N	R	M	N	F	R	P	R	M	N	R	M	R	M	P	R	M	F	
+Paola Montalba		M	P	R	M	R	M	P	R	M	R	F	P	R	M	P	R	M	M	F	R	M	R	M	P	R	M	P	R	P	N	
+Cristina Pace		M	N	R	P	R	M	N	R	P	R	M	P	R	M	P	R	M	M	P	R	F	R	M	P	R	F	N	R	P	R	
+Mauro Salino		P	R	M	P	R	M	R	M	P	R	M	N	R	M	N	R	M	P	N	R	P	F	R	F	R	M	R	M	N	R	
+Laura Bartoli		P	R	M	N	R	P	R	M	N	F	R	R	M	P	R	M	P	P	R	M	P	R	M	N	R	P	R	M	F	R	
+Benedetta Sacco		N	R	M	R	M	P	R	M	R	M	P	F	F	F	F	F	R	R	R	M	N	R	P	R	M	P	R	M	R	M	
+Daniele Giari		F	F	F	F	F	R	R	R	R	M	P	R	M	P	R	M	P	N	R	M	R	M	P	R	M	N	R	P	R	M	
+Stefania Allec		R	M	P	R	M	N	R	P	R	M	N	F	F	F	F	F	R	R	R	P	R	M	N	R	M	R	M	P	R	M	
+
+
+      LUGLIO 2020	1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	20	21	22	23	24	25	26	27	28	29	30	31
+			mer	gio	ven	sab	dom	lun	mar	mer	gio	ven	sab	dom	lun	mar	mer	gio	ven	sab	dom	lun	mar	mer	gio	ven	sab	dom	lun	mar	mer	gio	ven
+Mario Rossi		R	M	M	P	R	M	P	N	R	P	R	M	N	R	F	N	R	P	R	M	N	R	P	R	M	F	R	M	R	M	P
+Martina Saro		R	M	M	N	R	M	F	R	M	P	R	M	R	M	P	R	F	P	R	M	R	M	P	R	M	N	R	P	R	M	N
+Gianni Allegro		F	R	P	R	M	P	N	R	M	N	R	P	R	M	P	R	M	N	R	P	R	M	N	R	P	R	M	P	R	F	R
+Luca Marrone		F	R	P	R	M	P	R	M	M	R	M	P	R	M	N	R	M	R	M	P	R	M	R	M	P	R	M	N	R	F	R
+Paola Montalba		R	F	N	R	M	N	F	R	P	R	M	N	R	P	R	M	M	R	M	N	R	P	R	M	N	R	M	R	M	P	R
+Cristina Pace		M	M	R	F	P	R	M	M	P	R	M	R	M	P	R	F	P	R	M	R	M	P	R	M	R	M	P	R	M	P	R
+Mauro Salino		M	P	R	M	F	R	M	M	N	R	P	R	M	N	F	R	P	R	P	R	M	N	R	P	R	M	P	R	M	N	R
+Laura Bartoli		M	P	R	M	P	F	R	P	R	M	P	R	M	R	M	M	N	F	R	R	M	R	M	P	R	M	N	R	P	R	M
+Benedetta Sacco		P	N	R	M	N	R	M	P	R	M	N	R	P	R	M	M	R	M	P	F	F	F	F	F	R	R	R	R	P	R	M
+Daniele Giari		P	R	M	P	R	M	P	F	F	F	F	F	R	R	R	P	R	M	N	R	P	R	M	N	R	P	R	M	N	R	M
+Stefania Allec		N	F	F	F	F	F	R	R	R	M	R	M	P	R	M	P	R	M	R	M	P	R	M	R	M	P	R	M	R	M	P
+
+
+      AGOSTO 2020	1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	20	21	22	23	24	25	26	27	28	29	30	31
+			sab	dom	lun	mar	mer	gio	ven	sab	dom	lun	mar	mer	gio	ven	sab	dom	lun	mar	mer	gio	ven	sab	dom	lun	mar	mer	gio	ven	sab	dom	lun
+Mario Rossi		R	P	R	M	R	M	P	R	M	P	R	M	P	R	M	P	R	M	F	R	M	N	R	M	R	F	P	R	M	N	R
+Martina Saro		R	P	R	M	R	M	N	R	F	P	R	M	P	R	M	P	R	M	P	R	M	F	R	P	R	M	N	R	M	R	M
+Gianni Allegro		M	N	R	P	R	M	F	R	M	N	R	M	N	R	M	N	R	M	N	R	M	R	M	P	R	M	R	F	P	R	M
+Luca Marrone		M	R	M	P	R	P	R	M	M	F	R	P	R	M	P	R	M	P	R	M	P	R	M	N	R	P	R	F	P	R	M
+Paola Montalba		M	R	M	N	F	R	R	M	P	R	M	P	R	F	P	R	M	P	R	M	P	R	M	R	M	P	R	M	N	R	P
+Cristina Pace		P	R	F	R	M	P	R	F	P	R	M	N	R	M	N	R	M	N	R	M	N	R	P	R	M	N	R	M	R	M	P
+Mauro Salino		P	R	M	R	M	N	R	M	N	R	M	R	M	M	R	M	P	R	M	P	R	M	F	R	M	R	M	M	F	R	N
+Laura Bartoli		N	R	P	R	M	R	M	P	R	M	P	R	M	P	R	M	P	R	M	F	R	M	P	R	P	F	R	P	R	M	R
+Benedetta Sacco		R	M	P	R	P	R	M	F	F	F	F	R	R	P	R	M	N	R	M	P	R	M	N	R	P	R	M	P	R	M	R
+Daniele Giari		R	M	N	R	P	R	M	P	R	M	P	R	M	N	F	F	F	F	R	R	R	P	R	M	N	R	M	N	R	P	R
+Stefania Allec		R	M	R	M	N	R	P	N	R	M	N	R	F	F	F	F	R	R	P	N	R	P	R	M	R	M	P	R	M	P	R
+
+

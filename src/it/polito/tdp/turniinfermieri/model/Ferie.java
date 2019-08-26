@@ -2,7 +2,7 @@ package it.polito.tdp.turniinfermieri.model;
 
 import java.time.LocalDate;
 
-public class Ferie {
+public class Ferie implements Comparable<Ferie>{
 
 	private int id_ferie;
 	private int id_infermiere;
@@ -42,6 +42,16 @@ public class Ferie {
 	@Override
 	public String toString() {
 		return String.format("%s %s %s", id_ferie, id_infermiere, data);
+	}
+
+	@Override
+	public int compareTo(Ferie altro) {
+		if (this.data.isBefore(altro.getData()))
+			return -1;
+		else if (this.data.isAfter(altro.getData()))
+			return +1;
+		else
+			return 0;
 	}
 	
 	
