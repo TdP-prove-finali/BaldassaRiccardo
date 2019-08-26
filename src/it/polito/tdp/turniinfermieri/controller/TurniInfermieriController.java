@@ -255,7 +255,6 @@ public class TurniInfermieriController {
     	Tab_Genera_Orario.setDisable(true);
 
     	//modifica tabella ferie 
-    	//Ferie ferie = TableViewFerie4.getSelectionModel().getSelectedItem();   
     	Ferie ferie = ferieCellEditEvent.getTableView().getSelectionModel().getSelectedItem();
     	LocalDate newValue = ferieCellEditEvent.getNewValue();
     	
@@ -266,8 +265,6 @@ public class TurniInfermieriController {
 
     @FXML
     void doSelezionaInfermiere(ActionEvent event) {
-
-    
     	
 	Infermiere infermiere = ComboBoxInfermieri.getValue();
     	
@@ -342,9 +339,7 @@ public class TurniInfermieriController {
     	
     	TableColumn29.setVisible(false);
     	TableColumn30.setVisible(false);
-    	TableColumn31.setVisible(false);
-
-    	
+    	TableColumn31.setVisible(false);  	
     	
     	String m = ComboBoxMesi.getValue();
     	
@@ -368,8 +363,7 @@ public class TurniInfermieriController {
     		if (mesiIta.get(i).equals(m))
     			mese = Month.of(i+1);
     	}
-    	
-    	
+    	    	
     	List<InfermiereTurni> inf = new ArrayList<InfermiereTurni>();
 
     	if (mese != null) {
@@ -379,9 +373,7 @@ public class TurniInfermieriController {
 	    		inf.add(model.turniInfermiere(i, mese));
 	    		
 	    	}
-	    	
-	    	
-	    	
+	    		    	
 	    	int anno;
 			
 			if (mese.equals(Month.SEPTEMBER) || mese.equals(Month.OCTOBER) || mese.equals(Month.NOVEMBER) || mese.equals(Month.DECEMBER))
@@ -482,7 +474,6 @@ public class TurniInfermieriController {
 	    	festivita.add(LocalDate.of(2019, Month.DECEMBER, 8));
 	    	festivita.add(LocalDate.of(2019, Month.DECEMBER, 25));
 	    	festivita.add(LocalDate.of(2019, Month.DECEMBER, 26));
-
 
 	    	
 	    	if (giorni.getGiorno1().equals("dom") || giorni.getGiorno1().equals("sab") || festivita.contains(LocalDate.of(anno, mese, 1))) {
@@ -639,14 +630,14 @@ public class TurniInfermieriController {
     		List<Integer> statMedie = model.statMedie();
     		
     		ObservableList<PieChart.Data> pieChartInfData = FXCollections.observableArrayList(
-    				new PieChart.Data("Mattino", statInf.get(0)),
-    				new PieChart.Data("Pomeriggio", statInf.get(1)),
-    				new PieChart.Data("Notte", statInf.get(2)));
+    				new PieChart.Data("Mattino " + statInf.get(0), statInf.get(0)),
+    				new PieChart.Data("Pomeriggio " + statInf.get(1), statInf.get(1)),
+    				new PieChart.Data("Notte " + statInf.get(2), statInf.get(2)));
     		
     		ObservableList<PieChart.Data> pieChartMedieData = FXCollections.observableArrayList(
-    				new PieChart.Data("Mattino", statMedie.get(0)),
-    				new PieChart.Data("Pomeriggio", statMedie.get(1)),
-    				new PieChart.Data("Notte", statMedie.get(2)));
+    				new PieChart.Data("Mattino " + statMedie.get(0), statMedie.get(0)),
+    				new PieChart.Data("Pomeriggio " + statMedie.get(1), statMedie.get(1)),
+    				new PieChart.Data("Notte " + statMedie.get(2), statMedie.get(2)));
     		
     		PieChartInf.setData(pieChartInfData);
     		PieChartMedia.setData(pieChartMedieData);
@@ -739,10 +730,8 @@ public class TurniInfermieriController {
     		public LocalDate fromString(String value) {
     			
     			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
     			
-    			//controllo che la nuova data inserita sia valida
-    			
+    			//controllo che la nuova data inserita sia valida    			
     			try {
         			LocalDate.parse(value, formatter);
 				} catch (Exception DateTimeParseException) {
@@ -767,10 +756,8 @@ public class TurniInfermieriController {
     		public LocalDate fromString(String value) {
 
     			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-    			
-    			//controllo che la nuova data inserita sia valida
-    			
+   			
+    			//controllo che la nuova data inserita sia valida    			
     			try {
         			LocalDate.parse(value, formatter);
 				} catch (Exception DateTimeParseException) {
@@ -796,10 +783,8 @@ public class TurniInfermieriController {
     		public LocalDate fromString(String value) {
 
     			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
     			
-    			//controllo che la nuova data inserita sia valida
-    			
+    			//controllo che la nuova data inserita sia valida   			
     			try {
         			LocalDate.parse(value, formatter);
 				} catch (Exception DateTimeParseException) {
@@ -826,10 +811,8 @@ public class TurniInfermieriController {
     		public LocalDate fromString(String value) {
 
     			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
     			
-    			//controllo che la nuova data inserita sia valida
-    			
+    			//controllo che la nuova data inserita sia valida   			
     			try {
         			LocalDate.parse(value, formatter);
 				} catch (Exception DateTimeParseException) {

@@ -269,8 +269,8 @@ public class InfermiereTurni {
 	@Override
 	public String toString() {
 		return String.format(
-				"%s\t\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s",
-				infermiere, giorno1, giorno2, giorno3, giorno4, giorno5, giorno6, giorno7, giorno8, giorno9, giorno10,
+				"\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s",
+				giorno1, giorno2, giorno3, giorno4, giorno5, giorno6, giorno7, giorno8, giorno9, giorno10,
 				giorno11, giorno12, giorno13, giorno14, giorno15, giorno16, giorno17, giorno18, giorno19, giorno20,
 				giorno21, giorno22, giorno23, giorno24, giorno25, giorno26, giorno27, giorno28, giorno29, giorno30,
 				giorno31);

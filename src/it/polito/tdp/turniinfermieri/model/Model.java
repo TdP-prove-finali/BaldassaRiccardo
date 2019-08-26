@@ -1,20 +1,13 @@
 package it.polito.tdp.turniinfermieri.model;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -31,7 +24,6 @@ public class Model {
 	private List<Ferie> ferie;
 	private Map<LocalDate, Map<Infermiere, String>> soluzione;
 	private boolean trovata;
-
 	private LocalDate inizio;
 	private LocalDate fine;
 	private List<Infermiere> infMat;
@@ -61,7 +53,6 @@ public class Model {
 		return infermieri;
 	}
 
-	
 	public boolean controllaFerie(LocalDate value) {
 
 		if (value == null)
@@ -72,7 +63,6 @@ public class Model {
 		
 		return true;
 	}
-	
 	
 	public List<Ferie> getFerieInfermiere(Infermiere infermiere) {
 
@@ -183,14 +173,9 @@ public class Model {
 
 	// calcola orario attraverso la ricorsione
 	private void calcolaOrario(Map<LocalDate, Map<Infermiere, String>> parziale, LocalDate data) {
-		// System.out.println(data);
-
-	//	System.out.println(data);
 		
 		if (trovata)
-			return;
-		
-		
+			return;		
 
 		if (data.isBefore(fine)) {
 			
@@ -269,7 +254,6 @@ public class Model {
 								i.setNumero_notti(i.getNumero_notti() - 1);
 							}
 						}
-
 					}
 
 					for (Infermiere i : infermieri) {
@@ -278,7 +262,6 @@ public class Model {
 							i.setNumero_pomeriggi(i.getNumero_pomeriggi() - 1);
 						}
 					}
-
 				}
 
 				for (Infermiere i : infermieri) {
@@ -287,16 +270,12 @@ public class Model {
 						i.setNumero_mattine(i.getNumero_mattine() - 1);
 					}
 				}
-
 			}
-
 		}
 
 		// vedere se ho completato tutto l'anno
 		else if (data.isEqual(fine)) {
-			// System.out.println(data);
 			trovata = true;
-			// this.soluzione = new HashMap<LocalDate, Map<Infermiere,String>>(parziale);
 			LocalDate d = LocalDate.of(2019, Month.SEPTEMBER, 1);
 
 			while (d.isBefore(fine)) {
@@ -309,7 +288,6 @@ public class Model {
 
 			return;
 		}
-
 	}
 
 	private List<Infermiere> trovaCandidatiMattino(LocalDate data, Map<LocalDate, Map<Infermiere, String>> parziale) {
@@ -469,14 +447,10 @@ public class Model {
 
 	List<List<Infermiere>> subsets(List<Infermiere> input, int k) {
 
-		// int[] input = {10, 20, 30, 40, 50}; // input array
-		// int k = 3; // sequence length
-
 		List<List<Infermiere>> subsets = new ArrayList<>();
 
-		int[] s = new int[k]; // here we'll keep indices
-								// pointing to elements in input array
-
+		int[] s = new int[k];
+								
 		if (k <= input.size()) {
 			// first index sequence: 0, 1, 2, ...
 			for (int i = 0; (s[i] = i) < k - 1; i++)
@@ -521,8 +495,7 @@ public class Model {
 			anno = 2019;
 		else
 			anno = 2020;
-		
-		
+			
 		LocalDate d = LocalDate.of(anno, mese, 1);
 		
 		while (d.getMonth().equals(mese)) {
@@ -575,7 +548,6 @@ public class Model {
 		
 	}
 
-
 	public List<Integer> statMedie(){
 		
 		List<Integer> stat = new ArrayList<Integer>();
@@ -588,7 +560,6 @@ public class Model {
 			mat += this.statInfermiere(inf).get(0);
 			pome += this.statInfermiere(inf).get(1);
 			notti += this.statInfermiere(inf).get(2);
-
 		}
 		
 		stat.add(mat/this.getInfermieri().size());
@@ -636,7 +607,7 @@ public class Model {
 			writer.println("");
 			
 			for (Infermiere inf : infermieri) {
-	    		writer.println(this.turniInfermiere(inf, mese).toString().replace("null", ""));
+	    		writer.println(String.format("%18s",this.turniInfermiere(inf, mese).getInfermiere()) + this.turniInfermiere(inf, mese).toString().replace("null", ""));
 	    	}
 			writer.println("");
 			writer.println("");
@@ -661,13 +632,12 @@ public class Model {
 		
 		writer.println("");		
 		for (Infermiere inf : infermieri) {
-    		writer.println(this.turniInfermiere(inf, mese).toString().replace("null", ""));
+    		writer.println(String.format("%18s",this.turniInfermiere(inf, mese).getInfermiere()) + this.turniInfermiere(inf, mese).toString().replace("null", ""));
     	}
 		writer.println("");
 		writer.println("");
 	}
 		
-
 		writer.close();
 		
 	}

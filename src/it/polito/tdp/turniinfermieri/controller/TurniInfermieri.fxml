@@ -9,6 +9,7 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -27,6 +28,31 @@
    <center>
       <TabPane tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
+            <Tab closable="false" text="Introduzione">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <VBox alignment="CENTER" prefHeight="256.0" prefWidth="1115.0">
+                           <children>
+                              <Label alignment="CENTER" prefHeight="35.0" prefWidth="1113.0" text="Introduzione all'uso del programma">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </VBox.margin>
+                              </Label>
+                              <TextArea editable="false" prefHeight="181.0" prefWidth="810.0" text="Breve descrizione delle funzionalità del programma:&#10;Il programma permette di generare l'orario per l'anno 2019/2020 degli infermieri in un reparto ospedaliero, nello specifico il reparto di riferimento è un reparto di medicina generale con 20 pazienti in cui&#10;lavorano 11 infermieri. In questo reparto per ogni giorno sono necessari 3 infermieri per il turno del mattino, 2 infermieri per il turno del pomeriggio e 1 infermiere per il turno di notte.&#10;La scheda &quot;Richieste Giorni Ferie&quot; permette di indicare, per ogni infermiere, i 32 giorni annuali che spettano da contratto in cui si faranno le ferie.  Nel programma, dopo aver selezionato un infermiere&#10;compariranno i 32 giorni (suddivisi in 4 tabelle) di ferie già inseriti di default ma sarà possibile modificare ognuno di essi ed in seguito confermare la modifica. L'unica regola da rispettare è che per ogni&#10;giorno dell' anno al massimo 2 infermieri portanno richiedere le ferie.&#10;La scheda successiva, &quot;Genera Orario&quot;, permette di creare l'orario di tutti gli infermieri a partire dalle ferie richieste, attraverso la selezione del mese sarà poi possibile visualizzarlo, è inoltre presente un&#10;bottone chiamato &quot;Salva Orario&quot; che salverà l'orario appena creato in un file di testo chiamato &quot;OrarioInfermieri.txt&quot; all' interno della cartella del progetto.&#10;Dopo aver generato l' orario si sbloccherà l'ultima tab, ovvero &quot;Statistiche Infermieri&quot; in cui si potrà vedere quante volte i diversi infermieri hanno lavorato nei diversi turni e fare un confronto con la&#10;media del reparto attraverso dei grafici.">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </VBox.margin>
+                              </TextArea>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
           <Tab fx:id="Tab_Richieste_Giorni_Ferie" closable="false" text="Richieste Giorni Ferie">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0">
@@ -41,7 +67,7 @@
                                        </HBox.margin>
                                     </Label>
                                     <ComboBox fx:id="ComboBoxInfermieri" onAction="#doSelezionaInfermiere" prefHeight="25.0" prefWidth="205.0" />
-                                    <Button mnemonicParsing="false" onAction="#doModificaFerie" text="Conferma">
+                                    <Button mnemonicParsing="false" onAction="#doModificaFerie" text="Conferma Modifica">
                                        <HBox.margin>
                                           <Insets left="10.0" />
                                        </HBox.margin>
