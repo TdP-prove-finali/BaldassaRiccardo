@@ -19,6 +19,7 @@ import it.polito.tdp.turniinfermieri.model.Ferie;
 import it.polito.tdp.turniinfermieri.model.Infermiere;
 import it.polito.tdp.turniinfermieri.model.InfermiereTurni;
 import it.polito.tdp.turniinfermieri.model.Model;
+import it.polito.tdp.turniinfermieri.model.StatisticheInfermiere;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -297,16 +298,21 @@ public class TurniInfermieriController {
 
     	}
     }
-
+    
     @FXML
-    void doGeneraOrario(ActionEvent event) {
+    void doGeneraOrario(ActionEvent event) {    	
     	
     	TableViewOrarioGenerale.getItems().clear();
     	
     	ComboBoxMesi.setValue(null);
-    	TextFieldOrario.setText("Premere sul bottone per generare l'orario");
-    	
-    	 Map<LocalDate, Map<Infermiere, String>> soluzione = model.generaOrario();
+    	    	
+    	long startTime = System.currentTimeMillis();
+    	    	
+    	Map<LocalDate, Map<Infermiere, String>> soluzione = model.generaOrario();
+    	     	 
+     	long estimatedTime = System.currentTimeMillis() - startTime;
+
+     	System.out.println(estimatedTime);
     	 
     	 if (soluzione == null) {
     	    	TextFieldOrario.setText("Creazione orario non riuscita, modificare ferie e riprovare");
@@ -318,7 +324,7 @@ public class TurniInfermieriController {
  	    	Tab_Statistiche_Infermieri.setDisable(false);
  	    	ButtonSalvaOrario.setDisable(false);
     	
-	    	TextFieldOrario.setText("Orario generato! Seleziona mese da visualizzare");
+	    	TextFieldOrario.setText("Orario generato. Seleziona mese da visualizzare");
 	    	
 	    	ComboBoxMesi.getItems().clear();
 	    	
@@ -626,18 +632,16 @@ public class TurniInfermieriController {
 
     	if (infermiere != null) {
     		
-    		List<Integer> statInf = model.statInfermiere(infermiere);
-    		List<Integer> statMedie = model.statMedie();
+    		StatisticheInfermiere statInf = model.statInfermiere(infermiere);
     		
     		ObservableList<PieChart.Data> pieChartInfData = FXCollections.observableArrayList(
-    				new PieChart.Data("Mattino " + statInf.get(0), statInf.get(0)),
-    				new PieChart.Data("Pomeriggio " + statInf.get(1), statInf.get(1)),
-    				new PieChart.Data("Notte " + statInf.get(2), statInf.get(2)));
+    				new PieChart.Data("Mattino (" + statInf.getNumeroMattine() + ")", statInf.getNumeroMattine()),
+    				new PieChart.Data("Pomeriggio (" + statInf.getNumeroPomeriggi() + ")", statInf.getNumeroPomeriggi()),
+    				new PieChart.Data("Notte (" + statInf.getNumeroNotti() + ")", statInf.getNumeroNotti()));
     		
     		ObservableList<PieChart.Data> pieChartMedieData = FXCollections.observableArrayList(
-    				new PieChart.Data("Mattino " + statMedie.get(0), statMedie.get(0)),
-    				new PieChart.Data("Pomeriggio " + statMedie.get(1), statMedie.get(1)),
-    				new PieChart.Data("Notte " + statMedie.get(2), statMedie.get(2)));
+    				new PieChart.Data("Feriale (" + statInf.getNumeroRiposiFeriali() + ")", (statInf.getNumeroRiposiFeriali())),
+    				new PieChart.Data("Festivo (" + statInf.getNumeroRiposiFestivita() + ")", statInf.getNumeroRiposiFestivita()));
     		
     		PieChartInf.setData(pieChartInfData);
     		PieChartMedia.setData(pieChartMedieData);
@@ -709,6 +713,7 @@ public class TurniInfermieriController {
     }
 
 	public void setModel(Model model) {
+		
 		this.model = model;
 		// popolazione combobox
 		ComboBoxInfermieri.getItems().addAll(model.getInfermieri());

@@ -12,6 +12,7 @@ public class Infermiere implements Comparable<Infermiere>{
 	private int numero_mattine;
 	private int numero_pomeriggi;
 	private int numero_notti;
+	private int numero_riposi_festivita;
 
 	
 	public Infermiere(int id_infermiere, String nome, String cognome, LocalDate data_nascita) {
@@ -24,6 +25,7 @@ public class Infermiere implements Comparable<Infermiere>{
 		this.numero_mattine = 0;
 		this.numero_pomeriggi = 0;
 		this.numero_notti = 0;
+		this.numero_riposi_festivita = 0;
 	}
 
 	public int getId_infermiere() {
@@ -98,6 +100,14 @@ public class Infermiere implements Comparable<Infermiere>{
 
 	public void setNumero_notti(int numero_notti) {
 		this.numero_notti = numero_notti;
+	}
+
+	public int getNumero_riposi_festivita() {
+		return numero_riposi_festivita;
+	}
+
+	public void setNumero_riposi_festivita(int numero_riposi_festivita) {
+		this.numero_riposi_festivita = numero_riposi_festivita;
 	}
 
 }

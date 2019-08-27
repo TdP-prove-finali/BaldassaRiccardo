@@ -9,6 +9,7 @@ import java.time.Month;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -29,10 +30,9 @@ public class Model {
 	private List<Infermiere> infMat;
 	private List<Infermiere> infPom;
 	private List<Infermiere> infNot;
-	private Map<LocalDate, List<Infermiere>> infermieriMattino;
-	private Map<LocalDate, List<Infermiere>> infermieriPomeriggio;
-	private Map<LocalDate, List<Infermiere>> infermieriNotte;
 	private List<StatisticheInfermiere> stat;
+	private List<LocalDate> festivita;
+	private boolean dataFest;
 
 	public Model() {
 		dao = new TurniInfermieriDAO();
@@ -43,10 +43,21 @@ public class Model {
 		infMat = new ArrayList<Infermiere>();
 		infPom = new ArrayList<Infermiere>();
 		infNot = new ArrayList<Infermiere>();
-		infermieriMattino = new HashMap<LocalDate, List<Infermiere>>();
-		infermieriPomeriggio = new HashMap<LocalDate, List<Infermiere>>();
-		infermieriNotte = new HashMap<LocalDate, List<Infermiere>>();
 		stat = new ArrayList<StatisticheInfermiere>();
+		festivita = new ArrayList<LocalDate>(); 	
+    	// giorni festivita in italia
+    	festivita.add(LocalDate.of(2020, Month.JANUARY, 1));
+    	festivita.add(LocalDate.of(2020, Month.JANUARY, 6));
+    	festivita.add(LocalDate.of(2020, Month.APRIL, 12));
+    	festivita.add(LocalDate.of(2020, Month.APRIL, 13));
+    	festivita.add(LocalDate.of(2020, Month.APRIL, 25));
+    	festivita.add(LocalDate.of(2020, Month.MAY, 1));
+    	festivita.add(LocalDate.of(2020, Month.JUNE, 2));
+    	festivita.add(LocalDate.of(2020, Month.AUGUST, 15));
+    	festivita.add(LocalDate.of(2019, Month.NOVEMBER, 1));
+    	festivita.add(LocalDate.of(2019, Month.DECEMBER, 8));
+    	festivita.add(LocalDate.of(2019, Month.DECEMBER, 25));
+    	festivita.add(LocalDate.of(2019, Month.DECEMBER, 26));
 	}
 
 	public List<Infermiere> getInfermieri() {
@@ -125,6 +136,7 @@ public class Model {
 		this.soluzione = new TreeMap<LocalDate, Map<Infermiere, String>>();
 
 		this.trovata = false;
+		this.dataFest = false;
 		Map<LocalDate, Map<Infermiere, String>> parziale = new TreeMap<LocalDate, Map<Infermiere, String>>();
 
 		LocalDate data = LocalDate.of(2019, Month.SEPTEMBER, 1);
@@ -154,18 +166,7 @@ public class Model {
 
 		}
 
-		data = LocalDate.of(2019, Month.SEPTEMBER, 1);
-
-		while (data.isBefore(fine)) {
-			infermieriMattino.put(data, new ArrayList<Infermiere>());
-			infermieriPomeriggio.put(data, new ArrayList<Infermiere>());
-			infermieriNotte.put(data, new ArrayList<Infermiere>());
-
-			data = data.plusDays(1);
-		}
-
 		calcolaOrario(parziale, inizio);
-		// System.out.println(soluzione);
 
 		return this.soluzione;
 
@@ -175,12 +176,28 @@ public class Model {
 	private void calcolaOrario(Map<LocalDate, Map<Infermiere, String>> parziale, LocalDate data) {
 		
 		if (trovata)
-			return;		
+			return;	
+		
+		if (data.getDayOfWeek().getValue() == 6 || data.getDayOfWeek().getValue() == 7 || festivita.contains(data))
+			dataFest = true;
+		else
+			dataFest = false;
 
 		if (data.isBefore(fine)) {
 			
 			List<Infermiere> candidatiMattino = this.trovaCandidatiMattino(data, parziale);
-			Collections.sort(candidatiMattino);
+			
+			if (dataFest) {
+				Collections.sort(candidatiMattino, new Comparator<Infermiere>() {
+
+					@Override
+					public int compare(Infermiere inf1, Infermiere inf2) {
+						return inf2.getNumero_riposi_festivita() - inf1.getNumero_riposi_festivita();
+					}
+				});
+			}
+			else
+				Collections.sort(candidatiMattino);
 			
 			List<List<Infermiere>> combMattino = this.subsets(candidatiMattino, 3);
 
@@ -195,7 +212,18 @@ public class Model {
 				}
 
 				List<Infermiere> candidatiPomeriggio = this.trovaCandidatiPomeriggio(data, parziale);
-				Collections.sort(candidatiPomeriggio);
+				
+				if (dataFest) {
+					Collections.sort(candidatiPomeriggio, new Comparator<Infermiere>() {
+
+						@Override
+						public int compare(Infermiere inf1, Infermiere inf2) {
+							return inf2.getNumero_riposi_festivita() - inf1.getNumero_riposi_festivita();
+						}
+					});
+				}
+				else
+					Collections.sort(candidatiPomeriggio);
 				
 				List<List<Infermiere>> combPomeriggio = this.subsets(candidatiPomeriggio, 2);
 
@@ -210,7 +238,18 @@ public class Model {
 					}
 
 					List<Infermiere> candidatiNotte = this.trovaCandidatiNotte(data, parziale);
-					Collections.sort(candidatiNotte);
+					
+					if (dataFest) {
+						Collections.sort(candidatiNotte, new Comparator<Infermiere>() {
+
+							@Override
+							public int compare(Infermiere inf1, Infermiere inf2) {
+								return inf2.getNumero_riposi_festivita() - inf1.getNumero_riposi_festivita();
+							}
+						});
+					}
+					else
+						Collections.sort(candidatiNotte);
 					
 					List<List<Infermiere>> combNotte = this.subsets(candidatiNotte, 1);
 
@@ -228,6 +267,8 @@ public class Model {
 							if (parziale.get(data).get(i) == null) {
 								parziale.get(data).put(i, "Riposo");
 								i.setNumero_riposi(i.getNumero_riposi() + 1);
+								if (dataFest)
+									i.setNumero_riposi_festivita(i.getNumero_riposi_festivita() + 1);
 							}
 						}
 						
@@ -245,6 +286,8 @@ public class Model {
 							if (parziale.get(data).get(i) == "Riposo") {
 								parziale.get(data).put(i, null);
 								i.setNumero_riposi(i.getNumero_riposi() - 1);
+								if (dataFest)
+									i.setNumero_riposi_festivita(i.getNumero_riposi_festivita() - 1);
 							}
 						}
 
@@ -276,7 +319,7 @@ public class Model {
 		// vedere se ho completato tutto l'anno
 		else if (data.isEqual(fine)) {
 			trovata = true;
-			LocalDate d = LocalDate.of(2019, Month.SEPTEMBER, 1);
+			LocalDate d = inizio;
 
 			while (d.isBefore(fine)) {
 				this.soluzione.put(d, new HashMap<Infermiere, String>(parziale.get(d)));
@@ -284,7 +327,7 @@ public class Model {
 			}
 			
 			for (Infermiere i : infermieri)
-				stat.add(new StatisticheInfermiere(i, i.getNumero_riposi(), i.getNumero_mattine(), i.getNumero_pomeriggi(), i.getNumero_notti()));
+				stat.add(new StatisticheInfermiere(i, i.getNumero_riposi(), i.getNumero_mattine(), i.getNumero_pomeriggi(), i.getNumero_notti(), i.getNumero_riposi_festivita()));
 
 			return;
 		}
@@ -293,7 +336,7 @@ public class Model {
 	private List<Infermiere> trovaCandidatiMattino(LocalDate data, Map<LocalDate, Map<Infermiere, String>> parziale) {
 
 		infMat.clear();
-
+		
 		if (data.equals(this.inizio)) {
 			for (Infermiere i : infermieri) {
 				if (parziale.get(data).get(i) == null)
@@ -448,9 +491,12 @@ public class Model {
 	List<List<Infermiere>> subsets(List<Infermiere> input, int k) {
 
 		List<List<Infermiere>> subsets = new ArrayList<>();
+		
+		// input array
+		// sequence length  		
 
-		int[] s = new int[k];
-								
+		int[] s = new int[k];	// here we'll keep indices
+								// pointing to elements in input array
 		if (k <= input.size()) {
 			// first index sequence: 0, 1, 2, ...
 			for (int i = 0; (s[i] = i) < k - 1; i++)
@@ -520,53 +566,17 @@ public class Model {
 		
 	}
 	
-	public List<Integer> statInfermiere(Infermiere infermiere){
+	public StatisticheInfermiere statInfermiere(Infermiere infermiere){
 		
-		int mat = 0;
-		int pome = 0;
-		int notti = 0;
+		StatisticheInfermiere statInf = null;
 		
-		LocalDate d = LocalDate.of(2019, Month.SEPTEMBER, 1);
-		
-		while (d.isBefore(fine)) {
-			if (soluzione.get(d).get(infermiere).equals("Mattino"))
-				mat ++;
-			else if (soluzione.get(d).get(infermiere).equals("Pomeriggio"))
-				pome ++;
-			else if (soluzione.get(d).get(infermiere).equals("Notte"))
-				notti ++;
-			
-			d = d.plusDays(1);
+		for (StatisticheInfermiere si : stat) {
+			if (si.getInfermiere().equals(infermiere)) {
+				statInf = si;
+			}
 		}
 		
-		List<Integer> stat = new ArrayList<Integer>();
-		stat.add(mat);
-		stat.add(pome);
-		stat.add(notti);
-		
-		return stat;
-		
-	}
-
-	public List<Integer> statMedie(){
-		
-		List<Integer> stat = new ArrayList<Integer>();
-		
-		int mat = 0;
-		int pome = 0;
-		int notti = 0;
-		
-		for (Infermiere inf : this.getInfermieri()) {
-			mat += this.statInfermiere(inf).get(0);
-			pome += this.statInfermiere(inf).get(1);
-			notti += this.statInfermiere(inf).get(2);
-		}
-		
-		stat.add(mat/this.getInfermieri().size());
-		stat.add(pome/this.getInfermieri().size());
-		stat.add(notti/this.getInfermieri().size());
-
-		return stat;
+		return statInf;
 	}
 
 	public void salvaOrario(){

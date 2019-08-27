@@ -7,15 +7,17 @@ public class StatisticheInfermiere {
 	private int numeroMattine;
 	private int numeroPomeriggi;
 	private int numeroNotti;
+	private int numeroRiposiFestivita;
 	
 	public StatisticheInfermiere(Infermiere infermiere, int numeroRiposi, int numeroMattine, int numeroPomeriggi,
-			int numeroNotti) {
+			int numeroNotti, int numeroRiposiFestivita) {
 		super();
 		this.infermiere = infermiere;
 		this.numeroRiposi = numeroRiposi;
 		this.numeroMattine = numeroMattine;
 		this.numeroPomeriggi = numeroPomeriggi;
 		this.numeroNotti = numeroNotti;
+		this.numeroRiposiFestivita = numeroRiposiFestivita;
 	}
 
 	public Infermiere getInfermiere() {
@@ -63,6 +65,18 @@ public class StatisticheInfermiere {
 		return String.format(
 				"%s - riposi: %s, mattine: %s, pomeriggi: %s, notti: %s",
 				infermiere, numeroRiposi, numeroMattine, numeroPomeriggi, numeroNotti);
+	}
+
+	public int getNumeroRiposiFestivita() {
+		return numeroRiposiFestivita;
+	}
+
+	public void setNumeroRiposiFestivita(int numeroRiposiFestivita) {
+		this.numeroRiposiFestivita = numeroRiposiFestivita;
+	}
+	
+	public int getNumeroRiposiFeriali() {
+		return (numeroRiposi - numeroRiposiFestivita);
 	}
 	
 	
