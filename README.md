@@ -1,7 +1,7 @@
 # Baldassa Riccardo
 Programmazione dei turni lavorativi del personale infermieristico in un reparto ospedaliero
 
-*
+L'applicazione permette di generare la programmazione dei turni lavorativi del personale infermieristico in un reparto ospedaliero, attraverso la gestione delle ferie richieste da ogni infermiere. Sarà inoltre possibile visualizzare diverse statistiche per ognuno di essi.
 
 Istruzioni per l'utilizzo dell' applicazione:
 
