@@ -1,8 +1,9 @@
 package it.polito.tdp.turniinfermieri.model;
 
 import java.time.LocalDate;
+import java.util.Comparator;
 
-public class Infermiere implements Comparable<Infermiere>{
+public class Infermiere {
 	
 	private int id_infermiere;
 	private String nome;
@@ -73,11 +74,61 @@ public class Infermiere implements Comparable<Infermiere>{
 		this.numero_riposi = numero_riposi;
 	}
 
-	@Override
+/*	@Override
 	public int compareTo(Infermiere altro) {
 		return altro.getNumero_riposi() - this.getNumero_riposi();
-	}
+	}*/
 
+	static Comparator<Infermiere> riposiComparator() {
+        return new Comparator<Infermiere>() {
+
+			@Override
+			public int compare(Infermiere inf1, Infermiere inf2) {
+				return inf2.getNumero_riposi() - inf1.getNumero_riposi();
+			}
+        };
+    }
+	
+	static Comparator<Infermiere> riposiFestivitaComparator() {
+        return new Comparator<Infermiere>() {
+
+			@Override
+			public int compare(Infermiere inf1, Infermiere inf2) {
+				return inf2.getNumero_riposi_festivita() - inf1.getNumero_riposi_festivita();
+			}
+        };
+    }
+	
+	static Comparator<Infermiere> mattineComparator() {
+        return new Comparator<Infermiere>() {
+
+			@Override
+			public int compare(Infermiere inf1, Infermiere inf2) {
+				return inf1.getNumero_mattine() - inf2.getNumero_mattine();
+			}
+        };
+    }
+	
+	static Comparator<Infermiere> pomeriggiComparator() {
+        return new Comparator<Infermiere>() {
+
+			@Override
+			public int compare(Infermiere inf1, Infermiere inf2) {
+				return inf1.getNumero_pomeriggi() - inf2.getNumero_pomeriggi();
+			}
+        };
+    }
+	
+	static Comparator<Infermiere> nottiComparator() {
+        return new Comparator<Infermiere>() {
+
+			@Override
+			public int compare(Infermiere inf1, Infermiere inf2) {
+				return inf1.getNumero_notti() - inf2.getNumero_notti();
+			}
+        };
+    }
+	
 	public int getNumero_mattine() {
 		return numero_mattine;
 	}

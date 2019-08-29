@@ -85,13 +85,18 @@ public class TurniInfermieriDAO {
 		try {
 			Connection conn = DBConnect.getConnection() ;
 			
-			// aggiunta di 12 ore alla data da modificare perché altrimenti nel db prendeva il valore del giorno precedente
-			final long hours12 = 12L * 60L * 60L * 1000L;
-			Date d = Date.valueOf(ferie.getData());
-			Date newData = new Date(d.getTime() + hours12);
-		
 			PreparedStatement st = conn.prepareStatement(sql) ;
-			st.setDate(1, newData);
+			if (ferie.getData() != null) {
+				// aggiunta di 12 ore alla data da modificare perché altrimenti nel db prendeva il valore del giorno precedente
+				final long hours12 = 12L * 60L * 60L * 1000L;
+				Date d = Date.valueOf(ferie.getData());
+				Date newData = new Date(d.getTime() + hours12);
+			
+				st.setDate(1, newData);
+			}
+			else
+				st.setDate(1, null);
+			
 			st.setInt(2, ferie.getId_ferie());
 			
 			st.executeUpdate();
@@ -103,6 +108,35 @@ public class TurniInfermieriDAO {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	public List<Integer> getVincoli() {
+		String sql = "SELECT valore FROM vincoli" ;
+		try {
+			Connection conn = DBConnect.getConnection() ;
+
+			PreparedStatement st = conn.prepareStatement(sql) ;
+			
+			List<Integer> list = new ArrayList<>() ;
+			
+			ResultSet res = st.executeQuery() ;
+			
+			while(res.next()) {
+				try {
+					list.add(res.getInt("valore"));
+				} catch (Throwable t) {
+					t.printStackTrace();
+				}
+			}
+			
+			conn.close();
+			return list ;
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null ;
+		}
 	}
 
 

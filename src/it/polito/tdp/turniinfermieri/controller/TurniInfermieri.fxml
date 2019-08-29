@@ -79,7 +79,7 @@
                               </HBox>
                               <HBox alignment="CENTER" prefHeight="25.0" prefWidth="232.0">
                                  <children>
-                                    <TextField fx:id="TextFieldFerie" editable="false" prefHeight="25.0" prefWidth="1014.0" text="Ferie dal 01/09/2019 al 31/08/2020, si può scegliere qualsiasi giorno (formato: dd/mm/aaaa) ma sono accettate massimo due richieste di due infermieri diversi per lo stesso giorno" />
+                                    <TextField fx:id="TextFieldFerie" editable="false" prefHeight="25.0" prefWidth="1014.0" text="Ferie dal 01/09/2019 al 31/08/2020, si può scegliere qualsiasi giorno (formato: gg/mm/aaaa) ma sono accettate massimo due richieste di due infermieri diversi per lo stesso giorno" />
                                  </children>
                                  <VBox.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

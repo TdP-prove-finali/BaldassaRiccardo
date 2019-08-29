@@ -214,7 +214,9 @@ public class TurniInfermieriController {
     		List<LocalDate> ferieDuplicate = model.controlloFerieDuplicate(infermiere);
     		List<LocalDate> ferieMax = model.controlloFerieMax();
     		
-    		if (ferieDuplicate.size() != 0 && ferieMax.size() != 0) {
+
+    		
+    	/*	if (ferieDuplicate.size() != 0 && ferieMax.size() != 0) {
     			if (ferieDuplicate.size() == 1 && ferieMax.size() == 1)
     				TextFieldFerie.setText("È stato indicato più volte il giorno: " + ferieDuplicate + " ; Già altri due infermieri hanno indicato il giorno: " + ferieMax);
     			else if (ferieDuplicate.size() == 1 && ferieMax.size() != 1)
@@ -224,7 +226,9 @@ public class TurniInfermieriController {
     			else 
     				TextFieldFerie.setText("Sono stati indicati più volte i giorni: " + ferieDuplicate + " ; Già altri due infermieri hanno indicato i giorni: " + ferieMax);
     		}
-    		else if (ferieDuplicate.size() != 0) {
+    		else */
+    		
+    		if (ferieDuplicate.size() != 0) {
     			if (ferieDuplicate.size() == 1)
     				TextFieldFerie.setText("È stato indicato più volte il giorno: " + ferieDuplicate);
     			else
