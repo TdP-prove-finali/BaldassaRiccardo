@@ -74,11 +74,6 @@ public class Infermiere {
 		this.numero_riposi = numero_riposi;
 	}
 
-/*	@Override
-	public int compareTo(Infermiere altro) {
-		return altro.getNumero_riposi() - this.getNumero_riposi();
-	}*/
-
 	static Comparator<Infermiere> riposiComparator() {
         return new Comparator<Infermiere>() {
 

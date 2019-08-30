@@ -60,13 +60,6 @@ public class StatisticheInfermiere {
 		this.numeroNotti = numeroNotti;
 	}
 
-	@Override
-	public String toString() {
-		return String.format(
-				"%s - riposi: %s, mattine: %s, pomeriggi: %s, notti: %s",
-				infermiere, numeroRiposi, numeroMattine, numeroPomeriggi, numeroNotti);
-	}
-
 	public int getNumeroRiposiFestivita() {
 		return numeroRiposiFestivita;
 	}

@@ -14,6 +14,7 @@ public class Main extends Application {
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("TurniInfermieri.fxml"));
 			BorderPane root = loader.load();
+			
 			TurniInfermieriController controller = loader.getController();
 			Model model = new Model();
 			controller.setModel(model) ;

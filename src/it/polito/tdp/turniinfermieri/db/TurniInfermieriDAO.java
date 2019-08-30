@@ -13,6 +13,7 @@ import it.polito.tdp.turniinfermieri.model.Infermiere;
 
 public class TurniInfermieriDAO {
 	
+	// ottengo tutti gli infermieri dal db
 	public List<Infermiere> getInfermieri() {
 		String sql = "SELECT * FROM infermiere" ;
 		try {
@@ -46,7 +47,7 @@ public class TurniInfermieriDAO {
 		}
 	}
 
-	
+	// ottengo tutte le ferie dal db
 	public List<Ferie> getFerie() {
 		String sql = "SELECT * FROM ferie" ;
 		try {
@@ -79,6 +80,7 @@ public class TurniInfermieriDAO {
 		}
 	}
 
+	// apporto le modifiche effettuate nella tabella di gestione ferie sul db
 	public void modificaFerieInfermiere(Ferie ferie) {
 
 		String sql = "UPDATE ferie SET data = ? WHERE id_ferie = ?" ;
@@ -87,7 +89,7 @@ public class TurniInfermieriDAO {
 			
 			PreparedStatement st = conn.prepareStatement(sql) ;
 			if (ferie.getData() != null) {
-				// aggiunta di 12 ore alla data da modificare perché altrimenti nel db prendeva il valore del giorno precedente
+				// aggiunta di 12 ore alla data da modificare perché altrimenti nel db prende il valore del giorno precedente
 				final long hours12 = 12L * 60L * 60L * 1000L;
 				Date d = Date.valueOf(ferie.getData());
 				Date newData = new Date(d.getTime() + hours12);
@@ -110,6 +112,7 @@ public class TurniInfermieriDAO {
 		
 	}
 	
+	// ottengo tutti i vincoli dal db
 	public List<Integer> getVincoli() {
 		String sql = "SELECT valore FROM vincoli" ;
 		try {

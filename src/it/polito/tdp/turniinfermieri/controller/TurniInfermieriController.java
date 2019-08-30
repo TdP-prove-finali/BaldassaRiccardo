@@ -201,8 +201,8 @@ public class TurniInfermieriController {
 
     @FXML // fx:id="PieChartMedia"
     private PieChart PieChartMedia; // Value injected by FXMLLoader
-        
-    @FXML
+     
+    @FXML // controllo se le ferie modificate siano valide
     void doModificaFerie(ActionEvent event) {
     	
     	Infermiere infermiere = ComboBoxInfermieri.getValue();
@@ -211,22 +211,10 @@ public class TurniInfermieriController {
     	
     	if (infermiere != null) {
     		
+    		// controllo se sono stati inseriti due giorni di ferie uguali per lo stesso infermiere. (salvo quei giorni in una lista)
     		List<LocalDate> ferieDuplicate = model.controlloFerieDuplicate(infermiere);
+    		// controllo se i giorni di ferie sono stati richiesti da più di due infermieri. (salvo quei giorni in una lista)
     		List<LocalDate> ferieMax = model.controlloFerieMax();
-    		
-
-    		
-    	/*	if (ferieDuplicate.size() != 0 && ferieMax.size() != 0) {
-    			if (ferieDuplicate.size() == 1 && ferieMax.size() == 1)
-    				TextFieldFerie.setText("È stato indicato più volte il giorno: " + ferieDuplicate + " ; Già altri due infermieri hanno indicato il giorno: " + ferieMax);
-    			else if (ferieDuplicate.size() == 1 && ferieMax.size() != 1)
-        			TextFieldFerie.setText("È stato indicato più volte il giorno: " + ferieDuplicate + " ; Già altri due infermieri hanno indicato i giorni: " + ferieMax);
-    			else if (ferieDuplicate.size() != 1 && ferieMax.size() == 1)
-        			TextFieldFerie.setText("Sono stati indicati più volte i giorni: " + ferieDuplicate + " ; Già altri due infermieri hanno indicato il giorno: " + ferieMax);
-    			else 
-    				TextFieldFerie.setText("Sono stati indicati più volte i giorni: " + ferieDuplicate + " ; Già altri due infermieri hanno indicato i giorni: " + ferieMax);
-    		}
-    		else */
     		
     		if (ferieDuplicate.size() != 0) {
     			if (ferieDuplicate.size() == 1)
@@ -240,6 +228,7 @@ public class TurniInfermieriController {
     			else
     				TextFieldFerie.setText("Già altri due infermieri hanno indicato i giorni: " + ferieMax);
     		}
+    		// tutte le ferie inserite sono valide
     		else if (ferieDuplicate.size() == 0 && ferieMax.size() == 0) {
     			TextFieldFerie.setText("ferie accettate");
     			Tab_Genera_Orario.setDisable(false);
@@ -254,27 +243,27 @@ public class TurniInfermieriController {
 
     }
     
-    @FXML
+    @FXML // controllo che la data di ferie modificata sia una data valida (rispettare formato del tipo data ed essere compresa nell'arco di tempo gestito dal programma)
     void onEditCommitFerie(TableColumn.CellEditEvent<Ferie, LocalDate> ferieCellEditEvent) {
     	ComboBoxInfermieri.setDisable(true);
     	Tab_Genera_Orario.setDisable(true);
 
-    	//modifica tabella ferie 
+    	// ottengo il valore modificato 
     	Ferie ferie = ferieCellEditEvent.getTableView().getSelectionModel().getSelectedItem();
     	LocalDate newValue = ferieCellEditEvent.getNewValue();
     	
+    	// se il nuovo valore è valido aggiorno quello precedente
     	if (model.controllaFerie(newValue)) {
     		ferie.setData(newValue);
     	}
     }
 
-    @FXML
+    @FXML // visualizzazione delle ferie (suddivise in quattro tabelle) in seguito alla selezione di un infermiere
     void doSelezionaInfermiere(ActionEvent event) {
     	
 	Infermiere infermiere = ComboBoxInfermieri.getValue();
     	
     	if (infermiere != null) {
-    		//popolazione tabelle ferie
     		List<Ferie> ferie = model.getFerieInfermiere(infermiere);
 
     		
@@ -303,21 +292,20 @@ public class TurniInfermieriController {
     	}
     }
     
-    @FXML
+    @FXML // generazione dell'orario e popolazione della combobox contenente i mesi 
     void doGeneraOrario(ActionEvent event) {    	
     	
     	TableViewOrarioGenerale.getItems().clear();
     	
     	ComboBoxMesi.setValue(null);
-    	    	
-    	long startTime = System.currentTimeMillis();
-    	    	
+    	    	    	    	
+    	long inizio = System.currentTimeMillis();
+    	
     	Map<LocalDate, Map<Infermiere, String>> soluzione = model.generaOrario();
-    	     	 
-     	long estimatedTime = System.currentTimeMillis() - startTime;
-
-     	System.out.println(estimatedTime);
-    	 
+    	
+    	long fine = System.currentTimeMillis() - inizio;
+    	System.out.println(fine);
+    	     	     	 
     	 if (soluzione == null) {
     	    	TextFieldOrario.setText("Creazione orario non riuscita, modificare ferie e riprovare");
     	    	Tab_Statistiche_Infermieri.setDisable(true);
@@ -344,7 +332,7 @@ public class TurniInfermieriController {
     	
     }
 
-    @FXML
+    @FXML // visualizzazione mensile dell'orario generato, in seguito alla selezione del mese
     void doSelezionaMese(ActionEvent event) {
     	
     	TableColumn29.setVisible(false);
@@ -374,6 +362,7 @@ public class TurniInfermieriController {
     			mese = Month.of(i+1);
     	}
     	    	
+    	// lista degli oggetti che contengono l'infermiere e i turni mensili
     	List<InfermiereTurni> inf = new ArrayList<InfermiereTurni>();
 
     	if (mese != null) {
@@ -391,6 +380,7 @@ public class TurniInfermieriController {
 			else
 				anno = 2020;
 	    	
+			// creazione prima riga in cui viene indicato il nome di ogni giorno
 	    	InfermiereTurni giorni = new InfermiereTurni(null, LocalDate.of(anno, mese, 1).getDayOfWeek().getDisplayName(TextStyle.SHORT,Locale.ITALY),
 	    			LocalDate.of(anno, mese, 2).getDayOfWeek().getDisplayName(TextStyle.SHORT,Locale.ITALY),
 	    			LocalDate.of(anno, mese, 3).getDayOfWeek().getDisplayName(TextStyle.SHORT,Locale.ITALY),
@@ -472,20 +462,20 @@ public class TurniInfermieriController {
 	    	List<LocalDate> festivita = new ArrayList<LocalDate>();
 	    	
 	    	// giorni festivita in italia
-	    	festivita.add(LocalDate.of(2020, Month.JANUARY, 1));
-	    	festivita.add(LocalDate.of(2020, Month.JANUARY, 6));
-	    	festivita.add(LocalDate.of(2020, Month.APRIL, 12));
-	    	festivita.add(LocalDate.of(2020, Month.APRIL, 13));
-	    	festivita.add(LocalDate.of(2020, Month.APRIL, 25));
-	    	festivita.add(LocalDate.of(2020, Month.MAY, 1));
-	    	festivita.add(LocalDate.of(2020, Month.JUNE, 2));
-	    	festivita.add(LocalDate.of(2020, Month.AUGUST, 15));
-	    	festivita.add(LocalDate.of(2019, Month.NOVEMBER, 1));
-	    	festivita.add(LocalDate.of(2019, Month.DECEMBER, 8));
-	    	festivita.add(LocalDate.of(2019, Month.DECEMBER, 25));
-	    	festivita.add(LocalDate.of(2019, Month.DECEMBER, 26));
+			festivita.add(LocalDate.of(2019, Month.NOVEMBER, 1)); // tutti i santi
+	    	festivita.add(LocalDate.of(2019, Month.DECEMBER, 8)); // immacolata
+	    	festivita.add(LocalDate.of(2019, Month.DECEMBER, 25)); // natale 
+	    	festivita.add(LocalDate.of(2019, Month.DECEMBER, 26)); // santo stefano
+	    	festivita.add(LocalDate.of(2020, Month.JANUARY, 1)); // capodanno
+	    	festivita.add(LocalDate.of(2020, Month.JANUARY, 6)); // epifania
+	    	festivita.add(LocalDate.of(2020, Month.APRIL, 12)); // pasqua
+	    	festivita.add(LocalDate.of(2020, Month.APRIL, 13)); // pasquetta
+	    	festivita.add(LocalDate.of(2020, Month.APRIL, 25)); // festa della liberazione
+	    	festivita.add(LocalDate.of(2020, Month.MAY, 1)); // festa del lavoro
+	    	festivita.add(LocalDate.of(2020, Month.JUNE, 2)); // festa della repubblica
+	    	festivita.add(LocalDate.of(2020, Month.AUGUST, 15)); // ferragosto
 
-	    	
+	    	// colorazione delle colonne dei giorni festivi (il sabato viene considerato come giorno festivo)
 	    	if (giorni.getGiorno1().equals("dom") || giorni.getGiorno1().equals("sab") || festivita.contains(LocalDate.of(anno, mese, 1))) {
 	    		festivitaColonna(TableColumn01);
 	    	}
@@ -596,6 +586,7 @@ public class TurniInfermieriController {
 
     }
     
+    // colora le colonne dei giorni festivi
     void festivitaColonna(TableColumn<InfermiereTurni, String> col) {
     	
     	col.setCellFactory(column ->  {
@@ -612,7 +603,7 @@ public class TurniInfermieriController {
     	
     }
     
-    
+    // elimina colorazione del mese visualizzato precedentemente
     void pulisciColonna(TableColumn<InfermiereTurni, String> col) {
     	
     	col.setCellFactory(column ->  {
@@ -629,7 +620,7 @@ public class TurniInfermieriController {
     	
     }   
     
-    @FXML
+    @FXML // creazione dei diagrammi a torta in seguito alla selezione dell'infermiere
     void doSelezionaInfermiereStat(ActionEvent event) {
     	
     	Infermiere infermiere = ComboBoxInfermieriStat.getValue();
@@ -656,7 +647,7 @@ public class TurniInfermieriController {
     	}
     }
     
-    @FXML
+    @FXML // salva orario in un file di testo
     void doSalvaOrario(ActionEvent event) {   	
     	model.salvaOrario();  	
     	TextFieldOrario.setText("Orario salvato nel file 'OrarioInfermieri.txt'");
@@ -723,12 +714,12 @@ public class TurniInfermieriController {
 		ComboBoxInfermieri.getItems().addAll(model.getInfermieri());
 		ComboBoxInfermieriStat.getItems().addAll(model.getInfermieri());
 		
-		// tabelle ferie
+		// controllo sui dati inseriti nella prima tabella delle ferie
     	TableColumnFerie1.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateStringConverter() {
     		
     		@Override
     		public String toString(LocalDate value) {
-    			
+    			// 
     			if (!model.controllaFerie(value))
     				return "valore non valido";
     			
@@ -750,11 +741,13 @@ public class TurniInfermieriController {
     			return super.fromString(value);
     		}
     	}));
+    	
+		// controllo sui dati inseriti nella seconda tabella delle ferie
     	TableColumnFerie2.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateStringConverter() {
     		
     		@Override
     		public String toString(LocalDate value) {
-    			    			
+    			// se il nuovo valore non rispetta formato o è fuori dal periodo di gestione del programma
     			if (!model.controllaFerie(value))
     				return "valore non valido";
     			
@@ -766,7 +759,7 @@ public class TurniInfermieriController {
 
     			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
    			
-    			//controllo che la nuova data inserita sia valida    			
+    			//controllo che la nuova data inserita sia valida rispetto al formato 			
     			try {
         			LocalDate.parse(value, formatter);
 				} catch (Exception DateTimeParseException) {
@@ -777,11 +770,13 @@ public class TurniInfermieriController {
     		}
     	}));
     	
+		// controllo sui dati inseriti nella terza tabella delle ferie
     	TableColumnFerie3.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateStringConverter() {
     		
     		@Override
     		public String toString(LocalDate value) {
-    			    			
+    			    		
+    			// se il nuovo valore non rispetta formato o è fuori dal periodo di gestione del programma
     			if (!model.controllaFerie(value))
     				return "valore non valido";
     			
@@ -793,7 +788,7 @@ public class TurniInfermieriController {
 
     			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     			
-    			//controllo che la nuova data inserita sia valida   			
+    			//controllo che la nuova data inserita sia valida rispetto al formato 			
     			try {
         			LocalDate.parse(value, formatter);
 				} catch (Exception DateTimeParseException) {
@@ -805,11 +800,13 @@ public class TurniInfermieriController {
     		}
     	}));
     	
+		// controllo sui dati inseriti nella quarta tabella delle ferie
     	TableColumnFerie4.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateStringConverter() {
     		
     		@Override
     		public String toString(LocalDate value) {
-    			    			
+    			    	
+    			// se il nuovo valore non rispetta formato o è fuori dal periodo di gestione del programma
     			if (!model.controllaFerie(value))
     				return "valore non valido";
     			
@@ -821,7 +818,7 @@ public class TurniInfermieriController {
 
     			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     			
-    			//controllo che la nuova data inserita sia valida   			
+    			//controllo che la nuova data inserita sia valida rispetto al formato 			
     			try {
         			LocalDate.parse(value, formatter);
 				} catch (Exception DateTimeParseException) {

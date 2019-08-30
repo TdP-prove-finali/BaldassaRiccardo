@@ -25,12 +25,8 @@ public class Model {
 	private boolean trovata;
 	private LocalDate inizio;
 	private LocalDate fine;
-	private List<Infermiere> infMat;
-	private List<Infermiere> infPom;
-	private List<Infermiere> infNot;
 	private List<StatisticheInfermiere> stat;
 	private List<LocalDate> festivita;
-	private boolean dataFest;
 	private List<Integer> vincoli;
 	private int ore_lavorative_settimanali_contrattuali;
 	private int max_ore_lavorative_settimanali;
@@ -44,47 +40,45 @@ public class Model {
 	private int debito_orario_minimo_annuale;
 	
 	public Model() {
-		dao = new TurniInfermieriDAO();
-		infermieri = dao.getInfermieri();
-		ferie = dao.getFerie();
-		inizio = LocalDate.of(2019, Month.SEPTEMBER, 1);
-		fine = LocalDate.of(2020, Month.SEPTEMBER, 1);
-		infMat = new ArrayList<Infermiere>();
-		infPom = new ArrayList<Infermiere>();
-		infNot = new ArrayList<Infermiere>();
-		stat = new ArrayList<StatisticheInfermiere>();
-		festivita = new ArrayList<LocalDate>(); 	
+		dao = new TurniInfermieriDAO(); // dao
+		infermieri = dao.getInfermieri(); // ottengo tutti gli infermieri
+		ferie = dao.getFerie(); // ottengo tutti i giorni di ferie di tutti gli infermieri
+		inizio = LocalDate.of(2019, Month.SEPTEMBER, 1); // giorno di inizio periodo per la generazione dell'orario
+		fine = LocalDate.of(2020, Month.SEPTEMBER, 1); // giorno di fine periodo per la generazione dell'orario
+		stat = new ArrayList<StatisticheInfermiere>(); // lista in cui vengono salvate le statistiche di tutti gli infermieri 
+		festivita = new ArrayList<LocalDate>(); // lista che contiene tutte le date delle festivita
     	// giorni festivita in italia
-    	festivita.add(LocalDate.of(2020, Month.JANUARY, 1));
-    	festivita.add(LocalDate.of(2020, Month.JANUARY, 6));
-    	festivita.add(LocalDate.of(2020, Month.APRIL, 12));
-    	festivita.add(LocalDate.of(2020, Month.APRIL, 13));
-    	festivita.add(LocalDate.of(2020, Month.APRIL, 25));
-    	festivita.add(LocalDate.of(2020, Month.MAY, 1));
-    	festivita.add(LocalDate.of(2020, Month.JUNE, 2));
-    	festivita.add(LocalDate.of(2020, Month.AUGUST, 15));
-    	festivita.add(LocalDate.of(2019, Month.NOVEMBER, 1));
-    	festivita.add(LocalDate.of(2019, Month.DECEMBER, 8));
-    	festivita.add(LocalDate.of(2019, Month.DECEMBER, 25));
-    	festivita.add(LocalDate.of(2019, Month.DECEMBER, 26));
-    	// salvataggio vincoli
-    	vincoli = dao.getVincoli();
-    	ore_lavorative_settimanali_contrattuali = vincoli.get(1);
-    	max_ore_lavorative_settimanali = vincoli.get(2);
-    	durata_turno_lavorativo = vincoli.get(7);
-    	numero_infermieri_turno_mattino = vincoli.get(8);
-    	numero_infermieri_turno_pomeriggio = vincoli.get(9);
-    	numero_infermieri_turno_notte = vincoli.get(10);
-    	max_giorni_lavorativi_settimanali = max_ore_lavorative_settimanali / durata_turno_lavorativo;
-    	debito_orario_teorico_annuale = ore_lavorative_settimanali_contrattuali * 52;   	
-		debito_orario_massimo_annuale = debito_orario_teorico_annuale + (int) (0.02 * (double)debito_orario_teorico_annuale);
-		debito_orario_minimo_annuale = debito_orario_teorico_annuale - (int) (0.02 * (double)debito_orario_teorico_annuale);
+		festivita.add(LocalDate.of(2019, Month.NOVEMBER, 1)); // tutti i santi
+    	festivita.add(LocalDate.of(2019, Month.DECEMBER, 8)); // immacolata
+    	festivita.add(LocalDate.of(2019, Month.DECEMBER, 25)); // natale 
+    	festivita.add(LocalDate.of(2019, Month.DECEMBER, 26)); // santo stefano
+    	festivita.add(LocalDate.of(2020, Month.JANUARY, 1)); // capodanno
+    	festivita.add(LocalDate.of(2020, Month.JANUARY, 6)); // epifania
+    	festivita.add(LocalDate.of(2020, Month.APRIL, 12)); // pasqua
+    	festivita.add(LocalDate.of(2020, Month.APRIL, 13)); // pasquetta
+    	festivita.add(LocalDate.of(2020, Month.APRIL, 25)); // festa della liberazione
+    	festivita.add(LocalDate.of(2020, Month.MAY, 1)); // festa del lavoro
+    	festivita.add(LocalDate.of(2020, Month.JUNE, 2)); // festa della repubblica
+    	festivita.add(LocalDate.of(2020, Month.AUGUST, 15)); // ferragosto
+    	vincoli = dao.getVincoli(); // salvataggio vincoli
+    	ore_lavorative_settimanali_contrattuali = vincoli.get(1); // ore lavorative settimanali definite da contratto
+    	max_ore_lavorative_settimanali = vincoli.get(2); // ore massime lavorative in un periodo di sette giorni definite per legge
+    	durata_turno_lavorativo = vincoli.get(7); // durata in ore di un singolo turno lavorativo
+    	numero_infermieri_turno_mattino = vincoli.get(8); // infermieri necessari nel reparto per il turno del mattino
+    	numero_infermieri_turno_pomeriggio = vincoli.get(9); // infermieri necessari nel reparto per il turno del pomeriggio
+    	numero_infermieri_turno_notte = vincoli.get(10); // infermieri necessari nel reparto per il turno della notte
+    	max_giorni_lavorativi_settimanali = max_ore_lavorative_settimanali / durata_turno_lavorativo; // numero massimo di giorni lavorativi in un periodo di sette giorni
+    	debito_orario_teorico_annuale = ore_lavorative_settimanali_contrattuali * 52; // ore di lavoro teoriche che ogni infermiere dovrebbe fare all'anno (considerando annche i giorni di ferie)	
+		debito_orario_massimo_annuale = debito_orario_teorico_annuale + (int) (0.02 * (double)debito_orario_teorico_annuale); // ore di lavoro annuali teoriche maggiorate del 2%
+		debito_orario_minimo_annuale = debito_orario_teorico_annuale - (int) (0.02 * (double)debito_orario_teorico_annuale); // ore di lavoro annuali teoriche diminuite del 2%
 	}
 
+	// restituisco tutti gli infermieri
 	public List<Infermiere> getInfermieri() {
 		return infermieri;
 	}
 
+	// se la data modificata non rispetta il formato o è fuori dal periodo di gestione non viene accettata
 	public boolean controllaFerie(LocalDate value) {
 
 		if (value == null)
@@ -96,6 +90,7 @@ public class Model {
 		return true;
 	}
 	
+	// ottengo le ferie dell'infermiere passato come parametro, ordinate in ordine cronologico
 	public List<Ferie> getFerieInfermiere(Infermiere infermiere) {
 
 		List<Ferie> f =  new ArrayList<Ferie>();
@@ -109,6 +104,7 @@ public class Model {
 		return f;
 	}
 
+	// apporto le modifiche al db per le ferie modificate correttamente attraverso le tabelle
 	public void modificaFerie(Infermiere infermiere) {
 		
 		for (Ferie f : ferie) {
@@ -122,6 +118,7 @@ public class Model {
 		}
 	}
 	
+	// controllo se dopo aver modificato le ferie non siano stati ripetuti più volte gli stessi giorni per lo stesso infermiere
 	public List<LocalDate> controlloFerieDuplicate(Infermiere infermiere) {
 		List<LocalDate> giorni = new ArrayList<LocalDate>();
 		int cont = 0 ;
@@ -139,6 +136,8 @@ public class Model {
 		return giorni;
 	}
 	
+	// controllo se già altri due infermieri hanno richiesto le ferie in un giorno appena modificato
+	// ! C'È IL VINCOLO CHE AL MASSIMO DUE INFERMIERI POSSONO RICHIEDERE LE FERIE NELLO STESSO GIORNO
 	public List<LocalDate> controlloFerieMax() {
 
 		List<LocalDate> giorni = new ArrayList<LocalDate>();		
@@ -157,8 +156,10 @@ public class Model {
 		return giorni;	
 	}
 
+	// inizializzazione e richiamo della funzione ricorsiva per la generazione dell'orario
 	public Map<LocalDate, Map<Infermiere, String>> generaOrario() {
 		
+		// inizializzazione delle statistiche di ogni infermiere
 		for (Infermiere inf : infermieri) {
 			inf.setNumero_mattine(0);
 			inf.setNumero_pomeriggi(0);
@@ -167,39 +168,39 @@ public class Model {
 			inf.setNumero_riposi_festivita(0);
 		}
 
-		soluzione = new TreeMap<LocalDate, Map<Infermiere, String>>();
+		soluzione = new TreeMap<LocalDate, Map<Infermiere, String>>(); // mappa che conterrà la soluzione trovata
+		trovata = false; // variabile booleana che indica se la soluzione è stata trovata o meno
+		Map<LocalDate, Map<Infermiere, String>> parziale = new TreeMap<LocalDate, Map<Infermiere, String>>(); // soluzione parziale per la ricerca della soluzione completa
 
-		trovata = false;
-		dataFest = false;
-		Map<LocalDate, Map<Infermiere, String>> parziale = new TreeMap<LocalDate, Map<Infermiere, String>>();
-
-		LocalDate data = inizio;
 		// inizializzazione orario
+		
+		LocalDate data = inizio;
 
 		Map<Infermiere, String> turni = new HashMap<Infermiere, String>();
 
 		for (Infermiere i : infermieri)
 			turni.put(i, null);
 
+		// inizializzazione di parziale con tutte le date e tutti gli infermieri con i turni settati a null
+		// inizializzazione di soluzione solo con tutte le date
 		while (data.isBefore(fine)) {
 			parziale.put(data, new HashMap<Infermiere, String>(turni));
 			soluzione.put(data, new HashMap<Infermiere, String>());
 			data = data.plusDays(1);
 		}
 
-		Map<Integer, Infermiere> infermieriMap = new HashMap<Integer, Infermiere>();
+		Map<Integer, Infermiere> infermieriMap = new HashMap<Integer, Infermiere>(); // identity map degli infermieri
 
 		for (Infermiere i : infermieri)
 			infermieriMap.put(i.getId_infermiere(), i);
 
-		// inserimento ferie
+		// inserimento di tutte le ferie degli infermieri nella soluzione parziale
 		for (Ferie f : ferie) {
-
 			Map<Infermiere, String> map = parziale.get(f.getData());
 			map.put(infermieriMap.get(f.getId_infermiere()), "Ferie");
-
 		}
 
+		// chiamata della funzione ricorsiva
 		calcolaOrario(parziale, inizio);
 
 		return soluzione;
@@ -207,93 +208,111 @@ public class Model {
 	}
 
 	// calcola orario attraverso la ricorsione
+	// i parametri sono la soluzione parziale e la data che rappresenta il livello della ricorsione
 	private void calcolaOrario(Map<LocalDate, Map<Infermiere, String>> parziale, LocalDate data) {
 
+		// se la soluzione è stata trovata esco dalla ricorsione
 		if (trovata)
 			return;	
+		
+		boolean dataFest; // varaiabile che indicica se il giorno corrente è un feriale o festivo (il sabato viene considerato come giorno festivo)
 		
 		if (data.getDayOfWeek().getValue() == 6 || data.getDayOfWeek().getValue() == 7 || festivita.contains(data))
 			dataFest = true;
 		else
 			dataFest = false;
 
+		// se non ho ancora completato tutto il calendario
 		if (data.isBefore(fine)) {
 			
-			List<Infermiere> candidatiMattino = trovaCandidatiMattino(data, parziale);
+			List<Infermiere> candidatiMattino = trovaCandidatiMattino(data, parziale); // ottengo tutti gli infermieri candidati a lavorare nel turno del mattino in questa giornata
 			
 			if (dataFest) {
-				Collections.sort(candidatiMattino, Infermiere.riposiFestivitaComparator());
+				Collections.sort(candidatiMattino, Infermiere.riposiFestivitaComparator()); // ordino gli infermieri in base al numero di riposi nei giorni fetivi che hanno già fatto
 			}
 			else {
-				Collections.sort(candidatiMattino,Infermiere.mattineComparator());
+				Collections.sort(candidatiMattino,Infermiere.mattineComparator()); // ordino gli infermieri in base al numero di turni di mattina che hanno già fatto
 			}
 			
+			// se c'è troppa differenza tra il numero di riposi tra due infermieri
 			if (!diffRiposi()) {
-				Collections.sort(candidatiMattino, Infermiere.riposiComparator());
+				Collections.sort(candidatiMattino, Infermiere.riposiComparator()); // ordino gli infermieri in base al numero di riposi che hanno già fatto
 			}
 			
-			List<List<Infermiere>> combMattino = this.subsets(candidatiMattino, numero_infermieri_turno_mattino);
+			List<List<Infermiere>> combMattino = this.subsets(candidatiMattino, numero_infermieri_turno_mattino); //ottengo tutte le possibili combinazioni di infermieri che possono lavorare nel turno del mattino 
 
+			// se non esiste nemmeno una combinazione 
 			if (combMattino.size() == 0)
 				return;
 
+			// per ogni combinazione di infermieri che possono lavorare nel turno del mattino
 			for (List<Infermiere> infMat : combMattino) {
 
+				// assegno agli infermieri il turno del mattino
 				for (Infermiere i : infMat) {
 					parziale.get(data).put(i, "Mattino");
 					i.setNumero_mattine(i.getNumero_mattine() + 1);
 				}
 
-				List<Infermiere> candidatiPomeriggio = this.trovaCandidatiPomeriggio(data, parziale);
+				List<Infermiere> candidatiPomeriggio = this.trovaCandidatiPomeriggio(data, parziale); // ottengo tutti gli infermieri candidati a lavorare nel turno del pomeriggio in questa giornata
 				
 				if (dataFest) {
-					Collections.sort(candidatiPomeriggio, Infermiere.riposiFestivitaComparator());
+					Collections.sort(candidatiPomeriggio, Infermiere.riposiFestivitaComparator()); // ordino gli infermieri in base al numero di riposi nei giorni fetivi che hanno già fatto
 				}
 				else {
-					Collections.sort(candidatiPomeriggio, Infermiere.pomeriggiComparator());
+					Collections.sort(candidatiPomeriggio, Infermiere.pomeriggiComparator()); // ordino gli infermieri in base al numero di turni di pomeriggio che hanno già fatto
 				}
 				
+				// se c'è troppa differenza tra il numero di riposi tra due infermieri
 				if (!diffRiposi()) {
-					Collections.sort(candidatiPomeriggio, Infermiere.riposiComparator());
+					Collections.sort(candidatiPomeriggio, Infermiere.riposiComparator()); // ordino gli infermieri in base al numero di riposi che hanno già fatto
 				}
 				
-				List<List<Infermiere>> combPomeriggio = this.subsets(candidatiPomeriggio, numero_infermieri_turno_pomeriggio);
+				List<List<Infermiere>> combPomeriggio = this.subsets(candidatiPomeriggio, numero_infermieri_turno_pomeriggio); //ottengo tutte le possibili combinazioni di infermieri che possono lavorare nel turno del pomeriggio
 
+				// se non esiste nemmeno una combinazione
 				if (combPomeriggio.size() == 0)
 					return;
 
+				// per ogni combinazione di infermieri che possono lavorare nel turno del pomeriggio
 				for (List<Infermiere> infPom : combPomeriggio) {
 
+					// assegno agli infermieri il turno del pomeriggio
 					for (Infermiere i : infPom) {
 						parziale.get(data).put(i, "Pomeriggio");
 						i.setNumero_pomeriggi(i.getNumero_pomeriggi() + 1);
 					}
 
-					List<Infermiere> candidatiNotte = this.trovaCandidatiNotte(data, parziale);
+					List<Infermiere> candidatiNotte = this.trovaCandidatiNotte(data, parziale); // ottengo tutti gli infermieri candidati a lavorare nel turno della notte in questa giornata
 					
 					if (dataFest) {
-						Collections.sort(candidatiNotte, Infermiere.riposiFestivitaComparator());
+						Collections.sort(candidatiNotte, Infermiere.riposiFestivitaComparator()); // ordino gli infermieri in base al numero di riposi nei giorni fetivi che hanno già fatto
 					}
 					else {
-						Collections.sort(candidatiNotte, Infermiere.nottiComparator());
+						Collections.sort(candidatiNotte, Infermiere.nottiComparator()); // ordino gli infermieri in base al numero di turni della notte che hanno già fatto
 					}
 					
+					// se c'è troppa differenza tra il numero di riposi tra due infermieri
 					if (!diffRiposi()) {
-						Collections.sort(candidatiNotte, Infermiere.riposiComparator());
+						Collections.sort(candidatiNotte, Infermiere.riposiComparator()); // ordino gli infermieri in base al numero di riposi che hanno già fatto
 					}
 					
-					List<List<Infermiere>> combNotte = this.subsets(candidatiNotte, numero_infermieri_turno_notte);
+					List<List<Infermiere>> combNotte = this.subsets(candidatiNotte, numero_infermieri_turno_notte); //ottengo tutte le possibili combinazioni di infermieri che possono lavorare nel turno della notte
 
+					// se non esiste nemmeno una combinazione
 					if (combNotte.size() == 0)
 						return;
 
+					// per ogni combinazione di infermieri che possono lavorare nel turno della notte
 					for (List<Infermiere> infNot : combNotte) {
 
+						// assegno agli infermieri il turno della notte
 						for (Infermiere i : infNot) {
 							parziale.get(data).put(i, "Notte");
 							i.setNumero_notti(i.getNumero_notti() + 1);
 						}
 
+						// assegno il giorno di riposo a tutti gli infermieri a cui non è stato assegnato un turno lavorativo e che non sono in ferie
 						for (Infermiere i : infermieri) {
 							if (parziale.get(data).get(i) == null) {
 								parziale.get(data).put(i, "Riposo");
@@ -303,8 +322,10 @@ public class Model {
 							}
 						}
 						
-							this.calcolaOrario(parziale, data.plusDays(1));
+						// richiamo la funzione ricorsiva avendo assegnato tutti i turni in questa giornata e indicando di continuare per il giorno successivo
+						this.calcolaOrario(parziale, data.plusDays(1));
 
+						// rimuovo i giorni di riposo assegnati
 						for (Infermiere i : infermieri) {
 							if (parziale.get(data).get(i) == "Riposo") {
 								parziale.get(data).put(i, null);
@@ -314,6 +335,7 @@ public class Model {
 							}
 						}
 
+						// rimuovo i turni della notte assegnati
 						for (Infermiere i : infermieri) {
 							if (parziale.get(data).get(i) == "Notte") {
 								parziale.get(data).put(i, null);
@@ -321,7 +343,8 @@ public class Model {
 							}
 						}
 					}
-
+					
+					// rimuovo i turni del pomeriggio assegnati
 					for (Infermiere i : infermieri) {
 						if (parziale.get(data).get(i) == "Pomeriggio") {
 							parziale.get(data).put(i, null);
@@ -329,7 +352,8 @@ public class Model {
 						}
 					}
 				}
-
+				
+				// rimuovo i turni del mattino assegnati
 				for (Infermiere i : infermieri) {
 					if (parziale.get(data).get(i) == "Mattino") {
 						parziale.get(data).put(i, null);
@@ -339,10 +363,13 @@ public class Model {
 			}
 		}
 
-		// vedere se ho completato tutto l'anno
+		// quando completo tutto il calendario
 		else if (data.isEqual(fine)) {
-						System.out.println(debito_orario_massimo_annuale + " " + debito_orario_minimo_annuale);
-			int oreTot = 0;
+			
+			System.out.println(debito_orario_massimo_annuale + " " + debito_orario_minimo_annuale);
+			
+			// variaibli per la ricerca del numero minimo e massimo di turni e riposi per gli infermieri
+			int oreTot = 0; 
 			int maxMat = 0;
 			int minMat = Integer.MAX_VALUE;
 			int maxPom = 0;
@@ -355,31 +382,32 @@ public class Model {
 			int minRipFest = Integer.MAX_VALUE;
 			
 			for (Infermiere inf : infermieri) {
-				oreTot = (inf.getNumero_mattine() + inf.getNumero_pomeriggi() + inf.getNumero_notti() + 32) * durata_turno_lavorativo;
+				oreTot = (inf.getNumero_mattine() + inf.getNumero_pomeriggi() + inf.getNumero_notti() + 32) * durata_turno_lavorativo; // ore totali lavorative annuali per infermiere (vengono considerati anche i 32 giorni di ferie annuali in questo conteggio)
 				System.out.println(oreTot);		
-				if (oreTot > debito_orario_massimo_annuale || oreTot < debito_orario_minimo_annuale)
+				// controllo se l'infermiere ha lavorato per il numero giusto di ore durante l'anno (con uno scarto del 2%) 
+				if (oreTot > debito_orario_massimo_annuale || oreTot < debito_orario_minimo_annuale) 
 					return;
 				
 				if (inf.getNumero_mattine() < minMat)
-					minMat = inf.getNumero_mattine();
+					minMat = inf.getNumero_mattine(); // numero minimo di mattine assegnate ad un infermiere
 				if (inf.getNumero_mattine() > maxMat)
-					maxMat = inf.getNumero_mattine();
+					maxMat = inf.getNumero_mattine(); // numero massimo di mattine assegnate ad un infermiere
 				if (inf.getNumero_pomeriggi() < minPom)
-					minPom = inf.getNumero_pomeriggi();
-				if (inf.getNumero_pomeriggi() > maxPom)
-					maxPom = inf.getNumero_pomeriggi();
+					minPom = inf.getNumero_pomeriggi(); // numero minimo di pomeriggi assegnati ad un infermiere
+				if (inf.getNumero_pomeriggi() > maxPom) 
+					maxPom = inf.getNumero_pomeriggi(); // numero massimo di pomeriggi assegnati ad un infermiere
 				if (inf.getNumero_notti() < minNot)
-					minNot = inf.getNumero_notti();
+					minNot = inf.getNumero_notti(); // numero minimo di notti assegnate ad un infermiere
 				if (inf.getNumero_notti() > maxNot)
-					maxNot = inf.getNumero_notti();
+					maxNot = inf.getNumero_notti(); // numero massimo di notti assegnate ad un infermiere
 				if (inf.getNumero_riposi() < minRip)
-					minRip = inf.getNumero_riposi();
+					minRip = inf.getNumero_riposi(); // numero minimo di risposi assegnati ad un infemiere
 				if (inf.getNumero_riposi() > maxRip)
-					maxRip = inf.getNumero_riposi();
+					maxRip = inf.getNumero_riposi(); // numero massimo di risposi assegnati ad un infermiere
 				if (inf.getNumero_riposi_festivita() < minRipFest)
-					minRipFest = inf.getNumero_riposi_festivita();
+					minRipFest = inf.getNumero_riposi_festivita(); // numero minimo di riposi durante giorni festivi assegnati ad un infermiere
 				if (inf.getNumero_riposi_festivita() > maxRipFest)
-					maxRipFest = inf.getNumero_riposi_festivita();
+					maxRipFest = inf.getNumero_riposi_festivita(); // numero massimo di riposi durante giorni festivi assegnati ad un infermiere
 			}  
 			
 			
@@ -395,26 +423,28 @@ public class Model {
 			System.out.println(minRipFest);
 			System.out.println(maxRipFest);
 			
-			if (maxMat - minMat > 12)
+			// vincoli che permettono di trovare una soluzione che sia molto equa tra gli infermieri
+			if (maxMat - minMat > 12) // controllo differenza massima del numero di assegnazioni del turno del mattina tra gli infermieri
 				return;
-			if (maxPom - minPom > 8)
+			if (maxPom - minPom > 8) // controllo differenza massima del numero di assegnazioni del turno del pomeriggio tra gli infermieri
 				return;
-			if (maxNot - minNot > 4)
+			if (maxNot - minNot > 4) // controllo differenza massima del numero di assegnazioni del turno della notte tra gli infermieri
 				return;
-			if (maxRip - minRip > 5)
+			if (maxRip - minRip > 5) // controllo differenza massima del numero di assegnazioni di riposi tra gli infermieri
 				return;
-			if (maxRipFest - minRipFest > 3)
+			if (maxRipFest - minRipFest > 3) // controllo differenza massima del numero di assegnazioni di riposi durante giorni festivi tra gli infermieri
 				return;
-			
-			
-			trovata = true;
+						
+			trovata = true; // trovata soluzione che rispetti i vincoli sopra indicati
 			LocalDate d = inizio;
 
+			// salvo la soluzione finale
 			while (d.isBefore(fine)) {
 				soluzione.put(d, new HashMap<Infermiere, String>(parziale.get(d)));
 				d = d.plusDays(1);
 			}
 			
+			// salvo le statistiche degli infermieri
 			for (Infermiere i : infermieri)
 				stat.add(new StatisticheInfermiere(i, i.getNumero_riposi(), i.getNumero_mattine(), i.getNumero_pomeriggi(), i.getNumero_notti(), i.getNumero_riposi_festivita()));
 
@@ -422,23 +452,29 @@ public class Model {
 		}
 	}
 
+	// trovo quali infermieri possono essere assegnati al turno del mattino nella data passata come parametro andando a controllare la soluzione parziale fino a quel giorno 
 	private List<Infermiere> trovaCandidatiMattino(LocalDate data, Map<LocalDate, Map<Infermiere, String>> parziale) {
 
-		infMat.clear();
+		List<Infermiere> infMat = new ArrayList<Infermiere>();
 		
+		// primo giorno
 		if (data.equals(inizio)) {
 			for (Infermiere i : infermieri) {
-				if (parziale.get(data).get(i) == null)
+				if (parziale.get(data).get(i) == null) // tutti gli infermieri a cui non è ancora stato assegnato un turno sono possibili candidati a parte quelli a cui sono state assegnate le ferie 
 					infMat.add(i);
 			}
-		} else if (data.isBefore(LocalDate.of(2019, Month.SEPTEMBER, 7))
+		}
+		// tra il primo e il settimo giorno (esclusi)
+		else if (data.isBefore(inizio.plusDays(max_giorni_lavorativi_settimanali))
 				&& data.isAfter(inizio)) {
 			for (Infermiere i : infermieri) {
 				if (parziale.get(data).get(i) == null && !parziale.get(data.minusDays(1)).get(i).equals("Notte")
-						&& !parziale.get(data.minusDays(1)).get(i).equals("Pomeriggio"))
+						&& !parziale.get(data.minusDays(1)).get(i).equals("Pomeriggio")) // sono candidati gli infermieri a cui non è ancora stato assegnato il turno e il cui giorno precedente non è stato assegnato il turno di pomeriggio, il turno di notte o le ferie
 					infMat.add(i);
 			}
-		} else {
+		} 
+		// in tutti gli altri giorni
+		else {
 			int cont;
 
 			for (Infermiere i : infermieri) {
@@ -446,36 +482,42 @@ public class Model {
 
 				for (int j = max_giorni_lavorativi_settimanali; j > 0; j--) {
 					if (!parziale.get(data.minusDays(j)).get(i).equals("Riposo")
-							&& !parziale.get(data.minusDays(j)).get(i).equals("Ferie"))
+							&& !parziale.get(data.minusDays(j)).get(i).equals("Ferie")) // conto quante volte hanno lavorato gli infermieri nei sei giorni precedenti
 						cont++;
 				}
 
 				if (cont < max_giorni_lavorativi_settimanali && parziale.get(data).get(i) == null
 						&& !parziale.get(data.minusDays(1)).get(i).equals("Notte")
-						&& !parziale.get(data.minusDays(1)).get(i).equals("Pomeriggio"))
+						&& !parziale.get(data.minusDays(1)).get(i).equals("Pomeriggio")) // sono candidati gli infermieri a cui non è ancora stato assegnato un turno e che nei sei giorni precedenti non hanno lavorato per almeno un giorno, che nel giorno precedente non sono stati assegnati al turno del pomeriggio o della notte, e che in questo giorno non abbiano le ferie 
 					infMat.add(i);
 			}
 		}
 		return infMat;
 	}
 
-	private List<Infermiere> trovaCandidatiPomeriggio(LocalDate data,
-			Map<LocalDate, Map<Infermiere, String>> parziale) {
+	// trovo quali infermieri possono essere assegnati al turno del pomeriggio nella data passata come parametro andando a controllare la soluzione parziale fino a quel giorno 
+	private List<Infermiere> trovaCandidatiPomeriggio(LocalDate data, Map<LocalDate, Map<Infermiere, String>> parziale) {
 
-		infPom.clear();
+		List<Infermiere> infPom = new ArrayList<Infermiere>();
 
+		// primo giorno
 		if (data.equals(inizio)) {
 			for (Infermiere i : infermieri) {
-				if (parziale.get(data).get(i) == null)
+				if (parziale.get(data).get(i) == null) // tutti gli infermieri a cui non è ancora stato assegnato un turno sono possibili candidati a parte quelli a cui sono state assegnate le ferie
 					infPom.add(i);
 			}
-		} else if (data.isBefore(LocalDate.of(2019, Month.SEPTEMBER, 7))
+		} 
+		
+		// tra il primo e il settimo giorno (esclusi)
+		else if (data.isBefore(inizio.plusDays(max_giorni_lavorativi_settimanali))
 				&& data.isAfter(inizio)) {
 			for (Infermiere i : infermieri) {
-				if (parziale.get(data).get(i) == null && !parziale.get(data.minusDays(1)).get(i).equals("Notte"))
+				if (parziale.get(data).get(i) == null && !parziale.get(data.minusDays(1)).get(i).equals("Notte")) // sono candidati gli infermieri a cui non è ancora stato assegnato il turno il cui giorno precendete non sono stati assegnati al turno della notte o le ferie
 					infPom.add(i);
 			}
-		} else {
+		} 
+		// in tutti gli altri giorni
+		else {
 			int cont;
 
 			for (Infermiere i : infermieri) {
@@ -483,33 +525,40 @@ public class Model {
 
 				for (int j = max_giorni_lavorativi_settimanali; j > 0; j--) {
 					if (!parziale.get(data.minusDays(j)).get(i).equals("Riposo")
-							&& !parziale.get(data.minusDays(j)).get(i).equals("Ferie"))
+							&& !parziale.get(data.minusDays(j)).get(i).equals("Ferie")) // conto quante volte hanno lavorato gli infermieri nei sei giorni precedenti
 						cont++;
 				}
 
 				if (cont < max_giorni_lavorativi_settimanali && parziale.get(data).get(i) == null
-						&& !parziale.get(data.minusDays(1)).get(i).equals("Notte"))
+						&& !parziale.get(data.minusDays(1)).get(i).equals("Notte")) // sono candidati tutti gli infemieri a cui non è ancora stato assegnato un turno e che nei sei giorni precedenti non hanno lavorato per almeno un giorno, che nel giorno precedente non siano stati assegnati al turno di notte e che in questo giorno non abbiano le ferie
 					infPom.add(i);
 			}
 		}
 		return infPom;
 	}
 
+	// trovo quali infermieri possono essere assegnati al turno della notte nella data passata come parametro andando a controllare la soluzione parziale fino a quel giorno 
 	private List<Infermiere> trovaCandidatiNotte(LocalDate data, Map<LocalDate, Map<Infermiere, String>> parziale) {
 
-		infNot.clear();
+		List<Infermiere> infNot = new ArrayList<Infermiere>();
+		
+		// primo giorno
 		if (data.equals(inizio)) {
 			for (Infermiere i : infermieri) {
-				if (parziale.get(data).get(i) == null)
+				if (parziale.get(data).get(i) == null) // tutti gli infermieri a cui non è ancora stato assegnato un turno sono possibili candidati a parte quelli a cui sono state assegnate le ferie
 					infNot.add(i);
 			}
-		} else if (data.isBefore(LocalDate.of(2019, Month.SEPTEMBER, 7))
+		} 
+		// tra il primo e il settimo giorno (esclusi)
+		else if (data.isBefore(LocalDate.of(2019, Month.SEPTEMBER, 7))
 				&& data.isAfter(inizio)) {
 			for (Infermiere i : infermieri) {
-				if (parziale.get(data).get(i) == null)
+				if (parziale.get(data).get(i) == null) // tutti gli infermieri a cui non è ancora stato assegnato un turno sono possibili candidati a parte quelli a cui sono state assegnate le ferie
 					infNot.add(i);
 			}
-		} else {
+		} 
+		// in tutti gli altri giorni
+		else {
 			int cont;
 
 			for (Infermiere i : infermieri) {
@@ -517,17 +566,18 @@ public class Model {
 
 				for (int j = max_giorni_lavorativi_settimanali; j > 0; j--) {
 					if (!parziale.get(data.minusDays(j)).get(i).equals("Riposo")
-							&& !parziale.get(data.minusDays(j)).get(i).equals("Ferie"))
+							&& !parziale.get(data.minusDays(j)).get(i).equals("Ferie")) // conto quante volte hanno lavorato gli infermieri nei sei giorni precedenti
 						cont++;
 				}
 
-				if (cont < max_giorni_lavorativi_settimanali && parziale.get(data).get(i) == null)
+				if (cont < max_giorni_lavorativi_settimanali && parziale.get(data).get(i) == null) // sono candidati tutti gli infermieri a cui non è stato ancora assegnato un turno e che nei sei giorni precedenti non hanno lavorato per almeno un giorno e che in questo giorno non abbiano le ferie
 					infNot.add(i);
 			}
 		}
 		return infNot;
 	}
 	
+	// controllo la differenza massima tra il numero di riposi degli infermieri
 	public boolean diffRiposi() {
 		
 		int min = Integer.MAX_VALUE;
@@ -546,30 +596,28 @@ public class Model {
 		return true;
 	}
 
+	// trovo tutte le combinazioni formate da k infermieri attraverso l'uso degli indici
 	List<List<Infermiere>> subsets(List<Infermiere> input, int k) {
 
 		List<List<Infermiere>> subsets = new ArrayList<>();
 		
-		// input array
-		// sequence length  		
-
-		int[] s = new int[k];	// here we'll keep indices
-								// pointing to elements in input array
+		int[] s = new int[k];	// indici che puntano agli elementi nella lista
+								
 		if (k <= input.size()) {
-			// first index sequence: 0, 1, 2, ...
+			
 			for (int i = 0; (s[i] = i) < k - 1; i++)
 				;
 			subsets.add(getSubset(input, s));
 			for (;;) {
 				int i;
-				// find position of item that can be incremented
+				
 				for (i = k - 1; i >= 0 && s[i] == input.size() - k + i; i--)
 					;
 				if (i < 0) {
 					break;
 				}
-				s[i]++; // increment this item
-				for (++i; i < k; i++) { // fill up remaining items
+				s[i]++; 
+				for (++i; i < k; i++) { 
 					s[i] = s[i - 1] + 1;
 				}
 				subsets.add(getSubset(input, s));
@@ -578,18 +626,15 @@ public class Model {
 		return subsets;
 	}
 
-	// generate actual subset by index sequence
+	// genera la sotto-sequenza attraverso l'indice
 	List<Infermiere> getSubset(List<Infermiere> input, int[] subset) {
 		List<Infermiere> result = new ArrayList<Infermiere>();
 		for (int i = 0; i < subset.length; i++)
 			result.add(input.get(subset[i]));
 		return result;
 	}
-
-	public List<StatisticheInfermiere> getStat() {
-		return stat;
-	}
 	
+	// restituisce tutti i turni dell'infermiere nel mese (passati come parametri)
 	public InfermiereTurni turniInfermiere(Infermiere infermiere, Month mese) {
 		
 		int anno;
@@ -603,11 +648,12 @@ public class Model {
 		LocalDate d = LocalDate.of(anno, mese, 1);
 		
 		while (d.getMonth().equals(mese)) {
-			turni.add(soluzione.get(d).get(infermiere).substring(0, 1));
+			turni.add(soluzione.get(d).get(infermiere).substring(0, 1)); // salvo l'iniziale dei turni dell'infermiere
 			
 			d = d.plusDays(1);
 		}
 		
+		// creo oggetto da visualizzare nella tabella dell'orario
 		InfermiereTurni it = new InfermiereTurni(infermiere,turni.get(0),turni.get(1),turni.get(2),turni.get(3),turni.get(4),
 				turni.get(5),turni.get(6),turni.get(7),turni.get(8),turni.get(9),turni.get(10),turni.get(11),turni.get(12),turni.get(13),
 				turni.get(14),turni.get(15),turni.get(16),turni.get(17),turni.get(18),turni.get(19),turni.get(20),turni.get(21),
@@ -624,29 +670,26 @@ public class Model {
 		
 	}
 	
+	// restituisce statistiche infermiere
 	public StatisticheInfermiere statInfermiere(Infermiere infermiere){
-		
-		StatisticheInfermiere statInf = null;
-		
+				
 		for (StatisticheInfermiere si : stat) {
 			if (si.getInfermiere().equals(infermiere)) {
-				statInf = si;
+				return si;
 			}
-		}
-		
-		return statInf;
+		}		
+		return null;
 	}
 
+	// salva l'orario generato in un file di testo
 	public void salvaOrario(){
 		
 		PrintWriter writer = null;
 		try {
 			writer = new PrintWriter("OrarioInfermieri.txt", "UTF-8");
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
