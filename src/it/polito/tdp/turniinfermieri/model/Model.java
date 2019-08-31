@@ -590,7 +590,7 @@ public class Model {
 				min = inf.getNumero_riposi();
 		}
 		
-		if (max - min > 5)
+		if (max - min > 3)
 			return false;
 		
 		return true;
