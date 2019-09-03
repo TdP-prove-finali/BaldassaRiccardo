@@ -126,7 +126,7 @@
                            <children>
                               <HBox alignment="CENTER" layoutX="120.0" prefHeight="57.0" prefWidth="530.0">
                                  <children>
-                                    <Button alignment="CENTER" mnemonicParsing="false" onAction="#doGeneraOrario" text="Genera Orario">
+                                    <Button fx:id="ButtonGeneraOrario" alignment="CENTER" mnemonicParsing="false" onAction="#doGeneraOrario" text="Genera Orario">
                                        <font>
                                           <Font size="16.0" />
                                        </font>
@@ -134,7 +134,7 @@
                                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                        </HBox.margin>
                                     </Button>
-                                    <TextField fx:id="TextFieldOrario" editable="false" prefHeight="25.0" prefWidth="295.0" text="Premere sul bottone per generare l'orario" />
+                                    <TextField fx:id="TextFieldOrario" editable="false" prefHeight="25.0" prefWidth="394.0" text="Premere sul bottone per generare l'orario e attendere qualche secondo" />
                                     <ComboBox fx:id="ComboBoxMesi" onAction="#doSelezionaMese" prefWidth="150.0">
                                        <HBox.margin>
                                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -211,8 +211,8 @@
                               </HBox>
                               <HBox prefWidth="200.0">
                                  <children>
-                                    <PieChart fx:id="PieChartInf" title="Turni infermiere" />
-                                    <PieChart fx:id="PieChartMedia" title="Riposi infermiere" />
+                                    <PieChart fx:id="PieChartTurni" title="Turni infermiere" />
+                                    <PieChart fx:id="PieChartRiposi" title="Riposi infermiere" />
                                  </children>
                               </HBox>
                            </children>

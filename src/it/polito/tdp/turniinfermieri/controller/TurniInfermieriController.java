@@ -55,6 +55,9 @@ public class TurniInfermieriController {
     @FXML // fx:id="Tab_Genera_Orario"
     private Tab Tab_Genera_Orario; // Value injected by FXMLLoader
     
+    @FXML // fx:id="ButtonGeneraOrario"
+    private Button ButtonGeneraOrario; // Value injected by FXMLLoader
+    
     @FXML // fx:id="TextFieldOrario"
     private TextField TextFieldOrario; // Value injected by FXMLLoader
 
@@ -197,10 +200,10 @@ public class TurniInfermieriController {
     private ComboBox<Infermiere> ComboBoxInfermieriStat; // Value injected by FXMLLoader
 
     @FXML // fx:id="PieChartInf"
-    private PieChart PieChartInf; // Value injected by FXMLLoader
+    private PieChart PieChartTurni; // Value injected by FXMLLoader
 
     @FXML // fx:id="PieChartMedia"
-    private PieChart PieChartMedia; // Value injected by FXMLLoader
+    private PieChart PieChartRiposi; // Value injected by FXMLLoader
      
     @FXML // controllo se le ferie modificate siano valide
     void doModificaFerie(ActionEvent event) {
@@ -232,8 +235,14 @@ public class TurniInfermieriController {
     		else if (ferieDuplicate.size() == 0 && ferieMax.size() == 0) {
     			TextFieldFerie.setText("ferie accettate");
     			Tab_Genera_Orario.setDisable(false);
+    	    	Tab_Statistiche_Infermieri.setDisable(true);
     			model.modificaFerie(infermiere);
     	    	ComboBoxInfermieri.setDisable(false);
+    	    	ButtonGeneraOrario.setDisable(false);
+    	    	ButtonSalvaOrario.setDisable(true);
+    	    	TextFieldOrario.setText("Premere sul bottone per generare l'orario e attendere qualche secondo");
+    	    	TableViewOrarioGenerale.getItems().clear();
+    	    	ComboBoxMesi.getItems().clear();
     	    	this.doSelezionaInfermiere(event);
     		}
     	}
@@ -247,6 +256,7 @@ public class TurniInfermieriController {
     void onEditCommitFerie(TableColumn.CellEditEvent<Ferie, LocalDate> ferieCellEditEvent) {
     	ComboBoxInfermieri.setDisable(true);
     	Tab_Genera_Orario.setDisable(true);
+    	Tab_Statistiche_Infermieri.setDisable(true);
 
     	// ottengo il valore modificato 
     	Ferie ferie = ferieCellEditEvent.getTableView().getSelectionModel().getSelectedItem();
@@ -298,23 +308,28 @@ public class TurniInfermieriController {
     	TableViewOrarioGenerale.getItems().clear();
     	
     	ComboBoxMesi.setValue(null);
-    	    	    	    	
-    	long inizio = System.currentTimeMillis();
-    	
+    	    	    	    	    									
     	Map<LocalDate, Map<Infermiere, String>> soluzione = model.generaOrario();
-    	
-    	long fine = System.currentTimeMillis() - inizio;
-    	System.out.println(fine);
-    	     	     	 
-    	 if (soluzione == null) {
+		    	     	     	 
+    	if (soluzione == null) {
     	    	TextFieldOrario.setText("Creazione orario non riuscita, modificare ferie e riprovare");
     	    	Tab_Statistiche_Infermieri.setDisable(true);
      	    	ButtonSalvaOrario.setDisable(true);
-    	 }
+     	    	ButtonGeneraOrario.setDisable(true);
+    	}
     	 
-    	 else {
+    	else {
  	    	Tab_Statistiche_Infermieri.setDisable(false);
  	    	ButtonSalvaOrario.setDisable(false);
+ 	    	ButtonGeneraOrario.setDisable(true);
+ 	    	ComboBoxInfermieriStat.setValue(null);
+ 	    	ComboBoxInfermieri.setValue(null);
+ 	    	TableViewFerie1.getItems().clear();
+ 	    	TableViewFerie2.getItems().clear();
+ 	    	TableViewFerie3.getItems().clear();
+ 	    	TableViewFerie4.getItems().clear();
+ 	    	PieChartTurni.setVisible(false);
+ 	    	PieChartRiposi.setVisible(false);
     	
 	    	TextFieldOrario.setText("Orario generato. Seleziona mese da visualizzare");
 	    	
@@ -627,21 +642,24 @@ public class TurniInfermieriController {
 
     	if (infermiere != null) {
     		
+    		PieChartTurni.setVisible(true);
+    		PieChartRiposi.setVisible(true);
+    		
     		StatisticheInfermiere statInf = model.statInfermiere(infermiere);
     		
-    		ObservableList<PieChart.Data> pieChartInfData = FXCollections.observableArrayList(
+    		ObservableList<PieChart.Data> pieChartTurniData = FXCollections.observableArrayList(
     				new PieChart.Data("Mattino (" + statInf.getNumeroMattine() + ")", statInf.getNumeroMattine()),
     				new PieChart.Data("Pomeriggio (" + statInf.getNumeroPomeriggi() + ")", statInf.getNumeroPomeriggi()),
     				new PieChart.Data("Notte (" + statInf.getNumeroNotti() + ")", statInf.getNumeroNotti()));
     		
-    		ObservableList<PieChart.Data> pieChartMedieData = FXCollections.observableArrayList(
+    		ObservableList<PieChart.Data> pieChartRiposiData = FXCollections.observableArrayList(
     				new PieChart.Data("Feriale (" + statInf.getNumeroRiposiFeriali() + ")", (statInf.getNumeroRiposiFeriali())),
     				new PieChart.Data("Festivo (" + statInf.getNumeroRiposiFestivita() + ")", statInf.getNumeroRiposiFestivita()));
     		
-    		PieChartInf.setData(pieChartInfData);
-    		PieChartMedia.setData(pieChartMedieData);
-    		PieChartInf.setStartAngle(90);
-    		PieChartMedia.setStartAngle(90);
+    		PieChartTurni.setData(pieChartTurniData);
+    		PieChartRiposi.setData(pieChartRiposiData);
+    		PieChartTurni.setStartAngle(90);
+    		PieChartRiposi.setStartAngle(90);
 
     		
     	}
@@ -667,6 +685,7 @@ public class TurniInfermieriController {
         assert TableViewFerie4 != null : "fx:id=\"TableViewFerie4\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
         assert TableColumnFerie4 != null : "fx:id=\"TableColumnFerie4\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
         assert Tab_Genera_Orario != null : "fx:id=\"Tab_Genera_Orario\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert ButtonGeneraOrario != null : "fx:id=\"ButtonGeneraOrario\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
         assert TextFieldOrario != null : "fx:id=\"TextFieldOrario\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
         assert TableViewOrarioGenerale != null : "fx:id=\"TableViewOrarioGenerale\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
         assert TableColumnInfermiere != null : "fx:id=\"TableColumnInfermiere\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
@@ -703,8 +722,8 @@ public class TurniInfermieriController {
         assert TableColumn31 != null : "fx:id=\"TableColumn31\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
         assert Tab_Statistiche_Infermieri != null : "fx:id=\"Tab_Orario_Infermieri\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
         assert ComboBoxInfermieriStat != null : "fx:id=\"ComboBoxInfermieri2\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
-        assert PieChartInf != null : "fx:id=\"PieChartInf\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
-        assert PieChartMedia != null : "fx:id=\"PieChartMedia\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert PieChartTurni != null : "fx:id=\"PieChartInf\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
+        assert PieChartRiposi != null : "fx:id=\"PieChartMedia\" was not injected: check your FXML file 'TurniInfermieri.fxml'.";
     }
 
 	public void setModel(Model model) {

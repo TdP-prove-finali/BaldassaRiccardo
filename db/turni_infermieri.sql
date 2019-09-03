@@ -391,25 +391,24 @@ CREATE TABLE IF NOT EXISTS `infermiere` (
   `nome` varchar(50) COLLATE utf8_bin NOT NULL,
   `cognome` varchar(50) COLLATE utf8_bin NOT NULL,
   `data_nascita` date NOT NULL,
-  `trimestre_ferie_lunghe` int(11) NOT NULL,
   PRIMARY KEY (`id_infermiere`)
 ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8 COLLATE=utf8_bin COMMENT='anagrafica degli infermieri';
 
 -- Dump dei dati della tabella turni_infermieri.infermiere: ~11 rows (circa)
 DELETE FROM `infermiere`;
 /*!40000 ALTER TABLE `infermiere` DISABLE KEYS */;
-INSERT INTO `infermiere` (`id_infermiere`, `nome`, `cognome`, `data_nascita`, `trimestre_ferie_lunghe`) VALUES
-	(1, 'Mario', 'Rossi', '1990-07-24', 1),
-	(2, 'Martina', 'Saro', '1975-02-19', 1),
-	(3, 'Giovanni', 'Allegro', '1982-11-05', 1),
-	(4, 'Luca', 'Marrone', '1992-11-25', 2),
-	(5, 'Paola', 'Montalba', '1994-02-04', 2),
-	(6, 'Cristina', 'Pace', '1989-03-06', 3),
-	(7, 'Sebastiano', 'Salienti', '1995-12-12', 3),
-	(8, 'Laura', 'Bartoli', '1983-01-30', 3),
-	(9, 'Benedetta', 'Sacco', '1971-05-15', 4),
-	(10, 'Daniele', 'Giacorra', '1966-08-20', 4),
-	(11, 'Stefania', 'Allecco', '1988-10-01', 4);
+INSERT INTO `infermiere` (`id_infermiere`, `nome`, `cognome`, `data_nascita`) VALUES
+	(1, 'Mario', 'Rossi', '1990-07-24'),
+	(2, 'Martina', 'Saro', '1975-02-19'),
+	(3, 'Giovanni', 'Allegro', '1982-11-05'),
+	(4, 'Luca', 'Marrone', '1992-11-25'),
+	(5, 'Paola', 'Montalba', '1994-02-04'),
+	(6, 'Cristina', 'Pace', '1989-03-06'),
+	(7, 'Sebastiano', 'Salienti', '1995-12-12'),
+	(8, 'Laura', 'Bartoli', '1983-01-30'),
+	(9, 'Benedetta', 'Sacco', '1971-05-15'),
+	(10, 'Daniele', 'Giacorra', '1966-08-20'),
+	(11, 'Stefania', 'Allecco', '1988-10-01');
 /*!40000 ALTER TABLE `infermiere` ENABLE KEYS */;
 
 -- Dump della struttura di tabella turni_infermieri.vincoli

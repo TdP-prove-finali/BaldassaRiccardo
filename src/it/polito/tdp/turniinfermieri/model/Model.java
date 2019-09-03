@@ -334,7 +334,6 @@ public class Model {
 									i.setNumero_riposi_festivita(i.getNumero_riposi_festivita() - 1);
 							}
 						}
-
 						// rimuovo i turni della notte assegnati
 						for (Infermiere i : infermieri) {
 							if (parziale.get(data).get(i) == "Notte") {
@@ -342,8 +341,7 @@ public class Model {
 								i.setNumero_notti(i.getNumero_notti() - 1);
 							}
 						}
-					}
-					
+					}					
 					// rimuovo i turni del pomeriggio assegnati
 					for (Infermiere i : infermieri) {
 						if (parziale.get(data).get(i) == "Pomeriggio") {
@@ -351,8 +349,7 @@ public class Model {
 							i.setNumero_pomeriggi(i.getNumero_pomeriggi() - 1);
 						}
 					}
-				}
-				
+				}				
 				// rimuovo i turni del mattino assegnati
 				for (Infermiere i : infermieri) {
 					if (parziale.get(data).get(i) == "Mattino") {
@@ -365,91 +362,82 @@ public class Model {
 
 		// quando completo tutto il calendario
 		else if (data.isEqual(fine)) {
-			
-			System.out.println(debito_orario_massimo_annuale + " " + debito_orario_minimo_annuale);
-			
-			// variaibli per la ricerca del numero minimo e massimo di turni e riposi per gli infermieri
-			int oreTot = 0; 
-			int maxMat = 0;
-			int minMat = Integer.MAX_VALUE;
-			int maxPom = 0;
-			int minPom = Integer.MAX_VALUE;
-			int maxNot = 0;
-			int minNot = Integer.MAX_VALUE;
-			int maxRip = 0;
-			int minRip = Integer.MAX_VALUE;
-			int maxRipFest = 0;
-			int minRipFest = Integer.MAX_VALUE;
-			
-			for (Infermiere inf : infermieri) {
-				oreTot = (inf.getNumero_mattine() + inf.getNumero_pomeriggi() + inf.getNumero_notti() + 32) * durata_turno_lavorativo; // ore totali lavorative annuali per infermiere (vengono considerati anche i 32 giorni di ferie annuali in questo conteggio)
-				System.out.println(oreTot);		
-				// controllo se l'infermiere ha lavorato per il numero giusto di ore durante l'anno (con uno scarto del 2%) 
-				if (oreTot > debito_orario_massimo_annuale || oreTot < debito_orario_minimo_annuale) 
-					return;
-				
-				if (inf.getNumero_mattine() < minMat)
-					minMat = inf.getNumero_mattine(); // numero minimo di mattine assegnate ad un infermiere
-				if (inf.getNumero_mattine() > maxMat)
-					maxMat = inf.getNumero_mattine(); // numero massimo di mattine assegnate ad un infermiere
-				if (inf.getNumero_pomeriggi() < minPom)
-					minPom = inf.getNumero_pomeriggi(); // numero minimo di pomeriggi assegnati ad un infermiere
-				if (inf.getNumero_pomeriggi() > maxPom) 
-					maxPom = inf.getNumero_pomeriggi(); // numero massimo di pomeriggi assegnati ad un infermiere
-				if (inf.getNumero_notti() < minNot)
-					minNot = inf.getNumero_notti(); // numero minimo di notti assegnate ad un infermiere
-				if (inf.getNumero_notti() > maxNot)
-					maxNot = inf.getNumero_notti(); // numero massimo di notti assegnate ad un infermiere
-				if (inf.getNumero_riposi() < minRip)
-					minRip = inf.getNumero_riposi(); // numero minimo di risposi assegnati ad un infemiere
-				if (inf.getNumero_riposi() > maxRip)
-					maxRip = inf.getNumero_riposi(); // numero massimo di risposi assegnati ad un infermiere
-				if (inf.getNumero_riposi_festivita() < minRipFest)
-					minRipFest = inf.getNumero_riposi_festivita(); // numero minimo di riposi durante giorni festivi assegnati ad un infermiere
-				if (inf.getNumero_riposi_festivita() > maxRipFest)
-					maxRipFest = inf.getNumero_riposi_festivita(); // numero massimo di riposi durante giorni festivi assegnati ad un infermiere
-			}  
-			
-			
-			
-			System.out.println(minMat);
-			System.out.println(maxMat);
-			System.out.println(minPom);
-			System.out.println(maxPom);
-			System.out.println(minNot);
-			System.out.println(maxNot);
-			System.out.println(minRip);
-			System.out.println(maxRip);
-			System.out.println(minRipFest);
-			System.out.println(maxRipFest);
-			
-			// vincoli che permettono di trovare una soluzione che sia molto equa tra gli infermieri
-			if (maxMat - minMat > 12) // controllo differenza massima del numero di assegnazioni del turno del mattina tra gli infermieri
-				return;
-			if (maxPom - minPom > 8) // controllo differenza massima del numero di assegnazioni del turno del pomeriggio tra gli infermieri
-				return;
-			if (maxNot - minNot > 4) // controllo differenza massima del numero di assegnazioni del turno della notte tra gli infermieri
-				return;
-			if (maxRip - minRip > 5) // controllo differenza massima del numero di assegnazioni di riposi tra gli infermieri
-				return;
-			if (maxRipFest - minRipFest > 3) // controllo differenza massima del numero di assegnazioni di riposi durante giorni festivi tra gli infermieri
+						
+			if (!controlloSoluzione()) // controllo che la soluzione trovata sia accettabile
 				return;
 						
-			trovata = true; // trovata soluzione che rispetti i vincoli sopra indicati
+			trovata = true; // trovata soluzione che rispetti i vincoli di controllo
 			LocalDate d = inizio;
-
 			// salvo la soluzione finale
 			while (d.isBefore(fine)) {
 				soluzione.put(d, new HashMap<Infermiere, String>(parziale.get(d)));
 				d = d.plusDays(1);
-			}
-			
+			}		
 			// salvo le statistiche degli infermieri
 			for (Infermiere i : infermieri)
 				stat.add(new StatisticheInfermiere(i, i.getNumero_riposi(), i.getNumero_mattine(), i.getNumero_pomeriggi(), i.getNumero_notti(), i.getNumero_riposi_festivita()));
 
 			return;
 		}
+	}
+	
+	private boolean controlloSoluzione() {
+		
+		// variaibli per la ricerca del numero minimo e massimo di turni e riposi per gli infermieri
+		int oreTot = 0; 
+		int maxMat = 0;
+		int minMat = Integer.MAX_VALUE;
+		int maxPom = 0;
+		int minPom = Integer.MAX_VALUE;
+		int maxNot = 0;
+		int minNot = Integer.MAX_VALUE;
+		int maxRip = 0;
+		int minRip = Integer.MAX_VALUE;
+		int maxRipFest = 0;
+		int minRipFest = Integer.MAX_VALUE;
+
+		for (Infermiere inf : infermieri) {
+			// ore totali lavorative annuali per infermiere (vengono considerati anche i 32 giorni di ferie annuali in questo conteggio)
+			oreTot = (inf.getNumero_mattine() + inf.getNumero_pomeriggi() + inf.getNumero_notti() + 32) * durata_turno_lavorativo; 
+			// controllo se l'infermiere ha lavorato per il numero giusto di ore durante l'anno (con uno scarto del 2%) 
+			if (oreTot > debito_orario_massimo_annuale || oreTot < debito_orario_minimo_annuale) 
+				return false;
+
+			if (inf.getNumero_mattine() < minMat)
+				minMat = inf.getNumero_mattine(); // numero minimo di mattine assegnate ad un infermiere
+			if (inf.getNumero_mattine() > maxMat)
+				maxMat = inf.getNumero_mattine(); // numero massimo di mattine assegnate ad un infermiere
+			if (inf.getNumero_pomeriggi() < minPom)
+				minPom = inf.getNumero_pomeriggi(); // numero minimo di pomeriggi assegnati ad un infermiere
+			if (inf.getNumero_pomeriggi() > maxPom) 
+				maxPom = inf.getNumero_pomeriggi(); // numero massimo di pomeriggi assegnati ad un infermiere
+			if (inf.getNumero_notti() < minNot)
+				minNot = inf.getNumero_notti(); // numero minimo di notti assegnate ad un infermiere
+			if (inf.getNumero_notti() > maxNot)
+				maxNot = inf.getNumero_notti(); // numero massimo di notti assegnate ad un infermiere
+			if (inf.getNumero_riposi() < minRip)
+				minRip = inf.getNumero_riposi(); // numero minimo di risposi assegnati ad un infemiere
+			if (inf.getNumero_riposi() > maxRip)
+				maxRip = inf.getNumero_riposi(); // numero massimo di risposi assegnati ad un infermiere
+			if (inf.getNumero_riposi_festivita() < minRipFest)
+				minRipFest = inf.getNumero_riposi_festivita(); // numero minimo di riposi durante giorni festivi assegnati ad un infermiere
+			if (inf.getNumero_riposi_festivita() > maxRipFest)
+				maxRipFest = inf.getNumero_riposi_festivita(); // numero massimo di riposi durante giorni festivi assegnati ad un infermiere
+		}  
+		
+		// vincoli che permettono di trovare una soluzione che sia molto equa tra gli infermieri
+		if (maxMat - minMat > 12) // controllo differenza massima del numero di assegnazioni del turno del mattina tra gli infermieri
+			return false;
+		if (maxPom - minPom > 8) // controllo differenza massima del numero di assegnazioni del turno del pomeriggio tra gli infermieri
+			return false;
+		if (maxNot - minNot > 4) // controllo differenza massima del numero di assegnazioni del turno della notte tra gli infermieri
+			return false;
+		if (maxRip - minRip > 5) // controllo differenza massima del numero di assegnazioni di riposi tra gli infermieri
+			return false;
+		if (maxRipFest - minRipFest > 3) // controllo differenza massima del numero di assegnazioni di riposi durante giorni festivi tra gli infermieri
+			return false;
+					
+		return true;
 	}
 
 	// trovo quali infermieri possono essere assegnati al turno del mattino nella data passata come parametro andando a controllare la soluzione parziale fino a quel giorno 
@@ -468,8 +456,8 @@ public class Model {
 		else if (data.isBefore(inizio.plusDays(max_giorni_lavorativi_settimanali))
 				&& data.isAfter(inizio)) {
 			for (Infermiere i : infermieri) {
-				if (parziale.get(data).get(i) == null && !parziale.get(data.minusDays(1)).get(i).equals("Notte")
-						&& !parziale.get(data.minusDays(1)).get(i).equals("Pomeriggio")) // sono candidati gli infermieri a cui non è ancora stato assegnato il turno e il cui giorno precedente non è stato assegnato il turno di pomeriggio, il turno di notte o le ferie
+				if (parziale.get(data).get(i) == null && !parziale.get(data.minusDays(1)).get(i).equals("Notte") // sono candidati gli infermieri a cui non è ancora stato assegnato il turno e 
+						&& !parziale.get(data.minusDays(1)).get(i).equals("Pomeriggio")) // il cui giorno precedente non è stato assegnato il turno di pomeriggio, il turno di notte o le ferie
 					infMat.add(i);
 			}
 		} 
@@ -486,9 +474,9 @@ public class Model {
 						cont++;
 				}
 
-				if (cont < max_giorni_lavorativi_settimanali && parziale.get(data).get(i) == null
-						&& !parziale.get(data.minusDays(1)).get(i).equals("Notte")
-						&& !parziale.get(data.minusDays(1)).get(i).equals("Pomeriggio")) // sono candidati gli infermieri a cui non è ancora stato assegnato un turno e che nei sei giorni precedenti non hanno lavorato per almeno un giorno, che nel giorno precedente non sono stati assegnati al turno del pomeriggio o della notte, e che in questo giorno non abbiano le ferie 
+				if (cont < max_giorni_lavorativi_settimanali && parziale.get(data).get(i) == null // sono candidati gli infermieri a cui non è ancora stato assegnato un turno e che nei sei giorni 
+						&& !parziale.get(data.minusDays(1)).get(i).equals("Notte") // precedenti non hanno lavorato per almeno un giorno, che nel giorno precedente non sono stati assegnati 
+						&& !parziale.get(data.minusDays(1)).get(i).equals("Pomeriggio")) // al turno del pomeriggio o della notte, e che in questo giorno non abbiano le ferie 
 					infMat.add(i);
 			}
 		}
@@ -512,8 +500,8 @@ public class Model {
 		else if (data.isBefore(inizio.plusDays(max_giorni_lavorativi_settimanali))
 				&& data.isAfter(inizio)) {
 			for (Infermiere i : infermieri) {
-				if (parziale.get(data).get(i) == null && !parziale.get(data.minusDays(1)).get(i).equals("Notte")) // sono candidati gli infermieri a cui non è ancora stato assegnato il turno il cui giorno precendete non sono stati assegnati al turno della notte o le ferie
-					infPom.add(i);
+				if (parziale.get(data).get(i) == null && !parziale.get(data.minusDays(1)).get(i).equals("Notte")) // sono candidati gli infermieri a cui non è ancora stato assegnato il turno il cui giorno
+					infPom.add(i);																				  //  precendete non sono stati assegnati al turno della notte o le ferie
 			}
 		} 
 		// in tutti gli altri giorni
@@ -529,8 +517,8 @@ public class Model {
 						cont++;
 				}
 
-				if (cont < max_giorni_lavorativi_settimanali && parziale.get(data).get(i) == null
-						&& !parziale.get(data.minusDays(1)).get(i).equals("Notte")) // sono candidati tutti gli infemieri a cui non è ancora stato assegnato un turno e che nei sei giorni precedenti non hanno lavorato per almeno un giorno, che nel giorno precedente non siano stati assegnati al turno di notte e che in questo giorno non abbiano le ferie
+				if (cont < max_giorni_lavorativi_settimanali && parziale.get(data).get(i) == null // sono candidati tutti gli infemieri a cui non è ancora stato assegnato un turno e che nei sei giorni precedenti non hanno
+						&& !parziale.get(data.minusDays(1)).get(i).equals("Notte")) // lavorato per almeno un giorno, che nel giorno precedente non siano stati assegnati al turno di notte e che in questo giorno non abbiano le ferie
 					infPom.add(i);
 			}
 		}
@@ -570,8 +558,8 @@ public class Model {
 						cont++;
 				}
 
-				if (cont < max_giorni_lavorativi_settimanali && parziale.get(data).get(i) == null) // sono candidati tutti gli infermieri a cui non è stato ancora assegnato un turno e che nei sei giorni precedenti non hanno lavorato per almeno un giorno e che in questo giorno non abbiano le ferie
-					infNot.add(i);
+				if (cont < max_giorni_lavorativi_settimanali && parziale.get(data).get(i) == null) // sono candidati tutti gli infermieri a cui non è stato ancora assegnato un turno e che nei sei giorni 
+					infNot.add(i);																   // precedenti non hanno lavorato per almeno un giorno e che in questo giorno non abbiano le ferie
 			}
 		}
 		return infNot;
