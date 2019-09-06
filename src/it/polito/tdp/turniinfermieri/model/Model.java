@@ -202,6 +202,9 @@ public class Model {
 
 		// chiamata della funzione ricorsiva
 		calcolaOrario(parziale, inizio);
+		
+		if (!trovata)
+			soluzione = null;
 
 		return soluzione;
 

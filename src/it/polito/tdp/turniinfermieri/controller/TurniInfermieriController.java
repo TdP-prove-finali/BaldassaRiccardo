@@ -308,14 +308,15 @@ public class TurniInfermieriController {
     	TableViewOrarioGenerale.getItems().clear();
     	
     	ComboBoxMesi.setValue(null);
+    	ComboBoxMesi.getItems().clear();
     	    	    	    	    									
     	Map<LocalDate, Map<Infermiere, String>> soluzione = model.generaOrario();
 		    	     	     	 
     	if (soluzione == null) {
-    	    	TextFieldOrario.setText("Creazione orario non riuscita, modificare ferie e riprovare");
-    	    	Tab_Statistiche_Infermieri.setDisable(true);
-     	    	ButtonSalvaOrario.setDisable(true);
-     	    	ButtonGeneraOrario.setDisable(true);
+    	    TextFieldOrario.setText("Creazione orario non riuscita, modificare ferie e riprovare");
+    	    Tab_Statistiche_Infermieri.setDisable(true);
+     	    ButtonSalvaOrario.setDisable(true);
+     	    ButtonGeneraOrario.setDisable(true);
     	}
     	 
     	else {
@@ -330,11 +331,10 @@ public class TurniInfermieriController {
  	    	TableViewFerie4.getItems().clear();
  	    	PieChartTurni.setVisible(false);
  	    	PieChartRiposi.setVisible(false);
+ 	    	TextFieldFerie.setText("Ferie dal 01/09/2019 al 31/08/2020, si può scegliere qualsiasi giorno (formato: gg/mm/aaaa) ma sono accettate massimo due richieste di due infermieri diversi per lo stesso giorno");
     	
 	    	TextFieldOrario.setText("Orario generato. Seleziona mese da visualizzare");
-	    	
-	    	ComboBoxMesi.getItems().clear();
-	    	
+	    		    	
 	    	for (int i = 9; i <=12; i++) {
 				ComboBoxMesi.getItems().add(Month.of(i).getDisplayName(TextStyle.FULL, Locale.ITALY));
 			}
