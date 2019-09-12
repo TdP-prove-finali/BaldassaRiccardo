@@ -243,6 +243,9 @@ public class TurniInfermieriController {
     	    	TextFieldOrario.setText("Premere sul bottone per generare l'orario e attendere qualche secondo");
     	    	TableViewOrarioGenerale.getItems().clear();
     	    	ComboBoxMesi.getItems().clear();
+    	    	TableColumn29.setVisible(true);
+    	    	TableColumn30.setVisible(true);
+    	    	TableColumn31.setVisible(true); 
     	    	this.doSelezionaInfermiere(event);
     		}
     	}
@@ -433,7 +436,6 @@ public class TurniInfermieriController {
 	    	if (inf.get(0).getGiorno30() != null) {
 	        	TableColumn30.setVisible(true);
 	        	giorni.setGiorno30(LocalDate.of(anno, mese, 30).getDayOfWeek().getDisplayName(TextStyle.SHORT,Locale.ITALY));
-
 	    	}
 	    	if (inf.get(0).getGiorno31() != null) {
 	        	TableColumn31.setVisible(true);

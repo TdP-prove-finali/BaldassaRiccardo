@@ -89,22 +89,22 @@
                                  <children>
                                     <TableView fx:id="TableViewFerie1" editable="true">
                                       <columns>
-                                        <TableColumn fx:id="TableColumnFerie1" onEditCommit="#onEditCommitFerie" prefWidth="252.0" text="Ferie (1/4)" />
+                                        <TableColumn fx:id="TableColumnFerie1" onEditCommit="#onEditCommitFerie" prefWidth="252.0" resizable="false" sortable="false" text="Ferie (1/4)" />
                                       </columns>
                                     </TableView>
                                     <TableView fx:id="TableViewFerie2" editable="true">
                                        <columns>
-                                          <TableColumn fx:id="TableColumnFerie2" onEditCommit="#onEditCommitFerie" prefWidth="252.0" text="Ferie (2/4)" />
+                                          <TableColumn fx:id="TableColumnFerie2" onEditCommit="#onEditCommitFerie" prefWidth="252.0" resizable="false" sortable="false" text="Ferie (2/4)" />
                                        </columns>
                                     </TableView>
                                     <TableView fx:id="TableViewFerie3" editable="true" prefHeight="200.0" prefWidth="252.0">
                                       <columns>
-                                        <TableColumn fx:id="TableColumnFerie3" onEditCommit="#onEditCommitFerie" prefWidth="252.0" text="Ferie (3/4)" />
+                                        <TableColumn fx:id="TableColumnFerie3" onEditCommit="#onEditCommitFerie" prefWidth="252.0" resizable="false" sortable="false" text="Ferie (3/4)" />
                                       </columns>
                                     </TableView>
                                     <TableView fx:id="TableViewFerie4" editable="true" prefHeight="200.0" prefWidth="250.0">
                                       <columns>
-                                        <TableColumn fx:id="TableColumnFerie4" onEditCommit="#onEditCommitFerie" prefWidth="252.0" text="Ferie (4/4)" />
+                                        <TableColumn fx:id="TableColumnFerie4" onEditCommit="#onEditCommitFerie" prefWidth="252.0" resizable="false" sortable="false" text="Ferie (4/4)" />
                                       </columns>
                                     </TableView>
                                  </children>
@@ -148,38 +148,38 @@
                               </HBox>
                               <TableView fx:id="TableViewOrarioGenerale" prefHeight="400.0" prefWidth="1097.0">
                                 <columns>
-                                  <TableColumn fx:id="TableColumnInfermiere" prefWidth="135.0" text="Infermiere" />
-                                  <TableColumn fx:id="TableColumn01" prefWidth="30.5" text="01" />
-                                    <TableColumn fx:id="TableColumn02" prefWidth="30.5" text="02" />
-                                    <TableColumn fx:id="TableColumn03" prefWidth="30.5" text="03" />
-                                    <TableColumn fx:id="TableColumn04" prefWidth="30.5" text="04" />
-                                    <TableColumn fx:id="TableColumn05" prefWidth="30.5" text="05" />
-                                    <TableColumn fx:id="TableColumn06" prefWidth="30.5" text="06" />
-                                    <TableColumn fx:id="TableColumn07" prefWidth="30.5" text="07" />
-                                    <TableColumn fx:id="TableColumn08" prefWidth="30.5" text="08" />
-                                    <TableColumn fx:id="TableColumn09" prefWidth="30.5" text="09" />
-                                    <TableColumn fx:id="TableColumn10" prefWidth="30.5" text="10" />
-                                    <TableColumn fx:id="TableColumn11" prefWidth="30.5" text="11" />
-                                    <TableColumn fx:id="TableColumn12" prefWidth="30.5" text="12" />
-                                    <TableColumn fx:id="TableColumn13" prefWidth="30.5" text="13" />
-                                    <TableColumn fx:id="TableColumn14" prefWidth="30.5" text="14" />
-                                    <TableColumn fx:id="TableColumn15" prefWidth="30.5" text="15" />
-                                    <TableColumn fx:id="TableColumn16" prefWidth="30.5" text="16" />
-                                    <TableColumn fx:id="TableColumn17" prefWidth="30.5" text="17" />
-                                    <TableColumn fx:id="TableColumn18" prefWidth="30.5" text="18" />
-                                    <TableColumn fx:id="TableColumn19" prefWidth="30.5" text="19" />
-                                    <TableColumn fx:id="TableColumn20" prefWidth="30.5" text="20" />
-                                    <TableColumn fx:id="TableColumn21" prefWidth="30.5" text="21" />
-                                    <TableColumn fx:id="TableColumn22" prefWidth="30.5" text="22" />
-                                    <TableColumn fx:id="TableColumn23" prefWidth="30.5" text="23" />
-                                    <TableColumn fx:id="TableColumn24" prefWidth="30.5" text="24" />
-                                    <TableColumn fx:id="TableColumn25" prefWidth="30.5" text="25" />
-                                    <TableColumn fx:id="TableColumn26" prefWidth="30.5" text="26" />
-                                    <TableColumn fx:id="TableColumn27" prefWidth="30.5" text="27" />
-                                    <TableColumn fx:id="TableColumn28" prefWidth="30.5" text="28" />
-                                    <TableColumn fx:id="TableColumn29" prefWidth="30.5" text="29" />
-                                    <TableColumn fx:id="TableColumn30" prefWidth="30.5" text="30" />
-                                    <TableColumn fx:id="TableColumn31" prefWidth="30.5" text="31" />
+                                  <TableColumn fx:id="TableColumnInfermiere" editable="false" prefWidth="135.0" resizable="false" sortable="false" text="Infermiere" />
+                                  <TableColumn fx:id="TableColumn01" editable="false" prefWidth="30.5" resizable="false" sortable="false" text="01" />
+                                    <TableColumn fx:id="TableColumn02" editable="false" prefWidth="30.5" resizable="false" sortable="false" text="02" />
+                                    <TableColumn fx:id="TableColumn03" editable="false" prefWidth="30.5" resizable="false" sortable="false" text="03" />
+                                    <TableColumn fx:id="TableColumn04" editable="false" prefWidth="30.5" resizable="false" sortable="false" text="04" />
+                                    <TableColumn fx:id="TableColumn05" editable="false" prefWidth="30.5" resizable="false" sortable="false" text="05" />
+                                    <TableColumn fx:id="TableColumn06" editable="false" prefWidth="30.5" resizable="false" sortable="false" text="06" />
+                                    <TableColumn fx:id="TableColumn07" editable="false" prefWidth="30.5" resizable="false" sortable="false" text="07" />
+                                    <TableColumn fx:id="TableColumn08" editable="false" prefWidth="30.5" resizable="false" sortable="false" text="08" />
+                                    <TableColumn fx:id="TableColumn09" editable="false" prefWidth="30.5" resizable="false" sortable="false" text="09" />
+                                    <TableColumn fx:id="TableColumn10" editable="false" prefWidth="30.5" resizable="false" sortable="false" text="10" />
+                                    <TableColumn fx:id="TableColumn11" editable="false" prefWidth="30.5" resizable="false" sortable="false" text="11" />
+                                    <TableColumn fx:id="TableColumn12" editable="false" prefWidth="30.5" resizable="false" sortable="false" text="12" />
+                                    <TableColumn fx:id="TableColumn13" editable="false" prefWidth="30.5" resizable="false" sortable="false" text="13" />
+                                    <TableColumn fx:id="TableColumn14" editable="false" prefWidth="30.5" resizable="false" sortable="false" text="14" />
+                                    <TableColumn fx:id="TableColumn15" editable="false" prefWidth="30.5" resizable="false" sortable="false" text="15" />
+                                    <TableColumn fx:id="TableColumn16" editable="false" prefWidth="30.5" resizable="false" sortable="false" text="16" />
+                                    <TableColumn fx:id="TableColumn17" editable="false" prefWidth="30.5" resizable="false" sortable="false" text="17" />
+                                    <TableColumn fx:id="TableColumn18" editable="false" prefWidth="30.5" resizable="false" sortable="false" text="18" />
+                                    <TableColumn fx:id="TableColumn19" editable="false" prefWidth="30.5" resizable="false" sortable="false" text="19" />
+                                    <TableColumn fx:id="TableColumn20" editable="false" prefWidth="30.5" resizable="false" sortable="false" text="20" />
+                                    <TableColumn fx:id="TableColumn21" editable="false" prefWidth="30.5" resizable="false" sortable="false" text="21" />
+                                    <TableColumn fx:id="TableColumn22" editable="false" prefWidth="30.5" resizable="false" sortable="false" text="22" />
+                                    <TableColumn fx:id="TableColumn23" editable="false" prefWidth="30.5" resizable="false" sortable="false" text="23" />
+                                    <TableColumn fx:id="TableColumn24" editable="false" prefWidth="30.5" resizable="false" sortable="false" text="24" />
+                                    <TableColumn fx:id="TableColumn25" editable="false" prefWidth="30.5" resizable="false" sortable="false" text="25" />
+                                    <TableColumn fx:id="TableColumn26" editable="false" prefWidth="30.5" resizable="false" sortable="false" text="26" />
+                                    <TableColumn fx:id="TableColumn27" editable="false" prefWidth="30.5" resizable="false" sortable="false" text="27" />
+                                    <TableColumn fx:id="TableColumn28" editable="false" prefWidth="30.5" resizable="false" sortable="false" text="28" />
+                                    <TableColumn fx:id="TableColumn29" editable="false" prefWidth="30.5" resizable="false" sortable="false" text="29" />
+                                    <TableColumn fx:id="TableColumn30" editable="false" prefWidth="30.5" resizable="false" sortable="false" text="30" />
+                                    <TableColumn fx:id="TableColumn31" editable="false" prefWidth="30.5" resizable="false" sortable="false" text="31" />
                                 </columns>
                                  <VBox.margin>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
